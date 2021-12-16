@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 
-    <link rel="stylesheet" type="text/css" href="css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/Content/bootstrap.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="Css/Content/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="Css/Content/bootstrap.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="Css/style.css" media="screen"/>
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="Scripts/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.js"></script>
@@ -86,7 +86,7 @@
      
     </style>
 </head>
-<body class="Imagem">
+<body class="">
     <div >
 
         <form id="form1" runat="server" >
@@ -100,7 +100,7 @@
                         <table style="width: 50%; margin-top: 8%; margin: 60px">
                             <tr>
                                 <td align="center">
-                                    <h4><label style="color:white">Faça seu login!</label></h4>
+                                    <h4><label style="color:black">Faça seu login!</label></h4>
                                     
                                 </td>
                             </tr>
@@ -134,7 +134,7 @@
                             </tr>
                             <tr>
                                 <td align="center">
-                                    <asp:Button ID="btnLogin" Text="Login" runat="server" CssClass="btn btn-default" OnClick="btnlogin_Click" />
+                                    <asp:Button ID="btnLogin" Text="Login" runat="server" CssClass="btn btn-default"  />
                                 </td>
                             </tr>
                             <tr>
