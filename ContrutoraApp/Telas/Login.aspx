@@ -5,26 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 
-    <link rel="stylesheet" type="text/css" href="Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="Css/Content/bootstrap.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="Css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen"/>
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' />
-    <script type="text/javascript" src="Scripts/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="Scripts/bootstrap.js"></script>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script>
 
 
-
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        });
 
         $(document).ready(function () {
 
