@@ -125,7 +125,7 @@
                             </tr>
                             <tr>
                                 <td align="center">
-                                    <asp:Button ID="btnLogin" Text="Login" runat="server" CssClass="btn btn-default"  />
+                                    <asp:Button ID="btnLogin" Text="Login" runat="server" CssClass="btn btn-default" OnClick="btnLogin_Click" />
                                 </td>
                             </tr>
                             <tr>
