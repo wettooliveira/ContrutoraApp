@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\style.css" />
+    <Content Include="Telas\Home.aspx" />
     <Content Include="Telas\About.aspx" />
     <Content Include="Telas\Contact.aspx" />
     <Content Include="Css\Content\bootstrap-theme.css" />
@@ -165,6 +166,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Code\Conexao.cs" />
+    <Compile Include="Telas\Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Telas\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

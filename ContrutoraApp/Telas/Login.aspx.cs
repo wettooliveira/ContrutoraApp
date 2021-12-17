@@ -16,7 +16,14 @@ namespace ContrutoraApp
         string senha;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                
+            }
+            else
+            {
+                
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -64,7 +71,7 @@ namespace ContrutoraApp
             {
 
                 Session["usuario"] = usuario;
-                Response.Redirect("home.aspx");
+                Response.Redirect("Home.aspx");
 
             }
             else
