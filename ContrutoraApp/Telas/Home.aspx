@@ -75,8 +75,8 @@
         </div>--%>
 
 
-        <nav id="menu_div">
-            <ul>
+        <nav class="menu_div">
+            <ul class="ul">
                 <li>
                     <a href="https://satellasoft.com">Home </a>
                 </li>
@@ -85,10 +85,11 @@
                     <a href="https://satellasoft.com">Sobre </a>
                 </li>
 
-                <li id="li3">
+                <li>
+
                     <a href="https://satellasoft.com">o que </a>
 
-                    <ul id="ul3">
+                    <ul >
                         <li>
                             <a href="https://satellasoft.com">foi </a>
                         </li>
@@ -104,10 +105,7 @@
 
                 <li><a href="#">Entrar</a></li>--%>
             </ul>
-
         </nav>
-
-
 
         <br />
 
