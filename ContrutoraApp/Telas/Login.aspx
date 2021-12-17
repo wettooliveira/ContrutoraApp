@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen"/>
+  
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
