@@ -8,7 +8,7 @@
 <head runat="server">
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />
+    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
@@ -33,6 +33,86 @@
 
 
     </script>
+
+    <style type="text/css">
+        .menu_div {
+            background-color: rgb(37, 37, 39);
+            width: 75vw;
+            opacity: 0.7;
+        }
+
+        .ul {
+            display: inline;
+            list-style: none;
+        }
+
+            .ul div li {
+                width: 150px;
+                display: inline-block;
+                position: relative;
+            }
+
+                .ul div li a {
+                    color: #FFF;
+                    opacity: 0.7;
+                    text-decoration: none;
+                    padding: 10px 10px;
+                    display: block;
+                }
+
+                .ul li a {
+                    color: #FFF;
+                    opacity: 0.7;
+                    text-decoration: none;
+                    padding: 10px 10px;
+                    display: block;
+                }
+
+                .ul li label {
+                    color: #FFF;
+                    opacity: 0.7;
+                    text-decoration: none;
+                    padding: 15px 10px;
+                    display: block;
+                }
+
+                .ul div li a:hover {
+                    background: #333;
+                    color: #fff;
+                    -moz-box-shadow: 0 3px 10px 0 #CCC;
+                    -webkit-box-shadow: 0 3px 10px 0 #ccc;
+                    text-shadow: 0px 0px 5px #fff;
+                    opacity: 10;
+                }
+
+            .ul li a:hover {
+                background: #333;
+                color: #fff;
+                -moz-box-shadow: 0 3px 10px 0 #CCC;
+                -webkit-box-shadow: 0 3px 10px 0 #ccc;
+                text-shadow: 0px 0px 5px #fff;
+                opacity: 10;
+            }
+
+            .ul li ul {
+                position: absolute;
+                top: 40px;
+                left: 0;
+                background-color: transparent;
+                display: none;
+            }
+
+            .ul li:hover ul, .ul li.over ul {
+                display: block;
+            }
+
+            .ul li ul li {
+                border: 1px solid #c0c0c0;
+                display: block;
+                width: 150px;
+            }
+    </style>
+
 </head>
 <body class="teste" style="width: 100%">
 
@@ -73,39 +153,76 @@
             </div>
 
         </div>--%>
-
+        <%--     <div style="display: inline-flex;">--%>
 
         <nav class="menu_div">
-            <ul class="ul">
-                <li>
-                    <a href="https://satellasoft.com">Home </a>
-                </li>
 
-                <li>
-                    <a href="https://satellasoft.com">Sobre </a>
-                </li>
+            <ul class="ul" style="display: inline-flex">
+                <div>
+                    <li><a href="https://satellasoft.com">Home </a></li>
 
-                <li>
+                    <li><a href="https://satellasoft.com">Sobre </a></li>
 
-                    <a href="https://satellasoft.com">o que </a>
+                    <li>
+                        <a href="https://satellasoft.com">o que </a>
+                        <ul>
+                            <li><a style="padding: 5px; background-color: rgb(37, 37, 39);" href="https://satellasoft.com">foi </a></li>
 
-                    <ul >
-                        <li>
-                            <a href="https://satellasoft.com">foi </a>
-                        </li>
+                            <li><a style="padding: 5px; background-color: rgb(37, 37, 39);" href="https://satellasoft.com">Quem Somos</a></li>
+                        </ul>
+                    </li>
+                </div>
+
+
+                <li style="justify-self: right;">
+                    <asp:ImageButton runat="server" ImageUrl="~/Imagens/icons8-cardápio-24.png" Width="25px" Style="position: center" />
+                    <ul>
+                        <li><a style="padding: 5px; background-color: rgb(37, 37, 39);" href="https://satellasoft.com">foi </a></li>
+
+                        <li><a style="padding: 5px; background-color: rgb(37, 37, 39);" href="https://satellasoft.com">Quem Somos</a></li>
                     </ul>
-
                 </li>
+            </ul>
 
-                <%-- <li ><a href="https://academy.satellasoft.com">Sobre</a></li>
+
+        </nav>
+
+        <%--       </div>--%>
+
+
+
+        </div>
+
+            <%--<div>
+                 <nav class="menu_div">
+                    <ul class="ul">
+                        <li><a href="https://satellasoft.com">Home </a></li>
+
+                        <li><a href="https://satellasoft.com">Sobre </a></li>
+
+                        <li>
+                            <a href="https://satellasoft.com">o que </a>
+                            <ul>
+                                <li>
+                                    <a style="padding: 5px; background-color: rgb(37, 37, 39);" href="https://satellasoft.com">foi </a>
+                                </li>
+                            </ul>
+                        </li>--%>
+
+        <%-- <li style="width: 500px"></li>--%>
+
+        <%-- <li ><a href="https://academy.satellasoft.com">Sobre</a></li>
 
                 <li><a href="#">Quem Somos</a></li>
 
                 <li><a href="#">Contato</a></li>
 
                 <li><a href="#">Entrar</a></li>--%>
-            </ul>
-        </nav>
+        <%--          </ul>
+                </nav>
+            </div>--%>
+
+
 
         <br />
 

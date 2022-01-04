@@ -106,12 +106,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Telas\ContasPagar.aspx" />
     <Content Include="Css\Imagens\bgbg.png" />
     <Content Include="Css\Imagens\imagem-artigo3.jpg" />
     <Content Include="Css\Imagens\futuro-projeto-de-engenharia-de-construcao-civil_31965-6491.jpg" />
     <Content Include="Css\Imagens\planeamento_servios_obras.png" />
     <Content Include="Css\Menu.css" />
     <Content Include="Css\style.css" />
+    <Content Include="Imagens\icons8-cardápio-24.png" />
     <Content Include="Telas\Home.aspx" />
     <Content Include="Telas\About.aspx" />
     <Content Include="Telas\Contact.aspx" />
@@ -141,27 +143,6 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\WebForms\DetailsView.js" />
-    <Content Include="Scripts\WebForms\Focus.js" />
-    <Content Include="Scripts\WebForms\GridView.js" />
-    <Content Include="Scripts\WebForms\Menu.js" />
-    <Content Include="Scripts\WebForms\MenuStandards.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
-    <Content Include="Scripts\WebForms\SmartNav.js" />
-    <Content Include="Scripts\WebForms\TreeView.js" />
-    <Content Include="Scripts\WebForms\WebForms.js" />
-    <Content Include="Scripts\WebForms\WebParts.js" />
-    <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -171,6 +152,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Code\Conexao.cs" />
+    <Compile Include="Telas\ContasPagar.aspx.cs">
+      <DependentUpon>ContasPagar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\ContasPagar.aspx.designer.cs">
+      <DependentUpon>ContasPagar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Telas\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -220,6 +208,7 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
@@ -227,6 +216,7 @@
     <Compile Include="App_Code\Usuario.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

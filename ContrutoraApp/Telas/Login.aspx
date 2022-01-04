@@ -1,18 +1,17 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ContrutoraApp.Login" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen"/>
-  
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
+
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
-    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script>
 
@@ -50,15 +49,14 @@
 
 
     <style type="text/css">
-
         .Imagem {
-    background-image: url(../Imagem/Acai2.jpeg.jpeg);
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-color: black;
-    opacity: inherit;
-    position: relative;
-}
+            background-image: url(../Imagem/Acai2.jpeg.jpeg);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: black;
+            opacity: inherit;
+            position: relative;
+        }
 
         .auto-style1 {
             height: 48px;
@@ -75,13 +73,14 @@
                 background: #ddd;
             }
 
-     
+
+   
     </style>
 </head>
 <body class="">
-    <div >
+    <div>
 
-        <form id="form1" runat="server" >
+        <form id="form1" runat="server">
             <asp:HiddenField ID="hdnAcao" runat="server" />
             <asp:HiddenField ID="hdnLogin" runat="server" />
             <div>
@@ -92,8 +91,9 @@
                         <table style="width: 50%; margin-top: 8%; margin: 60px">
                             <tr>
                                 <td align="center">
-                                    <h4><label style="color:black">Faça seu login!</label></h4>
-                                    
+                                    <h4>
+                                        <label style="color: black">Faça seu login!</label></h4>
+
                                 </td>
                             </tr>
                             <tr>
@@ -121,7 +121,7 @@
                             <tr>
                                 <td class="checkbox" align="center">
                                     <asp:CheckBox runat="server" ID="chkLembrar" />
-                                    <asp:Label runat="server" ForeColor="White" >Lembrar-me?</asp:Label>
+                                    <asp:Label runat="server" ForeColor="White">Lembrar-me?</asp:Label>
                                 </td>
                             </tr>
                             <tr>
