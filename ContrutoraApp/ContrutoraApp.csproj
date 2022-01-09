@@ -152,6 +152,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Code\Conexao.cs" />
+    <Compile Include="App_Code\Contas.cs" />
     <Compile Include="Telas\ContasPagar.aspx.cs">
       <DependentUpon>ContasPagar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
