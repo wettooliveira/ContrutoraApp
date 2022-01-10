@@ -16,6 +16,59 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
+
+            <form id="form2" runat="server">
+        <asp:HiddenField ID="HiddenField1" runat="server" />
+
+        
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img  src="imagem/logo.lampada.png.png" width="30px" height="50px"/>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="home">Página inicial</a></li>
+
+                        <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
+                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
+                        <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
+                           <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
+                        <li><a href="About">Sobre</a></li>
+                        <li><a href="Contact">Contato</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="Account/Register">Registrar</a></li>
+                        <li><a href="Login">Logon</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br />
+        
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                </td>
+                <td style="text-align: center">
+                    <asp:Label runat="server" ID="Label1" Font-Size="Medium" Text="Seja bem vindo:"></asp:Label>&nbsp;<asp:Label ID="Label2" Font-Size="Medium" runat="server"></asp:Label>       
+                </td>
+            </tr>
+        </table>
+
+        <div style="width:80%">
+
+        </div>
+    </form>
+
+
     </asp:PlaceHolder>
     <webopt:BundleReference runat="server" Path="~/Content/css" />
 
@@ -28,6 +81,11 @@
         }
         function Contaspagar() {
             window.open("ContasPagar.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
+
+        }
+
+        function cliente() {
+            window.open("cad_cliente.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
 
         }
 
@@ -119,50 +177,7 @@
 
     <body class="teste">
 
-    <form id="form2" runat="server">
-        <asp:HiddenField ID="HiddenField1" runat="server" />
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <img  src="imagem/logo.lampada.png.png" width="30px" height="50px"/>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="home">Página inicial</a></li>
-
-                        <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
-                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
-                        <li><a href="cad_cliente_venda">Cadastro Atendimento1</a></li>
-                        <li><a href="About">Sobre</a></li>
-                        <li><a href="Contact">Contato</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="Account/Register">Registrar</a></li>
-                        <li><a href="Login">Logon</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <br />
-        
-        <table style="width: 100%">
-            <tr>
-                <td>
-                    <br />
-                    <br />
-                </td>
-                <td style="text-align: center">
-                    <asp:Label runat="server" ID="Label1" Font-Size="Medium" Text="Seja bem vindo:"></asp:Label>&nbsp;<asp:Label ID="Label2" Font-Size="Medium" runat="server"></asp:Label>       
-                </td>
-            </tr>
-        </table>
-    </form>
 </body>
 
 

@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Telas\cad_cliente.aspx" />
     <Content Include="Telas\ContasPagar.aspx" />
     <Content Include="Css\Imagens\bgbg.png" />
     <Content Include="Css\Imagens\imagem-artigo3.jpg" />
@@ -153,6 +154,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Code\Conexao.cs" />
     <Compile Include="App_Code\Contas.cs" />
+    <Compile Include="Telas\cad_cliente.aspx.cs">
+      <DependentUpon>cad_cliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\cad_cliente.aspx.designer.cs">
+      <DependentUpon>cad_cliente.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Telas\ContasPagar.aspx.cs">
       <DependentUpon>ContasPagar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
