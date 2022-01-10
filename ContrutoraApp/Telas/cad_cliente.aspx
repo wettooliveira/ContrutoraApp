@@ -83,7 +83,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="home">Página inicial</a></li>
+                        <li><a href="Home.aspx">Página inicial</a></li>
 
                         <li><a style="cursor: pointer" onclick="abrirUsuario()">Usuario</a></li>
                         <li><a style="cursor: pointer" onclick="Contaspagar()">Financeiro</a></li>
@@ -100,39 +100,97 @@
             </div>
         </div>
         <br />
+        <br />
+
 
 
         <div>
             <br />
-            <table>
-                <tr class="trBody">
-                    <td>
-                        <asp:TextBox ID="txtConta" runat="server" placeholder="Conta" CssClass="form-control"></asp:TextBox>
-                    </td>
+            <center>
+                <table>
+                    <tr class="trBody">
+                        <td>
+                            <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="400px"></asp:TextBox>
+                        </td>
+                    </tr>
 
-                    <td>
-                        <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
-                            <asp:ListItem Text="Dinheiro" Value="dinheiro"></asp:ListItem>
-                            <asp:ListItem Text="Débito" Value="debito"></asp:ListItem>
-                            <asp:ListItem Text="Crédito" Value="credito"></asp:ListItem>
-                            <asp:ListItem Text="Cheque" Value="cheque"></asp:ListItem>
-                        </asp:DropDownList>
-                    </td>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtCnpj" runat="server" placeholder="CPF\CNPJ" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
 
-                    <td>
-                        <asp:TextBox ID="txtParcela" runat="server" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
-                    </td>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtInscricao" runat="server" placeholder="RG\IE" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
 
-                    <td>
-                        <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" CssClass="form-control"></asp:TextBox>
-                    </td>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtTel" runat="server" placeholder="Telefone" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtEndereco" runat="server" placeholder="Endereco" CssClass="form-control" Width="400px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtBairro" runat="server" placeholder="Bairro" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 400px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="txtCidade" runat="server" placeholder="Cidade" CssClass="form-control" Width="200px"></asp:TextBox>
 
-                    <td>
-                        <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="Inserir();return false;" />
-                    </td>
-                </tr>
-            </table>
+                                    </td>
+                                    <td style="width: 110px"></td>
+                                    <td>
+                                        <asp:TextBox ID="txtUF" runat="server" placeholder="UF" CssClass="form-control" Width="90px"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+
+                    <%--<tr>
+                        <td>
+                            <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Dinheiro" Value="dinheiro"></asp:ListItem>
+                                <asp:ListItem Text="Débito" Value="debito"></asp:ListItem>
+                                <asp:ListItem Text="Crédito" Value="credito"></asp:ListItem>
+                                <asp:ListItem Text="Cheque" Value="cheque"></asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+
+                        <td>
+                            <asp:TextBox ID="txtParcela" runat="server" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
+                        </td>
+
+                        <td>
+                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" CssClass="form-control"></asp:TextBox>
+                        </td>
+
+                       
+                    </tr>--%>
+
+
+                    <tr>
+                        <td style="text-align: center">
+                            <br />
+                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="Inserir();return false;" />
+                        </td>
+                    </tr>
+                </table>
+            </center>
         </div>
         <div style="width: 100%">
             <br />

@@ -33,7 +33,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="home">Página inicial</a></li>
+                        <li><a href="Home.aspx">Página inicial</a></li>
 
                         <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
                         <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
