@@ -51,7 +51,7 @@ namespace ContrutoraApp
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
             String cor_r = "#FFFFFF";
-            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold;'> ";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Tipo</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";

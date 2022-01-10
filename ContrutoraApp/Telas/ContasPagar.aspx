@@ -10,6 +10,15 @@
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
 
     <title></title>
+
+    <style type="text/css">
+
+        
+        #tbDados tr tr:hover{
+           background-color:aquamarine;
+        }
+
+    </style>
 </head>
 
 <script type="text/javascript" language="javascript">
@@ -55,18 +64,20 @@
     }
 
     function Inserir() {
+                
+        var desc_conta = $('#txtConta').val();
+        var tipo = $('#ddlTipo').val();
+        var num_parcela_string = $('#txtParcela').val();
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
 
-        var desc_conta;
-        var tipo;
-        var num_parcela_string;
-        var valor_string;
+        var Contas = {
+            desc_conta: desc_conta,
+            tipo: tipo,
+            num_parcela_string: num_parcela_string,
+            valor_string: valor_string
+        };
 
-        desc_conta = $('#txtConta').val();
-        tipo = $('#ddlTipo').val();
-        num_parcela_string = $('#txtParcela').val();
-        valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');;
-
-        var obj = { 'desc_conta': desc_conta, 'tipo': tipo, 'num_parcela_string': num_parcela_string, 'valor_string': valor_string};
+        var obj = { 'Contas': Contas };
 
         console.log(obj);
 
@@ -107,7 +118,7 @@
     <form id="form1" runat="server">
         <div>
             <table>
-                <tr>
+                <tr class="trBody">
                     <td>
                         <asp:TextBox ID="txtConta" runat="server" placeholder="Conta" CssClass="form-control"></asp:TextBox>
                     </td>
