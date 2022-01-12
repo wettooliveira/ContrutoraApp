@@ -8,12 +8,13 @@ namespace ContrutoraApp
     public class Cliente
     {
         public Int32 id { get; set; }
-        public String razao { get; set; }
+        public String RazaoSocial { get; set; }
         public String CNPJ { get; set; }
         public String IE { get; set; }
         public String tel { get; set; }
-      
-     
+        public Endereco endereco { get; set; }
+
+
 
     }
 }

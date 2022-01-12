@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
+    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,7 +20,7 @@
 
             function Inserir() {
 
-                var  = $('#txtConta').val();
+                var RazaoSocial = $('#txtRazaoSocial').val();
                 var desc_conta = $('#txtConta').val();
                 var tipo = $('#ddlTipo').val();
                 var num_parcela_string = $('#txtParcela').val();
@@ -66,6 +67,36 @@
                 });
 
             }
+
+        function BuscarCep(cep) {                
+
+                $.ajax({
+                    type: "POST",
+                    url: "cad_cliente.aspx/BuscarCEP",
+                    data: "{'cep':'" + cep + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
+
+                        alert(source);
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                //});
+        
+        }
 
     </script>
 </head>
@@ -130,6 +161,11 @@
                     <tr>
                         <td>
                             <asp:TextBox ID="txtTel" runat="server" placeholder="Telefone" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtCEP" runat="server" placeholder="CEP" CssClass="form-control" Width="200px" onkeypress="return txtBoxFormat(this, '99999-999', event);" onblur="BuscarCep(this.value);"  MaxLength="9"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
