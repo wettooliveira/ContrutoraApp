@@ -16,75 +16,64 @@
 
     <title></title>
 
-    <script type="text/javascript" language="javascript">-
+    <script type="text/javascript" language="javascript">
 
-            function Inserir() {
+        function Inserir() {
 
-                var RazaoSocial = $('#txtRazaoSocial').val();
-                var CNPJ = $('#txtCnpj').val();
-                var IE = $('#txtInscricao').val();
-                var Tel = $('#txtTel').val();
+            var RazaoSocial = $('#txtRazaoSocial').val();
+            var CNPJ = $('#txtCnpj').val();
+            var IE = $('#txtInscricao').val();
+            var Tel = $('#txtTel').val();            
+            var CEP = $('#txtCEP').val();
+            var logradouro = $('#txtEndereco').val();
+            var bairro = $('#txtBairro').val();
+            var cidade = $('#txtCidade').val();
+            var UF = $('#txtUF').val();
 
-                var Cliente = {
-                    RazaoSocial: RazaoSocial,
-                    CNPJ: CNPJ,
-                    IE: IE,
-                    tel: Tel
+            var Endereco = {
+                cep: CEP,
+                logradouro: logradouro,
+                bairro: bairro,
+                cidade: cidade,
+                uf: UF
+            };
 
-                };
+            var Cliente = {
+                RazaoSocial: RazaoSocial,
+                CNPJ: CNPJ,
+                IE: IE,
+                tel: Tel,
+                endereco: Endereco
+            };
+                 
+            var obj = {'cliente': Cliente };
+      
+            $.ajax({
+                type: "POST",
+                url: "cad_cliente.aspx/Gravar",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {                                    
 
-                var logradouro, bairro, cidade, uf, CEP, complemento
-                cep = $('#txtCEP').val();
-                logradouro = $('#txtEndereco').val();
-                bairro = $('#txtBairro').val();
-                bairro = $('#txtCidade').val();
-                uf = $('#txtUF').val();
+                    alert(data.d);
 
-                var Endereco = {
-                    cep: cep,
-                    logradouro: logradouro,
-                    bairro: bairro,
-                    cidade: cidade,
-                    uf: uf
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
 
-                };
-
-                console.log(Cliente + ' , ' + Endereco);
-
-                //var obj = { 'Contas': Contas };
-
-                //console.log(obj);
-
-                //$.ajax({
-                //    type: "POST",
-                //    url: "ContasPagar.aspx/Gravar",
-                //    data: JSON.stringify(obj),
-                //    contentType: "application/json; charset=utf-8",
-                //    dataType: "JSON",
-                //    success: function (data) {
-                //        var source = data.d;
-
-                //        if (source == "OK") {
-                //            lancarDados();
-                //        }
-
-
-                //    },
-                //    error: function (request, status, error) {
-                //        alert(request.responseText);
-                //        console.log(request.responseText);
-                //        //swalWithBootstrapButtons.fire({
-                //        //    title: '',
-                //        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //        //    icon: 'error',
-                //        //    confirmButtonText: 'OK',
-                //        //    allowOutsideClick: false
-                //        //}).then((result) => {
-                //        /*  });*/
-                //    }
-                //});
-
-            }
+        }
 
         function BuscarCep(cep) {
 
@@ -133,7 +122,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <img src="imagem/logo.lampada.png.png" width="30px" height="50px" />
+                    <img src="" style="width: 30px; height: 50px" />
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">

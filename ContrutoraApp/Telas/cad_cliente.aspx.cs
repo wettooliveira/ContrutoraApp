@@ -25,5 +25,14 @@ namespace ContrutoraApp
             return end;
 
         }
+
+        [WebMethod]
+        public static String Gravar(Cliente cliente)
+        {
+            String cep = cliente.RazaoSocial;
+
+            return cep;
+
+        }
     }
 }
