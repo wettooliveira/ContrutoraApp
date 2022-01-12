@@ -19,6 +19,7 @@
 
             function Inserir() {
 
+                var  = $('#txtConta').val();
                 var desc_conta = $('#txtConta').val();
                 var tipo = $('#ddlTipo').val();
                 var num_parcela_string = $('#txtParcela').val();

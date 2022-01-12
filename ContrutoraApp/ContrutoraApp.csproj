@@ -154,6 +154,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Code\Conexao.cs" />
     <Compile Include="App_Code\Contas.cs" />
+    <Compile Include="App_Code\Cliente.cs" />
+    <Compile Include="App_Code\BuscaAPI.cs" />
+    <Compile Include="App_Code\Endereco.cs" />
     <Compile Include="Telas\cad_cliente.aspx.cs">
       <DependentUpon>cad_cliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
