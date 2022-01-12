@@ -38,6 +38,8 @@ namespace ContrutoraApp
             //construtor command para obter dados44
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
 
             //comando de instrução do banco de dados
             cmd.CommandText = "select desc_conta, tipo, num_parcela,valor from tb_contasPagar";
@@ -60,9 +62,8 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
             table += "          </tr> ";
 
-            cmd.CommandText = cmd.CommandText;
-            //abre a conexao
-            cn.Open();
+            cmd.CommandText = cmd.CommandText;          
+          
             SqlDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
