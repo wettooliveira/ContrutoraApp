@@ -16,11 +16,13 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String BuscarCEP(String cep)
+        public static Endereco BuscarCEP(String cep)
         {
-                       
+            BuscaAPI buscarcep = new BuscaAPI();
+            Endereco end = new Endereco();
+            end = buscarcep.BuscaCEP(cep);
 
-            return cep;
+            return end;
 
         }
     }

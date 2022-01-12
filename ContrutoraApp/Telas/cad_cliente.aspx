@@ -21,81 +21,103 @@
             function Inserir() {
 
                 var RazaoSocial = $('#txtRazaoSocial').val();
-                var desc_conta = $('#txtConta').val();
-                var tipo = $('#ddlTipo').val();
-                var num_parcela_string = $('#txtParcela').val();
-                var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+                var CNPJ = $('#txtCnpj').val();
+                var IE = $('#txtInscricao').val();
+                var Tel = $('#txtTel').val();
 
-                var Contas = {
-                    desc_conta: desc_conta,
-                    tipo: tipo,
-                    num_parcela_string: num_parcela_string,
-                    valor_string: valor_string
+                var Cliente = {
+                    RazaoSocial: RazaoSocial,
+                    CNPJ: CNPJ,
+                    IE: IE,
+                    tel: Tel
+
                 };
 
-                var obj = { 'Contas': Contas };
+                var logradouro, bairro, cidade, uf, CEP, complemento
+                cep = $('#txtCEP').val();
+                logradouro = $('#txtEndereco').val();
+                bairro = $('#txtBairro').val();
+                bairro = $('#txtCidade').val();
+                uf = $('#txtUF').val();
 
-                console.log(obj);
+                var Endereco = {
+                    cep: cep,
+                    logradouro: logradouro,
+                    bairro: bairro,
+                    cidade: cidade,
+                    uf: uf
 
-                $.ajax({
-                    type: "POST",
-                    url: "ContasPagar.aspx/Gravar",
-                    data: JSON.stringify(obj),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
+                };
 
-                        if (source == "OK") {
-                            lancarDados();
-                        }
+                console.log(Cliente + ' , ' + Endereco);
+
+                //var obj = { 'Contas': Contas };
+
+                //console.log(obj);
+
+                //$.ajax({
+                //    type: "POST",
+                //    url: "ContasPagar.aspx/Gravar",
+                //    data: JSON.stringify(obj),
+                //    contentType: "application/json; charset=utf-8",
+                //    dataType: "JSON",
+                //    success: function (data) {
+                //        var source = data.d;
+
+                //        if (source == "OK") {
+                //            lancarDados();
+                //        }
 
 
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                });
+                //    },
+                //    error: function (request, status, error) {
+                //        alert(request.responseText);
+                //        console.log(request.responseText);
+                //        //swalWithBootstrapButtons.fire({
+                //        //    title: '',
+                //        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //        //    icon: 'error',
+                //        //    confirmButtonText: 'OK',
+                //        //    allowOutsideClick: false
+                //        //}).then((result) => {
+                //        /*  });*/
+                //    }
+                //});
 
             }
 
-        function BuscarCep(cep) {                
+        function BuscarCep(cep) {
 
-                $.ajax({
-                    type: "POST",
-                    url: "cad_cliente.aspx/BuscarCEP",
-                    data: "{'cep':'" + cep + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
+            $.ajax({
+                type: "POST",
+                url: "cad_cliente.aspx/BuscarCEP",
+                data: "{'cep':'" + cep + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
 
-                        alert(source);
+                    $('#txtEndereco').val(source.logradouro);
+                    $('#txtBairro').val(source.bairro);
+                    $('#txtCidade').val(source.cidade);
+                    $('#txtUF').val(source.uf);
 
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                //});
-        
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
         }
 
     </script>
@@ -165,7 +187,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:TextBox ID="txtCEP" runat="server" placeholder="CEP" CssClass="form-control" Width="200px" onkeypress="return txtBoxFormat(this, '99999-999', event);" onblur="BuscarCep(this.value);"  MaxLength="9"></asp:TextBox>
+                            <asp:TextBox ID="txtCEP" runat="server" placeholder="CEP" CssClass="form-control" Width="200px" onkeypress="return txtBoxFormat(this, '99999-999', event);" onblur="BuscarCep(this.value);" MaxLength="9"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
