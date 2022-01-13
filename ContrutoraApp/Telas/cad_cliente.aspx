@@ -23,9 +23,12 @@
             var RazaoSocial = $('#txtRazaoSocial').val();
             var CNPJ = $('#txtCnpj').val();
             var IE = $('#txtInscricao').val();
-            var Tel = $('#txtTel').val();            
+            var Tel = $('#txtTel').val();
+            var obs = "texte";
             var CEP = $('#txtCEP').val();
             var logradouro = $('#txtEndereco').val();
+            var numero = $('#txtNumero').val();
+            var complemento = $('#txtComplemento').val();
             var bairro = $('#txtBairro').val();
             var cidade = $('#txtCidade').val();
             var UF = $('#txtUF').val();
@@ -33,6 +36,8 @@
             var Endereco = {
                 cep: CEP,
                 logradouro: logradouro,
+                numero: numero,
+                complemento: complemento,
                 bairro: bairro,
                 cidade: cidade,
                 uf: UF
@@ -43,18 +48,20 @@
                 CNPJ: CNPJ,
                 IE: IE,
                 tel: Tel,
+                obs: obs,
+                nm_cadastrou: "SISTEMA",
                 endereco: Endereco
             };
-                 
-            var obj = {'cliente': Cliente };
-      
+
+            var obj = { 'cliente': Cliente };
+
             $.ajax({
                 type: "POST",
                 url: "cad_cliente.aspx/Gravar",
                 data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
-                success: function (data) {                                    
+                success: function (data) {
 
                     alert(data.d);
 
@@ -153,7 +160,7 @@
                 <table>
                     <tr class="trBody">
                         <td>
-                            <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="400px"></asp:TextBox>
+                            <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="500px"></asp:TextBox>
                         </td>
                     </tr>
 
@@ -180,8 +187,23 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width: 500px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="txtEndereco" runat="server" placeholder="Endereco" CssClass="form-control" Width="400px"></asp:TextBox>
+                                    </td>
+                                    <td style="width: 20px"></td>
+                                    <td>
+                                        <asp:TextBox ID="txtNumero" runat="server" placeholder="numero" CssClass="form-control" Width="80px"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
-                            <asp:TextBox ID="txtEndereco" runat="server" placeholder="Endereco" CssClass="form-control" Width="400px"></asp:TextBox>
+                              <asp:TextBox ID="txtComplemento" runat="server" placeholder="Complemento" CssClass="form-control" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -190,16 +212,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 400px">
+                        <td style="width: 500px">
                             <table>
                                 <tr>
                                     <td>
                                         <asp:TextBox ID="txtCidade" runat="server" placeholder="Cidade" CssClass="form-control" Width="200px"></asp:TextBox>
 
                                     </td>
-                                    <td style="width: 110px"></td>
+                                    <td style="width: 220px"></td>
                                     <td>
-                                        <asp:TextBox ID="txtUF" runat="server" placeholder="UF" CssClass="form-control" Width="90px"></asp:TextBox>
+                                        <asp:TextBox ID="txtUF" runat="server" placeholder="UF" CssClass="form-control" Width="80px"></asp:TextBox>
                                     </td>
                                 </tr>
                             </table>

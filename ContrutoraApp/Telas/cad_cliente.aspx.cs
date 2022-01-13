@@ -29,9 +29,9 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar(Cliente cliente)
         {
-            String cep = cliente.RazaoSocial;
+            Dao inserirdados = new Dao();           
 
-            return cep;
+            return inserirdados.GravarCliente(cliente);
 
         }
     }

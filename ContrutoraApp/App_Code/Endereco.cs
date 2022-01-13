@@ -8,12 +8,15 @@ namespace ContrutoraApp
     public class Endereco
     {
         public String logradouro { get; set; }
+        public String numero { get; set; }
         public String bairro { get; set; }
         public String cidade { get; set; }
         public String uf { get; set; }
         public String cep { get; set; }
         public String complemento { get; set; }
         public String resultato_txt { get; set; }
+        public String nm_cadastrou { get; set; }
+        public DateTime dt_cadastrou { get; set; }
 
 
     }

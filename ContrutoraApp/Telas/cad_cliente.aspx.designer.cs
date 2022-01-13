@@ -78,6 +78,24 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.TextBox txtEndereco;
 
         /// <summary>
+        /// Controle txtNumero.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNumero;
+
+        /// <summary>
+        /// Controle txtComplemento.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtComplemento;
+
+        /// <summary>
         /// Controle txtBairro.
         /// </summary>
         /// <remarks>
