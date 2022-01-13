@@ -29,7 +29,7 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar(Cliente cliente)
         {
-            Dao inserirdados = new Dao();           
+            Dao inserirdados = new Dao();
 
             return inserirdados.GravarCliente(cliente);
 

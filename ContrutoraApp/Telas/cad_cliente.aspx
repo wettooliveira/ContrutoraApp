@@ -62,8 +62,18 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
+                              
 
-                    alert(data.d);
+                    if (data.d == 'OK') {
+                        $('#lblAviso').html('');
+                        $('#lblAviso').html('Gravado com sucesso!');
+                        $('#lblAviso').css('color', 'green');
+
+                    } else if (data.d == 'ERRO') {
+                        $('#lblAviso').html('');
+                        $('#lblAviso').html('Tente novamente, algo deu errado!');
+                        $('#lblAviso').css('color', 'red');
+                    }
 
                 },
                 error: function (request, status, error) {
@@ -117,6 +127,10 @@
         }
 
     </script>
+
+    <style>
+      
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -129,16 +143,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <img src="" style="width: 30px; height: 50px" />
+                    <img  src="imagem/logo.lampada.png.png" width="30px" height="50px"/>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="Home.aspx">Página inicial</a></li>
 
-                        <li><a style="cursor: pointer" onclick="abrirUsuario()">Usuario</a></li>
-                        <li><a style="cursor: pointer" onclick="Contaspagar()">Financeiro</a></li>
-                        <li><a style="cursor: pointer" onclick="cliente()">Cadastros</a></li>
-                        <li><a href="cad_cliente.aspx" style="cursor: pointer">Cadastros</a></li>
+                        <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
+                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
+                        <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
+                           <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
                         <li><a href="About">Sobre</a></li>
                         <li><a href="Contact">Contato</a></li>
                     </ul>
@@ -203,7 +217,7 @@
                     </tr>
                     <tr>
                         <td>
-                              <asp:TextBox ID="txtComplemento" runat="server" placeholder="Complemento" CssClass="form-control" Width="200px"></asp:TextBox>
+                            <asp:TextBox ID="txtComplemento" runat="server" placeholder="Complemento" CssClass="form-control" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -257,6 +271,11 @@
                         <td style="text-align: center">
                             <br />
                             <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="Inserir();return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <asp:Label runat="server" ID="lblAviso"></asp:Label>
                         </td>
                     </tr>
                 </table>
