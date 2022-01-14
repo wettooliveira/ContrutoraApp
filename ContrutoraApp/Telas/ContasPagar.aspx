@@ -30,6 +30,116 @@
 
     });
 
+    function validateDate(id) {
+        if (id.value != '') {
+            var RegExPattern = /^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))$/;
+
+            if (!((id.value.match(RegExPattern)) && (id.value != ''))) {
+                swalWithBootstrapButtons.fire({
+                    title: '',
+                    text: 'Data inválida! Digite novamente no formato DD/MM/AAAA.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                id.value = "";
+                id.focus();
+            }
+            else {
+                var dataPrazo = $('#hdnDataPrazoCalculado').val();
+                var dt_prazo = dataPrazo;
+                dataPrazo = dataPrazo.split('/')[2] + dataPrazo.split('/')[1] + dataPrazo.split('/')[0];
+
+                var dataDigitada = $('#txtData').val();
+                dataDigitada = dataDigitada.split('/')[2] + dataDigitada.split('/')[1] + dataDigitada.split('/')[0];
+
+                if (parseInt(dataDigitada) < parseInt(dataPrazo)) {
+                    swalWithBootstrapButtons.fire({
+                        title: '',
+                        text: 'Data programada não pode ser menor que a data de prazo ' + dt_prazo + '!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false
+                    });
+                    id.value = "";
+                    id.focus();
+                }
+            }
+        }
+    }
+
+    function verBackSpace(v, n) {
+        var tecla = event.keyCode;
+        if (n == data && tecla == 8 && (v.value.length == 7 || v.value.length == 4)) {
+            var texto = v.value.substring(0, v.value.length - 1);
+            v.value = texto;
+        }
+    }
+
+    function mascaraMutuario(o, f) {
+        v_obj = o
+        v_fun = f
+        setTimeout('execmascara()', 1)
+    }
+
+    function execmascara() {
+        v_obj.value = v_fun(v_obj.value)
+    }
+
+    function data(v) {
+
+        //Remove tudo o que não é dígito
+        v = v.replace(/\D/g, "")
+
+        //Coloca uma barra entre o segundo e o terceiro dígitos
+        v = v.replace(/(\d{2})(\d)/, "$1/$2")
+
+        //Coloca uma barra entre o segundo e o terceiro dígitos
+        //de novo (para o segundo bloco de números)
+        v = v.replace(/(\d{2})(\d)/, "$1/$2")
+
+        return v
+
+    }
+
+    function validateDate(id) {
+        if (id.value != '') {
+            var RegExPattern = /^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))$/;
+
+            if (!((id.value.match(RegExPattern)) && (id.value != ''))) {
+                swalWithBootstrapButtons.fire({
+                    title: '',
+                    text: 'Data inválida! Digite novamente no formato DD/MM/AAAA.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                id.value = "";
+                id.focus();
+            }
+            else {
+                var dataPrazo = $('#hdnDataPrazoCalculado').val();
+                var dt_prazo = dataPrazo;
+                dataPrazo = dataPrazo.split('/')[2] + dataPrazo.split('/')[1] + dataPrazo.split('/')[0];
+
+                var dataDigitada = $('#txtData').val();
+                dataDigitada = dataDigitada.split('/')[2] + dataDigitada.split('/')[1] + dataDigitada.split('/')[0];
+
+                if (parseInt(dataDigitada) < parseInt(dataPrazo)) {
+                    swalWithBootstrapButtons.fire({
+                        title: '',
+                        text: 'Data programada não pode ser menor que a data de prazo ' + dt_prazo + '!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false
+                    });
+                    id.value = "";
+                    id.focus();
+                }
+            }
+        }
+    }
+
     function Menu() {
 
               
@@ -98,16 +208,32 @@
 
     function Inserir() {
                 
-        var desc_conta = $('#txtConta').val();
+        var desc_conta = $('#txtConta').val() ;
         var tipo = $('#ddlTipo').val();
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        var tp_despesa = $('#ddlTipodespesa').val();
+        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
+        var desc_despesa = '';
+        var id_obra = 0;
+        if ($('#txtDespesa').val() != '')
+        {
+            desc_despesa = $('#txtDespesa').val();
+        }
+        if ($('#ddlObra').val() != '')
+        {
+            id_obra = $('#ddlObra').val();
+        }
+              
 
         var Contas = {
             desc_conta: desc_conta,
             tipo: tipo,
             num_parcela_string: num_parcela_string,
-            valor_string: valor_string
+            valor_string: valor_string,
+            data: data,
+            desc_despesa: desc_despesa,
+            id_obra: id_obra
         };
 
         var obj = { 'Contas': Contas };
@@ -146,6 +272,20 @@
 
     }
 
+    //function tipoDespesa(value) {
+  
+    //    if (value == 'Despesa') {
+    //        $('#tdObras').addClass('hidden');
+    //        $('#tdDespesa').removeClass('hidden');
+    //    } else if (value == 'obra') {
+    //        $('#tdObras').removeClass('hidden');
+    //        $('#tdDespesa').addClass('hidden');
+    //    }else {
+    //        $('#tdObras').addClass('hidden');
+    //        $('#tdDespesa').addClass('hidden');
+    //    }
+    //}
+
 </script>
 <body>
     <form id="form1" runat="server">
@@ -164,10 +304,11 @@
                     <td>
                         <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control">
                             <asp:ListItem Text="Forma Pgto" Value="0"></asp:ListItem>
-                            <asp:ListItem Text="Dinheiro" Value="dinheiro"></asp:ListItem>
-                            <asp:ListItem Text="Débito" Value="debito"></asp:ListItem>
-                            <asp:ListItem Text="Crédito" Value="credito"></asp:ListItem>
-                            <asp:ListItem Text="Cheque" Value="cheque"></asp:ListItem>
+                            <asp:ListItem Text="Boleto" Value="BOLETO"></asp:ListItem>
+                            <asp:ListItem Text="Dinheiro" Value="DINHEIRO"></asp:ListItem>
+                            <asp:ListItem Text="Débito" Value="DEBITO"></asp:ListItem>
+                            <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
+                            <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
                         </asp:DropDownList>
                     </td>
 
@@ -182,18 +323,30 @@
                     </tr>
                 <tr>
                    <td style="width:100px">
-                        <asp:DropDownList ID="ddpTipoDesp" Width="100px" runat="server" CssClass="form-control">
-                               <asp:ListItem Text="Tipo" Value="tipo"></asp:ListItem>
+                        <asp:DropDownList ID="ddpTipoDesp" Width="120px" runat="server" CssClass="form-control" onchange="tipoDespesa(value);">
+                               <asp:ListItem Text="Selecione.." Value="tipo"></asp:ListItem>
                             <asp:ListItem Text="Despesa" Value="Despesa"></asp:ListItem>
                             <asp:ListItem Text="Obra" Value="obra"></asp:ListItem>                        
                         </asp:DropDownList>
                    </td>
 
-                     <td colspan="3">
+                  
+                   <td id="tdDespesa" colspan="3" > <asp:TextBox ID="txtDespesa" runat="server" placeholder="Despesa" CssClass="form-control"></asp:TextBox>
+                   </td>
+
+                     </tr>
+                <tr>
+
+                    <td>
+                           <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10"  onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
+                    </td>
+
+                     <td id="tdObras" colspan="3" >
                         <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
                              <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
-                            <asp:ListItem Text="Obra1" Value="obra1"></asp:ListItem>
-                            <asp:ListItem Text="Obra2" Value="obra2"></asp:ListItem>                        
+                            <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
+                            <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>   
+                            <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>   
                         </asp:DropDownList>
                    </td>
 

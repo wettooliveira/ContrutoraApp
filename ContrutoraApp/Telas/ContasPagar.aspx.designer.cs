@@ -69,6 +69,24 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.DropDownList ddpTipoDesp;
 
         /// <summary>
+        /// Controle txtDespesa.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDespesa;
+
+        /// <summary>
+        /// Controle txtData.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtData;
+
+        /// <summary>
         /// Controle ddlObras.
         /// </summary>
         /// <remarks>

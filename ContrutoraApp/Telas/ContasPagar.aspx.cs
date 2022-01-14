@@ -14,7 +14,6 @@ namespace ContrutoraApp
         protected void Page_Load(object sender, EventArgs e)
         {
 
-          
             if (!IsPostBack)
             {
                
@@ -68,6 +67,7 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Tipo</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Detalhar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Editar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
             table += "          </tr> ";
@@ -85,6 +85,7 @@ namespace ContrutoraApp
                 table += "          <th> " + dr["tipo"].ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
                 table += "          </tr> "; 
@@ -118,13 +119,26 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor,nm_cadastrou,dt_cadastrou)
-                                values(@desc_conta,@tipo,@num_parcela,@valor,'SISTEMA',getdate())";
+            cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor, fornec_despesa, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@desc_conta,@tipo,@num_parcela,@valor, @fornec_despesa, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
-            cmd.Parameters.AddWithValue("@desc_conta",Contas.desc_conta);
+            cmd.Parameters.AddWithValue("@desc_conta",Contas.desc_conta.ToUpper());
             cmd.Parameters.AddWithValue("@tipo", Contas.tipo);
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+            cmd.Parameters.AddWithValue("@fornec_despesa", Contas.desc_despesa.ToUpper());
+            
+            if(Contas.id_obra <= 0)
+            {
+                cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
+            }
+            else if( Contas.id > 0)
+            {
+                cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
+            }
+         
+           
 
             cmd.ExecuteNonQuery();
             cn.Close();

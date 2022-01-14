@@ -16,5 +16,9 @@ namespace ContrutoraApp
         public String valor_string { get; set; }
         public String nm_cadastrou { get; set; }
         public String dt_cadastrou { get; set; }
+        public String desc_despesa { get; set; }
+        public Int32 id_obra { get; set; }
+        public string data { get; set; }
+
     }
 }
