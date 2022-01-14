@@ -24,6 +24,16 @@ namespace ContrutoraApp
                 
             }
         }
+
+        [WebMethod]
+        public static String Menu(String m)
+        {
+            Dao menu = new Dao();          
+           
+            return menu.Menu();
+
+        }
+
         [WebMethod]
         public static String TabelaContasPagar(String id_receb_new)
         {
