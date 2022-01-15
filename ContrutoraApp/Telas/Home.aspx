@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="ContrutoraApp.Home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="ContrutoraApp.Home" %>
 
 
 <!DOCTYPE html>
@@ -8,6 +8,7 @@
 <head runat="server">
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
+    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,56 +18,7 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
 
-            <form id="form2" runat="server">
-        <asp:HiddenField ID="HiddenField1" runat="server" />
-
-        
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <img  src="imagem/logo.lampada.png.png" width="30px" height="50px"/>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="Home.aspx">Página inicial</a></li>
-
-                        <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
-                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
-                        <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
-                           <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
-                        <li><a href="About">Sobre</a></li>
-                        <li><a href="Contact">Contato</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="Account/Register">Registrar</a></li>
-                        <li><a href="Login">Logon</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <br />
-        
-        <table style="width: 100%">
-            <tr>
-                <td>
-                    <br />
-                    <br />
-                </td>
-                <td style="text-align: center">
-                    <asp:Label runat="server" ID="Label1" Font-Size="Medium" Text="Seja bem vindo:"></asp:Label>&nbsp;<asp:Label ID="Label2" Font-Size="Medium" runat="server"></asp:Label>       
-                </td>
-            </tr>
-        </table>
-
-        <div style="width:80%">
-
-        </div>
-    </form>
+          
 
 
     </asp:PlaceHolder>
@@ -75,6 +27,45 @@
     <title><%: Page.Title %> - Meu Aplicativo ASP.NET</title>
 
     <script>
+
+        $(document).ready(function () {
+                       
+            Menu();
+
+        });
+
+        function Menu() {
+
+
+            $.ajax({
+                type: "POST",
+                url: "Home.aspx/Menu",
+                data: "{'m':'m'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+                    $('#menu').html(source);
+
+
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
+        }
+
         function abrirUsuario() {
             window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
 
@@ -175,8 +166,31 @@
 
 
 
-    <body class="teste">
+<body class="teste">
 
+      <form id="form2" runat="server">
+        <asp:HiddenField ID="HiddenField1" runat="server" />
+
+          <div id="menu">
+        </div>
+               
+        
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                </td>
+                <td style="text-align: center">
+                    <asp:Label runat="server" ID="Label1" Font-Size="Medium" Text="Seja bem vindo:"></asp:Label>&nbsp;<asp:Label ID="Label2" Font-Size="Medium" runat="server"></asp:Label>       
+                </td>
+            </tr>
+        </table>
+
+        <div style="width:80%">
+
+        </div>
+    </form>
 
 </body>
 

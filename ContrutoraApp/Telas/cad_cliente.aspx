@@ -126,6 +126,20 @@
 
         }
 
+        function abrirUsuario() {
+            window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
+
+        }
+        function Contaspagar() {
+            window.open("ContasPagar.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
+
+        }
+
+        function cliente() {
+            window.open("cad_cliente.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
+
+        }
+
     </script>
 
     <style>
@@ -150,7 +164,7 @@
                         <li><a href="Home.aspx">Página inicial</a></li>
 
                         <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
-                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
+                        <li><a  href="ContasPagar.aspx" style="cursor:pointer">Financeiro</a></li>
                         <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
                            <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
                         <li><a href="About">Sobre</a></li>
