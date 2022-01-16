@@ -51,7 +51,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = "select desc_conta, tipo, num_parcela, valor, dt_pagamento from tb_contasPagar";
+            cmd.CommandText = "select desc_conta, tipo, num_parcela, valor, dt_pagamento from tb_contasPagar order by 1 desc";
             
             
 
@@ -87,9 +87,9 @@ namespace ContrutoraApp
                 table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                 table += "          <th> " + Convert.ToDateTime(dr["dt_pagamento"]).ToString("dd/MM/yyyy") + " </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnDetalhar' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnEditar' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnExcluir' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnDetalhar' class='btn btn-info' value='Detalhar' style='width:80px; cursor:pointer; text-align:center'  onclick='Filtrar(); return false;' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnEditar' class='btn btn-info' value='Editar' style='width:80px; cursor:pointer; text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnExcluir' class='btn btn-danger' value='Excluir' style='width:80px; cursor:pointer;text-align:center' /> </th>";
                 table += "          </tr> "; 
 
             }

@@ -286,19 +286,17 @@
 
     }
 
-    //function tipoDespesa(value) {
-  
-    //    if (value == 'Despesa') {
-    //        $('#tdObras').addClass('hidden');
-    //        $('#tdDespesa').removeClass('hidden');
-    //    } else if (value == 'obra') {
-    //        $('#tdObras').removeClass('hidden');
-    //        $('#tdDespesa').addClass('hidden');
-    //    }else {
-    //        $('#tdObras').addClass('hidden');
-    //        $('#tdDespesa').addClass('hidden');
-    //    }
-    //}
+
+    function Filtrar() {
+        alert();
+    
+        $("#ModalDetalhes").modal({ show: true });
+    }
+
+    function fecharModal() {
+        $("#ModalDetalhes").modal('hide');
+        $('#btnGravar').prop('disabled', '');
+    }
 
 </script>
 <body>
@@ -357,7 +355,7 @@
 
                      <td id="tdObras" colspan="3" >
                         <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
-                             <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
+                             <asp:ListItem Text="Selecione Obra" Value="0"></asp:ListItem>
                             <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
                             <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>   
                             <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>   
@@ -391,6 +389,43 @@
                 </table>
             </center>
         </div>
+
+
+
+<%--        Modal detalhar--%>
+                <div class="modal fade" id="ModalDetalhes" tabindex="-1" role="dialog" aria-labelledby="ModalDetalhes" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div id="modal-dialog" class="modal-dialog" role="document" style="width: 500px; max-width: 100%; max-height: 100%; height: 100%; margin: 0px auto;">
+                <div id="modal-content" class="modal-content" style="width: 500px; max-width: 100%; top: 30px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalDetalhes"><b>Buscar</b></h5>
+                    </div>
+                    <div id="divLiberacaoEspecial" class="modal-body" style="max-width: 100% !important; overflow-x: auto !important; height: calc(100% - 135px) !important; overflow-y: auto !important; padding: 0px 20px 20px 20px !important;">
+                        <center>
+                            <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
+                            <label id="lblLiberacaoEspecial"></label>
+                            <br />
+                            <br />
+                            <label><b>Escolha uma filial para consulta</b></label>
+                            <br />
+                            <br />
+                            <b>Filial:</b>
+                            <br />
+                            <asp:TextBox Font-Size="15px" runat="server" CssClass="form-control" ID="txtDescDetalhe" Style="width: 150px;"></asp:TextBox>
+                            <label id="avisoModal" style="color: red" class="hidden"><b>Selecione uma Filial</b></label>
+                            <br />
+                            <br />
+
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnAutorizar" style="width: 90px" class="swal2-cancel btn btn-success" onclick="FiltrarModal();">Filtrar</button>
+                        <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </form>
 </body>
 </html>
