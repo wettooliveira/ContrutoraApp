@@ -87,10 +87,71 @@ namespace ContrutoraApp
                 table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                 table += "          <th> " + Convert.ToDateTime(dr["dt_pagamento"]).ToString("dd/MM/yyyy") + " </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnDetalhar' class='btn btn-info' value='Detalhar' style='width:80px; cursor:pointer; text-align:center'  onclick='Filtrar(); return false;' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnEditar' class='btn btn-info' value='Editar' style='width:80px; cursor:pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnExcluir' class='btn btn-danger' value='Excluir' style='width:80px; cursor:pointer;text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info'   value='Detalhar' style='width:80px; cursor:pointer; text-align:center'  onclick='detalhar(); return false;' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info'   value='Editar'   style='width:80px; cursor:pointer; text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir'  style='width:80px; cursor:pointer; text-align:center' /> </th>";
                 table += "          </tr> "; 
+
+            }
+
+            dr.Close();
+
+            table += "      </table> ";
+
+            return table;
+
+        }
+
+        [WebMethod]
+        public static String TabelaDetalhados(String id_receb_new)
+        {
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = "select desc_detalhe, qtde, valor from tb_temp_detalhes_contasPagar order by 1 desc";
+
+
+
+
+            String table = "";
+
+
+            table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+
+            String cor_r = "#FFFFFF";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px; width:300px'>Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px; width:80px'>Qtde</th>";           
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;width:100px'>Valor</th>";         
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 0px;text-align:center; width:90px'> Excluir </th>";
+            table += "          </tr> ";
+
+            cmd.CommandText = cmd.CommandText;
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+
+                if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                table += "          <th> " + dr["desc_detalhe"].ToString() + " </th>";
+                table += "          <th> " + dr["qtde"].ToString() + " </th>";              
+                table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";              
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 0px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir'  style='width:80px; cursor:pointer; text-align:center' /> </th>";
+                table += "          </tr> ";
 
             }
 
@@ -145,6 +206,102 @@ namespace ContrutoraApp
             cmd.ExecuteNonQuery();
             cn.Close();
                    
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static String GravarTempDetalhes(Contas Contas)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
+                                values(@desc_conta, @id_conta, @num_parcela, @valor)";
+
+            cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
+            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);           
+            cmd.Parameters.AddWithValue("@valor", Contas.valor);
+            cmd.Parameters.AddWithValue("@id_conta", Contas.valor);
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static String DeletarTabelaTempDetalhes(String id_receb_new)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"truncate table tb_temp_detalhes_contasPagar";
+     
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static String GravarTabelaDetalhes(String id_receb_new)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
+                                SELECT desc_detalhe, id_conta, qtde, valor from tb_temp_detalhes_contasPagar";
+
+            cmd.ExecuteNonQuery();
+
+            cmd.Parameters.Clear();
+            cmd.CommandText = @"truncate table tb_temp_detalhes_contasPagar";
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
 
             return "OK";
 

@@ -106,6 +106,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Css\Content\bootstrap-grid.css" />
+    <Content Include="Css\Content\bootstrap-grid.min.css" />
+    <Content Include="Css\Content\bootstrap-reboot.css" />
+    <Content Include="Css\Content\bootstrap-reboot.min.css" />
+    <Content Include="Css\Content\bootstrap.css" />
+    <Content Include="Css\Content\bootstrap.min.css" />
     <Content Include="Telas\cad_cliente.aspx" />
     <Content Include="Telas\ContasPagar.aspx" />
     <Content Include="Css\Imagens\bgbg.png" />
@@ -118,11 +134,6 @@
     <Content Include="Telas\Home.aspx" />
     <Content Include="Telas\About.aspx" />
     <Content Include="Telas\Contact.aspx" />
-    <Content Include="Css\Content\bootstrap-theme.css" />
-    <Content Include="Css\Content\bootstrap-theme.min.css" />
-    <Content Include="Css\Content\bootstrap.css" />
-    <Content Include="Css\Content\bootstrap.min.css" />
-    <Content Include="Css\Content\Site.css" />
     <Content Include="Telas\Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -131,19 +142,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Css\Content\bootstrap.min.css.map" />
-    <Content Include="Css\Content\bootstrap.css.map" />
-    <Content Include="Css\Content\bootstrap-theme.min.css.map" />
-    <Content Include="Css\Content\bootstrap-theme.css.map" />
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Telas\Login.aspx" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -239,9 +238,19 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Css\Content\bootstrap-grid.css.map" />
+    <Content Include="Css\Content\bootstrap-grid.min.css.map" />
+    <Content Include="Css\Content\bootstrap-reboot.css.map" />
+    <Content Include="Css\Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Css\Content\bootstrap.css.map" />
+    <Content Include="Css\Content\bootstrap.min.css.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

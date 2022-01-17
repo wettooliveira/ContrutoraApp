@@ -5,9 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
-    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" /> 
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" /> 
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" /> 
+    <script type="text/javascript" src="../Scripts/bootstrap.js">  </script>
+    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js">  </script>
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
 
     <title></title>
 
@@ -25,7 +29,8 @@
 
     $(document).ready(function () {
 
-        lancarDados();
+        TabelaLancarDados();
+        Tabeladetalhes();
         Menu();
 
     });
@@ -34,6 +39,7 @@
         window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
 
     }
+
     function Contaspagar() {
         window.open("ContasPagar.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
 
@@ -186,7 +192,7 @@
 
     }
 
-    function lancarDados() {
+    function TabelaLancarDados() {
 
         var id_receb_new = '';
 
@@ -200,6 +206,40 @@
                 var source = data.d;
 
                 $('#div').html(source);
+                console.log(source);
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function Tabeladetalhes() {
+
+        var id_receb_new = '';
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/TabelaDetalhados",
+            data: "{'id_receb_new':'" + id_receb_new + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#tbDetalhados').html(source);
                 console.log(source);
 
 
@@ -286,16 +326,136 @@
 
     }
 
+    function inserirDetahes() {
 
-    function Filtrar() {
-        alert();
-    
-        $("#ModalDetalhes").modal({ show: true });
+        var desc_detalhe = $('#txtDescDetalhes').val();
+        var qtde = $('#txtQtdeDetalhes').val();      
+        var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
+        var id_obra = 0;
+            
+
+        var Contas = {
+            desc_conta: desc_detalhe,           
+            num_parcela: qtde,
+            valor: valor,            
+            id_obra: id_obra
+        };
+
+        var obj = { 'Contas': Contas };
+
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/GravarTempDetalhes",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == "OK") {
+                    Tabeladetalhes();
+                }
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function detalhar() {
+        $('#ModalDetalhes').modal('show');
+       /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
     function fecharModal() {
         $("#ModalDetalhes").modal('hide');
-        $('#btnGravar').prop('disabled', '');
+        $('#txtDescDetalhes').val('');
+        $('#txtQtdeDetalhes').val('');
+        $('#txtvalorDetalhes').val('');
+
+        var id_receb_new = '';
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/DeletarTabelaTempDetalhes",
+            data: "{'id_receb_new':'" + id_receb_new + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == "OK") {
+                    Tabeladetalhes();
+                }
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+       /* $('#btnGravar').prop('disabled', '');*/
+    }
+
+    function GravarDetalhes() {
+        $("#ModalDetalhes").modal('hide');
+        $('#txtDescDetalhes').val('');
+        $('#txtQtdeDetalhes').val('');
+        $('#txtvalorDetalhes').val('');      
+
+        var id_receb_new = '';
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/GravarTabelaDetalhes",
+            data: "{'id_receb_new':'" + id_receb_new + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == "OK") {
+                    Tabeladetalhes();
+                }
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+        /* $('#btnGravar').prop('disabled', '');*/
     }
 
 </script>
@@ -310,6 +470,7 @@
             <table>
                 <tr class="trBody">
                     <td>
+                     
                         <asp:TextBox ID="txtConta" runat="server" Width="300px" placeholder="Conta" CssClass="form-control"></asp:TextBox>
                     </td>
 
@@ -397,28 +558,51 @@
             <div id="modal-dialog" class="modal-dialog" role="document" style="width: 500px; max-width: 100%; max-height: 100%; height: 100%; margin: 0px auto;">
                 <div id="modal-content" class="modal-content" style="width: 500px; max-width: 100%; top: 30px;">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalDetalhes"><b>Buscar</b></h5>
+                        <h5 class="modal-title" ><b>Detalhar</b></h5>
                     </div>
                     <div id="divLiberacaoEspecial" class="modal-body" style="max-width: 100% !important; overflow-x: auto !important; height: calc(100% - 135px) !important; overflow-y: auto !important; padding: 0px 20px 20px 20px !important;">
                         <center>
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
-                            <label id="lblLiberacaoEspecial"></label>
-                            <br />
-                            <br />
-                            <label><b>Escolha uma filial para consulta</b></label>
-                            <br />
-                            <br />
-                            <b>Filial:</b>
-                            <br />
-                            <asp:TextBox Font-Size="15px" runat="server" CssClass="form-control" ID="txtDescDetalhe" Style="width: 150px;"></asp:TextBox>
+                            <label id="lblLiberacaoEspecial"></label>                          
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" Width="150px" placeholder="item"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox runat="server" ID="txtQtdeDetalhes" CssClass="form-control" Width="60px" placeholder="Qtde"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <input type="button" class="btn btn-info" value="Inserir"  onclick="inserirDetahes()"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <br />
+                                    </td>
+                                </tr>                              
+                                <tr>
+                                    <td colspan="4">
+                                        <center>
+                                            <div id="tbDetalhados">
+
+                                            </div>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>                        
+                                                        
+                                         
                             <label id="avisoModal" style="color: red" class="hidden"><b>Selecione uma Filial</b></label>
                             <br />
                             <br />
-
                         </center>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnAutorizar" style="width: 90px" class="swal2-cancel btn btn-success" onclick="FiltrarModal();">Filtrar</button>
+                        <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>
                         <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Cancelar</button>
                     </div>
                 </div>
