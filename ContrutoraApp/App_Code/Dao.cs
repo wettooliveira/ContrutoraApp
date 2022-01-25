@@ -103,14 +103,14 @@ namespace ContrutoraApp
                         <li><a href='Home.aspx' > Página inicial</a></li>
 
                         <li><a style='cursor: pointer' onclick='abrirUsuario()'>Usuario</a></li>
-                         <li><a  href='ContasPagar.aspx' style='cursor: pointer'>Financeiro</a></li>
+                         <li><a href='ContasPagar.aspx' style='cursor: pointer'>Financeiro</a></li>
                          <li><a style='cursor: pointer' onclick='cliente()'>Cadastros</a></li>
                         <li><a href='cad_cliente.aspx' style='cursor: pointer'>Cadastros</a></li>
                         <li><a href='About' > Sobre </a></li>
                         <li><a href='Contact'>Contato</a></li>
                     </ul>
                     <ul class='nav navbar-nav navbar-right'>
-                        <li><a href= 'Account/Register' > Registrar </a></li>
+                        <li><a href='Account/Register' > Registrar </a></li>
                         <li><a href='Login'>Logon</a></li>
                     </ul>
                 </div>

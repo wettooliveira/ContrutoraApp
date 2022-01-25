@@ -83,8 +83,8 @@
 
     </script>
 
-    <style type="text/css">
-        .menu_div {
+  <style type="text/css">
+     /*   .menu_div {
             background-color: rgb(37, 37, 39);
             width: 75vw;
             opacity: 0.7;
@@ -159,9 +159,8 @@
                 border: 1px solid #c0c0c0;
                 display: block;
                 width: 150px;
-            }
+            }*/
     </style>
-
 </head>
 
 
