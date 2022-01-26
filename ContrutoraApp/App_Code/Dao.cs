@@ -10,25 +10,24 @@ namespace ContrutoraApp
     {
         public String GravarCliente(Cliente cliente)
         {
+            String retorno = "";
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+            //abre a conexao
+            cn.Open();
 
             try
             {
-                //// Passa o caminho do banco de dados para um string      
-                string connectionString = Conexao.StrConexao;
-
-                //chama o metodo de conexao com o banco
-                SqlConnection cn = new SqlConnection();
-                cn.ConnectionString = connectionString;
-
-                //construtor command para obter dados44
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cn;
-                cmd.CommandText = cmd.CommandText;
-
-                //abre a conexao
-                cn.Open();
-
-
+                    
                 //comando de instrução do banco de dados
                 cmd.CommandText = @"INSERT INTO tb_cliente(razaoSocial,
                                                        CNPJ, 
@@ -74,16 +73,17 @@ namespace ContrutoraApp
                 cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 
                 cmd.ExecuteNonQuery();
-                cn.Close();
 
-                return "OK";
+                
+                retorno = "OK";
             }
             catch (Exception ex)
             {
-                return "ERRO";
+                retorno = "ERRO";                
             }
 
-
+            cn.Close();
+            return retorno;
         }
 
         public String Menu()
@@ -103,7 +103,7 @@ namespace ContrutoraApp
                         <li><a href='Home.aspx' > Página inicial</a></li>
 
                         <li><a style='cursor: pointer' onclick='abrirUsuario()'>Usuario</a></li>
-                        <li><a style='cursor: pointer' onclick='Contaspagar()'>Financeiro</a></li>
+                        <li><a style='cursor: pointer' onclick='ContasPagar()'>Financeiro</a></li>
                         <li><a style='cursor: pointer' onclick='cliente()'>Cadastros</a></li>
                         <li><a href='cad_cliente.aspx' style='cursor: pointer'>Cadastros</a></li>
                         <li><a href='About' > Sobre </a></li>
@@ -123,5 +123,43 @@ namespace ContrutoraApp
             return menu;
 
         }
+
+        public String DeletarTabelaTemporariaDetalhes()
+        {
+            String retorno = "";
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            try
+            {         
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"Truncate table tb_temp_detalhes_contasPagar";
+
+                cmd.ExecuteNonQuery();            
+
+                retorno = "OK";
+            }
+            catch (Exception ex)
+            {
+                retorno = "ERRO";
+            }
+
+            cn.Close();
+            return retorno;
+        }
+
+
     }
 }

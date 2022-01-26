@@ -34,7 +34,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaContasPagar(String id_receb_new)
+        public static String TabelaContasPagar()
         {
 
             //// Passa o caminho do banco de dados para um string      
@@ -85,9 +85,9 @@ namespace ContrutoraApp
                 table += "          <th> " + dr["tipo"].ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(); return false;' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
                 table += "          </tr> "; 
 
             }
@@ -98,6 +98,14 @@ namespace ContrutoraApp
 
             return table;
 
+        }
+
+        [WebMethod]
+        public static String DeletarTabelaTempDetalhes()
+        {
+            Dao dao = new Dao();
+
+            return dao.DeletarTabelaTemporariaDetalhes();
         }
 
         [WebMethod]
