@@ -16,19 +16,19 @@ namespace ContrutoraApp
 
             if (!IsPostBack)
             {
-               
+
             }
             else
             {
-                
+
             }
         }
 
         [WebMethod]
         public static String Menu(String m)
         {
-            Dao menu = new Dao();          
-           
+            Dao menu = new Dao();
+
             return menu.Menu();
 
         }
@@ -52,12 +52,10 @@ namespace ContrutoraApp
 
             //comando de instrução do banco de dados
             cmd.CommandText = "select id, desc_conta, tipo, num_parcela,valor from tb_contasPagar";
-            
-            
 
 
             String table = "";
-                     
+
 
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
@@ -72,13 +70,13 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
             table += "          </tr> ";
 
-            cmd.CommandText = cmd.CommandText;          
-          
+            cmd.CommandText = cmd.CommandText;
+
             SqlDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
             {
-                
+
                 if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                 table += "          <th> " + dr["desc_conta"].ToString() + " </th>";
@@ -88,7 +86,7 @@ namespace ContrutoraApp
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
-                table += "          </tr> "; 
+                table += "          </tr> ";
 
             }
 
@@ -130,64 +128,48 @@ namespace ContrutoraApp
             cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor, fornec_despesa, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
                                 values(@desc_conta,@tipo,@num_parcela,@valor, @fornec_despesa, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
-            cmd.Parameters.AddWithValue("@desc_conta",Contas.desc_conta.ToUpper());
+            cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
             cmd.Parameters.AddWithValue("@tipo", Contas.tipo);
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
             cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
             cmd.Parameters.AddWithValue("@fornec_despesa", Contas.desc_despesa.ToUpper());
-            
-            if(Contas.id_obra <= 0)
+
+            if (Contas.id_obra <= 0)
             {
                 cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
             }
-            else if( Contas.id > 0)
+            else if (Contas.id > 0)
             {
                 cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
             }
-         
-           
+
+
 
             cmd.ExecuteNonQuery();
             cn.Close();
-                   
+
 
             return "OK";
 
         }
 
         [WebMethod]
-        public static String GravarTempDetalhes(Contas Contas)
+        public static List<Contas> GravarTempDetalhes(Contas Contas)
         {
-            //// Passa o caminho do banco de dados para um string      
-            string connectionString = Conexao.StrConexao;
+            String retorno= "";
+            List<Contas> DadosDetalhes = new List<Contas>();
+            Dao GravarTempDetalhesmodal = new Dao();
+            Dao buscarTempDetalhesmodal = new Dao();
 
-            //chama o metodo de conexao com o banco
-            SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = connectionString;
+            retorno = GravarTempDetalhesmodal.GravarTempDetalhesDao(Contas);
 
-            //construtor command para obter dados44
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cmd.CommandText = cmd.CommandText;
+            if(retorno == "OK")
+            {
+                DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal();
+            }
 
-            //abre a conexao
-            cn.Open();
-
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor)
-                                values(@id_conta, @desc_conta, @num_parcela, @valor)";
-
-            cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
-            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
-            cmd.Parameters.AddWithValue("@valor", Contas.valor);
-            cmd.Parameters.AddWithValue("@id_conta", Contas.id_obra);
-
-            cmd.ExecuteNonQuery();
-            cn.Close();
-
-            return "OK";
-
+            return DadosDetalhes;
         }
 
         [WebMethod]
@@ -223,5 +205,7 @@ namespace ContrutoraApp
             return "OK";
 
         }
+
+        
     }
 }

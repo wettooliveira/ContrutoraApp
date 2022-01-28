@@ -187,7 +187,38 @@
                 var source = data.d;
 
                 $('#div').html(source);
-                console.log(source);
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function TabelaLancarDadosModal() {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/BuscarDetalhamentoTempModal",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == "OK") {
+                    lancarDados();
+                }
 
 
             },
@@ -204,6 +235,21 @@
                 /*  });*/
             }
         });
+
+        var table = "";
+
+        table += "      <table id='tbDadosModal' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+
+        var cor_r = "#FFFFFF";
+        table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
+        table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
+        table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Qtde</th>";
+        table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
+
+        table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'>  </th>";
+        table += "          </tr> ";
+
+        $('#tbDetalhados').html(table);
 
     }
 
@@ -317,7 +363,7 @@
     }
 
     function GravarDetahesTemp() {
-    
+
         var desc_detalhe = $('#txtDescDetalhes').val();
         var qtde = $('#txtQtdeDetalhes').val();
         var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
@@ -344,10 +390,9 @@
                 var source = data.d;
 
                 if (source == "OK") {
-                    alert();
+                    TabelaLancarDadosModal();
                     //Tabeladetalhes();
                 }
-
 
             },
             error: function (request, status, error) {
@@ -501,7 +546,6 @@
         <hr />
 
         <div style="width: 100%">
-
             <br />
             <center>
                 <table style="width: 70%">

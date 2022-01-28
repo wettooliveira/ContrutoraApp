@@ -27,7 +27,7 @@ namespace ContrutoraApp
 
             try
             {
-                    
+
                 //comando de instrução do banco de dados
                 cmd.CommandText = @"INSERT INTO tb_cliente(razaoSocial,
                                                        CNPJ, 
@@ -74,12 +74,12 @@ namespace ContrutoraApp
 
                 cmd.ExecuteNonQuery();
 
-                
+
                 retorno = "OK";
             }
             catch (Exception ex)
             {
-                retorno = "ERRO";                
+                retorno = "ERRO";
             }
 
             cn.Close();
@@ -88,7 +88,7 @@ namespace ContrutoraApp
 
         public String Menu()
         {
-           String menu = @"<div class='navbar navbar-inverse navbar-fixed-top'>
+            String menu = @"<div class='navbar navbar-inverse navbar-fixed-top'>
              <div class='container'>
                 <div class='navbar-header'>
                     <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
@@ -124,6 +124,86 @@ namespace ContrutoraApp
 
         }
 
+        //------------------------------------- CONTAS A PAGAR -----------------------------------------------//
+        public String GravarTempDetalhesDao(Contas Contas)
+        {
+            String retorno = "";
+           
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            try
+            {
+
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor)
+                                    values(@id_conta, @desc_conta, @num_parcela, @valor)";
+
+                cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
+                cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
+                cmd.Parameters.AddWithValue("@valor", Contas.valor);
+                cmd.Parameters.AddWithValue("@id_conta", Contas.id_obra);
+
+                cmd.ExecuteNonQuery();
+                cn.Close();
+                retorno = "OK";
+            }
+            catch (Exception ex)
+            {
+                retorno = "ERRO";
+            }
+
+             return retorno;
+        }
+
+        public List<Contas> BuscarDadosDetalhesModal()
+        {
+            List<Contas> listaDados = new List<Contas>();
+           
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = "SELECT id, desc_detalhe, qtde, valor FROM tb_temp_detalhes_contasPagar";           
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                Contas dadosTabelaDetalhes = new Contas();
+                dadosTabelaDetalhes.id = Convert.ToInt32(dr["id"]);
+                dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
+                dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
+                dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
+
+                listaDados.Add(dadosTabelaDetalhes);
+            }
+              
+            return listaDados;
+        }
+
         public String DeletarTabelaTemporariaDetalhes()
         {
             String retorno = "";
@@ -143,11 +223,11 @@ namespace ContrutoraApp
             cn.Open();
 
             try
-            {         
+            {
                 //comando de instrução do banco de dados
                 cmd.CommandText = @"Truncate table tb_temp_detalhes_contasPagar";
 
-                cmd.ExecuteNonQuery();            
+                cmd.ExecuteNonQuery();
 
                 retorno = "OK";
             }
