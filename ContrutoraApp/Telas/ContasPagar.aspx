@@ -203,55 +203,7 @@
             }
         });
 
-    }
-
-    function TabelaLancarDadosModal() {
-
-        $.ajax({
-            type: "POST",
-            url: "ContasPagar.aspx/BuscarDetalhamentoTempModal",
-            data: JSON.stringify(obj),
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            success: function (data) {
-                var source = data.d;
-
-                if (source == "OK") {
-                    lancarDados();
-                }
-
-
-            },
-            error: function (request, status, error) {
-                alert(request.responseText);
-                console.log(request.responseText);
-                //swalWithBootstrapButtons.fire({
-                //    title: '',
-                //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //    icon: 'error',
-                //    confirmButtonText: 'OK',
-                //    allowOutsideClick: false
-                //}).then((result) => {
-                /*  });*/
-            }
-        });
-
-        var table = "";
-
-        table += "      <table id='tbDadosModal' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
-
-        var cor_r = "#FFFFFF";
-        table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
-        table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
-        table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Qtde</th>";
-        table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
-
-        table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'>  </th>";
-        table += "          </tr> ";
-
-        $('#tbDetalhados').html(table);
-
-    }
+    }     
 
     function GravarConta() {
 
@@ -338,11 +290,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
-                var source = data.d;
-
-                if (source == "OK") {
-                    Tabeladetalhes();
-                }
+                                      
 
 
             },
@@ -389,10 +337,34 @@
             success: function (data) {
                 var source = data.d;
 
-                if (source == "OK") {
-                    TabelaLancarDadosModal();
-                    //Tabeladetalhes();
-                }
+                var table = "";
+
+                table += "      <table id='tbDadosModal' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+
+                var cor_r = "#FFFFFF";
+                table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
+                table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
+                table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Qtde</th>";
+                table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
+
+                table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'>  </th>";
+                table += "          </tr> ";
+
+                $(source).each(function (index, element ) {
+                    console.log(index + ',' + element.desc_conta);
+                    if (cor_r == "#FFFFFF") { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                    table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                    table += "          <th> " + element.desc_conta + " </th>";
+                    table += "          <th> " + element.tipo + " </th>";
+                    table += "          <th> " + element.valor + " </th>";
+              
+                    //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                    //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
+                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
+                    table += "          </tr> ";
+                });
+
+                $('#tbDetalhados').html(table);
 
             },
             error: function (request, status, error) {
