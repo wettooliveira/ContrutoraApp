@@ -270,8 +270,9 @@
 
     }
 
-    function detalhar() {
+    function detalhar(id) {
 
+        $('#hdnIDContasPagar').val(id);
         $('#ModalDetalhes').modal('show');
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
@@ -281,6 +282,7 @@
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
+        $('#hdnIDContasPagar').val('');
               
 
         $.ajax({
@@ -319,6 +321,7 @@
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
+     
 
         var id_receb_new = '';
 
@@ -369,7 +372,7 @@
 </script>
 <body>
     <form id="form1" runat="server">
-
+        <asp:HiddenField ID="hdnIDContasPagar" runat="server"/>
         <div id="menu">
         </div>
 

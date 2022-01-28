@@ -51,7 +51,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = "select desc_conta, tipo, num_parcela,valor from tb_contasPagar";
+            cmd.CommandText = "select id, desc_conta, tipo, num_parcela,valor from tb_contasPagar";
             
             
 
@@ -85,7 +85,7 @@ namespace ContrutoraApp
                 table += "          <th> " + dr["tipo"].ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(); return false;' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
                 table += "          </tr> "; 
