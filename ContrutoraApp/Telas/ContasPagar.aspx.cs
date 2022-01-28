@@ -155,5 +155,73 @@ namespace ContrutoraApp
             return "OK";
 
         }
+
+        [WebMethod]
+        public static String GravarTempDetalhes(Contas Contas)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
+                                values(@desc_conta, @id_conta, @num_parcela, @valor)";
+
+            cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
+            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
+            cmd.Parameters.AddWithValue("@valor", Contas.valor);
+            cmd.Parameters.AddWithValue("@id_conta", Contas.valor);
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static String GravarTabelaDetalhes(String id_receb_new)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
+                                SELECT desc_detalhe, id_conta, qtde, valor from tb_temp_detalhes_contasPagar";
+
+            cmd.ExecuteNonQuery();
+
+            cmd.Parameters.Clear();
+            cmd.CommandText = @"truncate table tb_temp_detalhes_contasPagar";
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
     }
 }
