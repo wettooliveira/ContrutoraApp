@@ -175,7 +175,7 @@
 
     function TabelaLancarDados() {
 
-       
+
 
         $.ajax({
             type: "POST",
@@ -283,7 +283,7 @@
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
         $('#hdnIDContasPagar').val('');
-              
+
 
         $.ajax({
             type: "POST",
@@ -316,12 +316,63 @@
         /* $('#btnGravar').prop('disabled', '');*/
     }
 
+    function GravarDetahesTemp() {
+    
+        var desc_detalhe = $('#txtDescDetalhes').val();
+        var qtde = $('#txtQtdeDetalhes').val();
+        var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
+        var id_obra = $('#hdnIDContasPagar').val();
+
+
+        var Contas = {
+            desc_conta: desc_detalhe,
+            num_parcela: qtde,
+            valor: valor,
+            id_obra: id_obra
+        };
+
+        var obj = { 'Contas': Contas };
+
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/GravarTempDetalhes",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == "OK") {
+                    alert();
+                    //Tabeladetalhes();
+                }
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
     function GravarDetalhes() {
         $("#ModalDetalhes").modal('hide');
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
-     
+        $('#hdnIDContasPagar').val('');
+
 
         var id_receb_new = '';
 
@@ -370,9 +421,10 @@
     //}
 
 </script>
+
 <body>
     <form id="form1" runat="server">
-        <asp:HiddenField ID="hdnIDContasPagar" runat="server"/>
+        <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <div id="menu">
         </div>
 
@@ -486,7 +538,7 @@
                                         <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahes()" />
+                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp()" />
                                     </td>
                                 </tr>
                                 <tr>

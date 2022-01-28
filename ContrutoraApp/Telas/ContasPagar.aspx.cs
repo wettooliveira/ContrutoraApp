@@ -175,13 +175,13 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
-                                values(@desc_conta, @id_conta, @num_parcela, @valor)";
+            cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor)
+                                values(@id_conta, @desc_conta, @num_parcela, @valor)";
 
             cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
             cmd.Parameters.AddWithValue("@valor", Contas.valor);
-            cmd.Parameters.AddWithValue("@id_conta", Contas.valor);
+            cmd.Parameters.AddWithValue("@id_conta", Contas.id_obra);
 
             cmd.ExecuteNonQuery();
             cn.Close();
