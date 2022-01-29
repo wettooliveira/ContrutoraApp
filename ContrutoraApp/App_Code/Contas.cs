@@ -20,5 +20,14 @@ namespace ContrutoraApp
         public Int32 id_obra { get; set; }
         public string data { get; set; }
 
+        public List<Contas> listaContas1 { get; set; }
+        public List<Contas> listaContas2 { get; set; }
+
     }
-}
+   
+
+
+
+
+
+    }

@@ -203,7 +203,7 @@
             }
         });
 
-    }     
+    }
 
     function GravarConta() {
 
@@ -271,6 +271,7 @@
     function detalhar(id) {
 
         $('#hdnIDContasPagar').val(id);
+        GravarDetahesTemp('buscar');
         $('#ModalDetalhes').modal('show');
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
@@ -281,6 +282,8 @@
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
         $('#hdnIDContasPagar').val('');
+        $('#tbDetalhados').html('');
+
 
 
         $.ajax({
@@ -290,7 +293,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
-                                      
+
 
 
             },
@@ -310,20 +313,36 @@
         /* $('#btnGravar').prop('disabled', '');*/
     }
 
-    function GravarDetahesTemp() {
+    function GravarDetahesTemp(acao) {
+       
 
-        var desc_detalhe = $('#txtDescDetalhes').val();
-        var qtde = $('#txtQtdeDetalhes').val();
-        var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
-        var id_obra = $('#hdnIDContasPagar').val();
+        var Contas = {};
 
 
-        var Contas = {
-            desc_conta: desc_detalhe,
-            num_parcela: qtde,
-            valor: valor,
-            id_obra: id_obra
-        };
+        if (acao == '') {
+
+
+            var desc_detalhe = $('#txtDescDetalhes').val();
+            var qtde = $('#txtQtdeDetalhes').val();
+            var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
+            var id_obra = $('#hdnIDContasPagar').val();
+
+
+            Contas = {
+                desc_conta: desc_detalhe,
+                num_parcela: qtde,
+                valor: valor,
+                id_obra: id_obra
+            };
+
+        } else {
+            Contas = {
+                desc_conta: 'vazio',
+                id_obra: $('#hdnIDContasPagar').val()
+            };
+        }
+
+      
 
         var obj = { 'Contas': Contas };
 
@@ -335,36 +354,10 @@
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
-                var source = data.d;
 
-                var table = "";
+                var dados = JSON.parse(data.d);
 
-                table += "      <table id='tbDadosModal' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
-
-                var cor_r = "#FFFFFF";
-                table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
-                table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
-                table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Qtde</th>";
-                table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
-
-                table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'>  </th>";
-                table += "          </tr> ";
-
-                $(source).each(function (index, element ) {
-                    console.log(index + ',' + element.desc_conta);
-                    if (cor_r == "#FFFFFF") { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-                    table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                    table += "          <th> " + element.desc_conta + " </th>";
-                    table += "          <th> " + element.tipo + " </th>";
-                    table += "          <th> " + element.valor + " </th>";
-              
-                    //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
-                    //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
-                    table += "          </tr> ";
-                });
-
-                $('#tbDetalhados').html(table);
+                BuscaTabelaDetalhesModal(dados);
 
             },
             error: function (request, status, error) {
@@ -383,20 +376,88 @@
 
     }
 
+    function BuscaTabelaDetalhesModal(dados) {
+
+        var table = "";
+
+        if (dados.listaContas1[0].desc_conta != 'vazio') {
+
+
+            table += "      <table id='tbDadosModal' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+
+            var cor_r = "#FFFFFF";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Qtde</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'>  </th>";
+            table += "          </tr> ";
+        }
+
+        if (dados.listaContas1[0].desc_conta != 'vazio') {
+            $(dados.listaContas1).each(function (index, element) {
+                if (cor_r == "#FFFFFF") { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                table += "          <th> " + element.desc_conta + " </th>";
+                table += "          <th> " + element.tipo + " </th>";
+                table += "          <th> " + element.valor + " </th>";
+
+                //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px;  height:20px; cursor: pointer;text-align:center; padding-top:initial'   /> </th>";
+                table += "          </tr> ";
+
+            });
+        }
+
+
+
+
+        //if (dados.listaContas2[0].desc_conta != 'vazio') {
+        //    $(dados.listaContas2).each(function (index, element) {
+        //        if (cor_r == "#FFFFFF") { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+        //        table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+        //        table += "          <th> " + element.desc_conta + " </th>";
+        //        table += "          <th> " + element.tipo + " </th>";
+        //        table += "          <th> " + element.valor + " </th>";
+
+        //        //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+        //        //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
+        //        table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px;  height:20px; cursor: pointer;text-align:center; padding-top:initial'   /> </th>";
+        //        table += "          </tr> ";
+
+        //    });
+        //}
+
+        if (dados.listaContas1[0].desc_conta != 'vazio') {
+            table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+            table += "          <th> Total </th>";
+            table += "          <th>  </th>";
+            table += "          <th> " + dados.listaContas1[0].valor_string + " </th>";
+            table += "          <th> </th>";
+            table += "          </tr> ";
+        }
+
+
+        $('#tbDetalhados').html(table);
+    }
+
     function GravarDetalhes() {
         $("#ModalDetalhes").modal('hide');
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
+        
+
+
+        var id_conta = $('#hdnIDContasPagar').val();
+
         $('#hdnIDContasPagar').val('');
-
-
-        var id_receb_new = '';
 
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/GravarTabelaDetalhes",
-            data: "{'id_receb_new':'" + id_receb_new + "'}",
+            data: "{'id_conta':'" + id_conta + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
@@ -474,14 +535,13 @@
 
                     </tr>
                     <tr>
-                        <td style="width: 100px">
+                        <td style="width: 100px;">
                             <asp:DropDownList ID="ddpTipoDesp" Width="120px" runat="server" CssClass="form-control" onchange="tipoDespesa(value);">
                                 <asp:ListItem Text="Selecione.." Value="tipo"></asp:ListItem>
                                 <asp:ListItem Text="Despesa" Value="Despesa"></asp:ListItem>
                                 <asp:ListItem Text="Obra" Value="obra"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
-
 
                         <td id="tdDespesa" colspan="3">
                             <asp:TextBox ID="txtDespesa" runat="server" placeholder="Despesa" CssClass="form-control"></asp:TextBox>
@@ -554,7 +614,7 @@
                                         <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp()" />
+                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp('')" />
                                     </td>
                                 </tr>
                                 <tr>

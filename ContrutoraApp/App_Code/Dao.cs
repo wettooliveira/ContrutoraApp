@@ -168,10 +168,16 @@ namespace ContrutoraApp
              return retorno;
         }
 
-        public List<Contas> BuscarDadosDetalhesModal()
+        public Contas BuscarDadosDetalhesModal(Contas contas, string tipo)
         {
-            List<Contas> listaDados = new List<Contas>();
-           
+
+            double soma = 0;
+            Contas retorno = new Contas();
+            List<Contas> listaDados1 = new List<Contas>();
+            List<Contas> listaDados2 = new List<Contas>();
+
+
+
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -185,23 +191,100 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = "SELECT id, desc_detalhe, qtde, valor FROM tb_temp_detalhes_contasPagar";           
+            if (tipo != "gravar")
+            {
+
+
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"insert into tb_temp_detalhes_contasPagar(id_conta,desc_detalhe,qtde,valor)
+								select id_conta,desc_detalhe,qtde,valor from tb_detalhes_contasPagar Where id_conta = @id_obra";
+
+                cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
+
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+            }
+
+            cmd.CommandText = @"SELECT id, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
+                                OUTER APPLY(select sum(valor*qtde) as total from tb_temp_detalhes_contasPagar)total  
+                                WHERE id_conta = @id_obra
+                                ORDER BY 1 DESC";                           
+                             
+            cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
             SqlDataReader dr = cmd.ExecuteReader();
 
-            while (dr.Read())
+            if (dr.HasRows)
             {
-                Contas dadosTabelaDetalhes = new Contas();
-                dadosTabelaDetalhes.id = Convert.ToInt32(dr["id"]);
-                dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
-                dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
-                dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
+                while (dr.Read())
+                {
+                    Contas dadosTabelaDetalhes = new Contas();
+                    dadosTabelaDetalhes.id = Convert.ToInt32(dr["id"]);
+                    dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
+                    dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
+                    dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
+                    dadosTabelaDetalhes.valor_string = Convert.ToDouble(dr["total"]).ToString("N2");
+                    //soma += Convert.ToDouble(dr["valor"]);
+                    //dadosTabelaDetalhes.valor_string = soma.ToString("N2");
 
-                listaDados.Add(dadosTabelaDetalhes);
+                    listaDados1.Add(dadosTabelaDetalhes);
+                    retorno.listaContas1 = listaDados1; 
+                }
             }
-              
-            return listaDados;
+            else
+            {
+                Contas c = new Contas();
+                c.desc_conta = "vazio";
+                listaDados1.Add(c);
+                retorno.listaContas1 = listaDados1;
+            }
+
+            dr.Close();
+            //cmd.Parameters.Clear();
+
+         
+
+            ////comando de instrução do banco de dados
+            //cmd.CommandText = @"SELECT id, desc_detalhe, qtde, valor, total FROM tb_detalhes_contasPagar 
+            //                    OUTER APPLY(select sum(valor*qtde) as total from tb_detalhes_contasPagar)total
+            //                    WHERE id_conta = @id_obra
+            //                    ORDER BY 1 DESC";
+
+            //cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
+
+            //dr = cmd.ExecuteReader();
+      
+
+            //if (dr.HasRows)
+            //{
+            //    while (dr.Read())
+            //    {
+            //        Contas dadosTabelaDetalhes = new Contas();
+            //        dadosTabelaDetalhes.id = Convert.ToInt32(dr["id"]);
+            //        dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
+            //        dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
+            //        dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
+            //        dadosTabelaDetalhes.valor_string = Convert.ToDouble(dr["total"]).ToString("N2");
+            //        soma += Convert.ToDouble(dr["valor"]);
+            //        dadosTabelaDetalhes.valor_string = soma.ToString("N2");
+
+            //        listaDados2.Add(dadosTabelaDetalhes);
+            //        retorno.listaContas2 = listaDados2;
+            //    }
+            //}
+            //else
+            //{
+            //    Contas c = new Contas();
+            //    c.desc_conta = "vazio";
+            //    listaDados2.Add(c);
+            //    retorno.listaContas2 = listaDados2;
+            //}
+
+            //dr.Close();
+
+            cn.Close();
+
+            return retorno;
         }
 
         public String DeletarTabelaTemporariaDetalhes()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace ContrutoraApp
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
             String cor_r = "#FFFFFF";
-            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:bold'> ";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Tipo</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
@@ -79,14 +80,15 @@ namespace ContrutoraApp
 
                 if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th> " + dr["desc_conta"].ToString() + " </th>";
-                table += "          <th> " + dr["tipo"].ToString() + " </th>";
-                table += "          <th> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
-                table += "          <th> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; cursor: pointer; text-align:center' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; cursor: pointer; text-align:center' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; cursor: pointer;text-align:center' /> </th>";
+                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_conta"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid;'> " + dr["tipo"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:20px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:20px; cursor: pointer; text-align:center; padding-top:initial ' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:20px; cursor: pointer;text-align:center; padding-top:initial ' /> </th>";
                 table += "          </tr> ";
+
 
             }
 
@@ -155,25 +157,34 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static List<Contas> GravarTempDetalhes(Contas Contas)
+        public static String GravarTempDetalhes(Contas Contas)
         {
-            String retorno= "";
-            List<Contas> DadosDetalhes = new List<Contas>();
+            String retorno = "";
+            Contas DadosDetalhes = new Contas();
             Dao GravarTempDetalhesmodal = new Dao();
             Dao buscarTempDetalhesmodal = new Dao();
 
-            retorno = GravarTempDetalhesmodal.GravarTempDetalhesDao(Contas);
-
-            if(retorno == "OK")
+            if (Contas.desc_conta != "vazio")
             {
-                DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal();
+                retorno = GravarTempDetalhesmodal.GravarTempDetalhesDao(Contas);
+
+                if (retorno == "OK")
+                {
+                    DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
+                }
+            }
+            else
+            {
+
+                DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas,"buscar");
+
             }
 
-            return DadosDetalhes;
+            return JsonConvert.SerializeObject(DadosDetalhes); 
         }
 
         [WebMethod]
-        public static String GravarTabelaDetalhes(String id_receb_new)
+        public static String GravarTabelaDetalhes(String id_conta)
         {
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
@@ -190,14 +201,19 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
-                                SELECT desc_detalhe, id_conta, qtde, valor from tb_temp_detalhes_contasPagar";
+            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta =" + id_conta;
 
             cmd.ExecuteNonQuery();
 
             cmd.Parameters.Clear();
-            cmd.CommandText = @"truncate table tb_temp_detalhes_contasPagar";
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
+                                SELECT desc_detalhe, id_conta, qtde, valor from tb_temp_detalhes_contasPagar where id_conta =" + id_conta;
+
+            cmd.ExecuteNonQuery();
+
+            cmd.Parameters.Clear();
+            cmd.CommandText = @"delete tb_temp_detalhes_contasPagar where id_conta =" + id_conta;
 
             cmd.ExecuteNonQuery();
             cn.Close();
@@ -206,6 +222,6 @@ namespace ContrutoraApp
 
         }
 
-        
+
     }
 }
