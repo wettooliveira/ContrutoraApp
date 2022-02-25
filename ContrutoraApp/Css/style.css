@@ -2,9 +2,9 @@
     
 }
 
-.teste {
+.imagem_body {
     background-image: url('Imagens/bgbg.png');
-/*    background-attachment: fixed;
+    /*    background-attachment: fixed;
     background-repeat: no-repeat;
     color: black;
     opacity: inherit;
@@ -15,7 +15,7 @@
     color: black;
     left: 0;
     overflow: auto;
-    padding: 3em;
+   
     position: absolute;
     right: 0;
     text-align: center;
