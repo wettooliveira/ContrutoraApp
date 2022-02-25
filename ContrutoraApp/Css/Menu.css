@@ -1,46 +1,103 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-* {
+.divMenuPrincipal {
+    height: 60px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.divMenuLogo {
+    height: 60px;
+    background-color: #343434;
+    width: 10%;
+    color: white;
+}
+
+.divMenu {
+    height: 60px;
+    background-color: #343434;
+    width: 85%;
+}
+
+.divMenuFinal {
+    height: 60px;
+    background-color: #343434;
+    width: 5%;
+    color: white;
+    align-items: center;
+}
+
+#nav {
+    list-style: none inside;
     margin: 0;
-    padding: 0;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    background-color: #343434;
 }
 
-* {
-    margin: 0 auto;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
-}
-
-#menu-h {
-    background-color: rgb(37, 37, 39);
-}
-
-    #menu-h ul {
-        max-width: 800px;
-        list-style: none;
+    #nav li {
+        display: block;
+        position: relative;
+        float: left;
+        background-color: #343434;
+        /* menu background color */
     }
 
-        #menu-h ul li {
-            display: inline;
+        #nav li a {
+            display: block;
+            padding: 0;
+            text-decoration: none;
+            width: 100px;
+            /* this is the width of the menu items */
+            line-height: 35px;
+            /* this is the hieght of the menu items */
+            color: #ffffff;
+            opacity: 0.6;
+            /* list item font color */
         }
 
+        #nav li li a {
+            font-size: 90%;
+        }
 
-            #menu-h ul li a {
-                color: #FFF;
-                padding: 20px;
-                display: inline-block;
-                text-decoration: none;
-                transition: background .4s;
-            }
+        /* smaller font size for sub menu items */
 
-                #menu-h ul li a:hover {
-                    background-color: rgb(24, 139, 233);
-                }
+        #nav li:hover {
+        }
 
-            #menu-h ul li:last-child a {
-                float: right;
-                background-color: rgb(24, 139, 233);
-            }
+        #nav li a:hover {
+            opacity: 0.9;
+        }
 
+    /* highlights current hovered list item and the parent list items when hovering over sub menues */
+
+    #nav ul {
+        position: absolute;
+        padding: 0;
+        left: 0;
+        display: none;
+        /* hides sublists */
+    }
+
+    #nav li:hover ul ul {
+        display: none;
+    }
+
+    /* hides sub-sublists */
+
+    #nav li:hover ul {
+        display: block;
+    }
+
+    /* shows sublist on hover */
+
+    #nav li li:hover ul {
+        display: block;
+        /* shows sub-sublist on hover */
+        margin-left: 100px;
+        /* this should be the same width as the parent list item */
+        margin-top: -35px;
+        /* aligns top of sub menu with top of list item */
+    }
 

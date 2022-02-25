@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
@@ -33,163 +34,44 @@
 
         }
 
+
+        function Menu() {
+            var menu = "";          
+           menu =" <ul id='nav'>";
+           menu += "<li><a href='#'>HOME</a></li>";
+           menu += "<li><a href='#'>CADASTROS</a>";
+           menu += "<ul>";
+                        <li><a href="#">Sub Item</a></li>
+                        <li><a href="#">Sub Item</a></li>
+                        <li><a href="#">SUB SUB LIST »</a>
+                            <ul>
+                                <li><a href="#">Sub Sub Item 1</a>
+                                    <li><a href="#">Sub Sub Item 2</a>
+                            </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="#">FINANCEIRO</a>
+                            <ul>
+                                <li><a href="#">Sub Item</a></li>
+                                <li><a href="#">Sub Item</a></li>
+                                <li><a href="#">SUB SUB LIST »</a>
+                                    <ul>
+                                        <li><a href="#">Sub Sub Item 1</a>
+                                            <li><a href="#">Sub Sub Item 2</a>
+                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Main Item 3</a></li>
+                            </ul>
+                            ";
+                        
+        }
+
     </script>
 
-    <%--  <style type="text/css">
-        .menu_div {
-            background-color: rgb(37, 37, 39);
-            width: 75vw;
-            opacity: 0.7;
-        }
-
-        .ul {
-            display: inline;
-            list-style: none;
-        }
-
-            .ul div li {
-                width: 150px;
-                display: inline-block;
-                position: relative;
-            }
-
-                .ul div li a {
-                    color: #FFF;
-                    opacity: 0.7;
-                    text-decoration: none;
-                    padding: 10px 10px;
-                    display: block;
-                }
-
-                .ul li a {
-                    color: #FFF;
-                    opacity: 0.7;
-                    text-decoration: none;
-                    padding: 10px 10px;
-                    display: block;
-                }
-
-                .ul li label {
-                    color: #FFF;
-                    opacity: 0.7;
-                    text-decoration: none;
-                    padding: 15px 10px;
-                    display: block;
-                }
-
-                .ul div li a:hover {
-                    background: #333;
-                    color: #fff;
-                    -moz-box-shadow: 0 3px 10px 0 #CCC;
-                    -webkit-box-shadow: 0 3px 10px 0 #ccc;
-                    text-shadow: 0px 0px 5px #fff;
-                    opacity: 10;
-                }
-
-            .ul li a:hover {
-                background: #333;
-                color: #fff;
-                -moz-box-shadow: 0 3px 10px 0 #CCC;
-                -webkit-box-shadow: 0 3px 10px 0 #ccc;
-                text-shadow: 0px 0px 5px #fff;
-                opacity: 10;
-            }
-
-            .ul li ul {
-                position: absolute;
-                top: 40px;
-                left: 0;
-                background-color: transparent;
-                display: none;
-            }
-
-            .ul li:hover ul, .ul li.over ul {
-                display: block;
-            }
-
-            .ul li ul li {
-                border: 1px solid #c0c0c0;
-                display: block;
-                width: 150px;
-            }
-    </style>--%>
-
-    <style>
-        #nav {
-            list-style: none inside;
-            margin: 0;
-            padding: 15px;
-            text-align: center;
-            width: 100%;
-            background-color: #343434;
-        }
-
-            #nav li {
-                display: block;
-                position: relative;
-                float: left;
-                background-color: #343434;
-                /* menu background color */
-            }
-
-                #nav li a {
-                    display: block;
-                    padding: 0;
-                    text-decoration: none;
-                    width: 100px;
-                    /* this is the width of the menu items */
-                    line-height: 35px;
-                    /* this is the hieght of the menu items */
-                    color: #ffffff;
-                    opacity: 0.6;
-                    /* list item font color */
-                }
-
-                #nav li li a {
-                    font-size: 90%;
-                }
-
-                /* smaller font size for sub menu items */
-
-                #nav li:hover {
-                }
-
-                #nav li a:hover {
-                    opacity: 0.9;
-                }
-
-            /* highlights current hovered list item and the parent list items when hovering over sub menues */
-
-            #nav ul {
-                position: absolute;
-                padding: 0;
-                left: 0;
-                display: none;
-                /* hides sublists */
-            }
-
-            #nav li:hover ul ul {
-                display: none;
-            }
-
-            /* hides sub-sublists */
-
-            #nav li:hover ul {
-                display: block;
-            }
-
-            /* shows sublist on hover */
-
-            #nav li li:hover ul {
-                display: block;
-                /* shows sub-sublist on hover */
-                margin-left: 100px;
-                /* this should be the same width as the parent list item */
-                margin-top: -35px;
-                /* aligns top of sub menu with top of list item */
-            }
-    </style>
-
+ 
     <%--/*Menu Anterior ou Site--%>
     <%--  <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
@@ -223,11 +105,11 @@
 
 <body class="imagem_body">
 
-    <div style="height: 60px; display: inline-flex; width: 100%;">
-        <div style="height: 60px; background-color: #343434; width: 10%; color: white">
+    <div class="divMenuPrincipal">
+        <div class="divMenuLogo">
             <img runat="server" src="~/Imagens/proibido.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
-        <div style="height: 60px; background-color: #343434; width: 85%">
+        <div class="divMenu">
             <ul id="nav">
 
                 <li><a href="#">HOME</a></li>
@@ -259,7 +141,7 @@
             </ul>
         </div>
 
-        <div style="height: 60px; background-color: #343434; width: 5%; color: white; align-items: center">
+        <div class="divMenuFinal">
             <img runat="server" src="~/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
 
