@@ -314,7 +314,7 @@
     }
 
     function GravarDetahesTemp(acao) {
-       
+
 
         var Contas = {};
 
@@ -342,7 +342,7 @@
             };
         }
 
-      
+
 
         var obj = { 'Contas': Contas };
 
@@ -447,7 +447,7 @@
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
-        
+
 
 
         var id_conta = $('#hdnIDContasPagar').val();
@@ -484,19 +484,19 @@
         });
     }
 
-    //function tipoDespesa(value) {
+    function tipoDespesa(value) {
 
-    //    if (value == 'Despesa') {
-    //        $('#tdObras').addClass('hidden');
-    //        $('#tdDespesa').removeClass('hidden');
-    //    } else if (value == 'obra') {
-    //        $('#tdObras').removeClass('hidden');
-    //        $('#tdDespesa').addClass('hidden');
-    //    }else {
-    //        $('#tdObras').addClass('hidden');
-    //        $('#tdDespesa').addClass('hidden');
-    //    }
-    //}
+        if (value == 'Despesa') {
+            $('#tdObras').addClass('hidden');
+            $('#tdDespesa').removeClass('hidden');
+        } else if (value == 'obra') {
+            $('#tdObras').removeClass('hidden');
+            $('#tdDespesa').addClass('hidden');
+        } else {
+            $('#tdObras').addClass('hidden');
+            $('#tdDespesa').addClass('hidden');
+        }
+    }
 
 </script>
 
@@ -509,6 +509,33 @@
         <div>
             <center>
                 <table>
+                    <tr>
+                        <td style="width: 100px;">
+                            <asp:DropDownList ID="ddpTipoDesp" Width="120px" runat="server" CssClass="form-control" onchange="tipoDespesa(value);">
+                                <asp:ListItem Text="Selecione.." Value="tipo"></asp:ListItem>
+                                <asp:ListItem Text="Despesa" Value="Despesa"></asp:ListItem>
+                                <asp:ListItem Text="Obra" Value="obra"></asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+
+                        <td id="tdObras" colspan="3">
+                            <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
+                        </td>
+
+
+
+                    </tr>
                     <tr class="trBody">
                         <td>
                             <asp:TextBox ID="txtConta" runat="server" Width="300px" placeholder="Conta" CssClass="form-control"></asp:TextBox>
@@ -534,35 +561,25 @@
                         </td>
 
                     </tr>
+
                     <tr>
-                        <td style="width: 100px;">
-                            <asp:DropDownList ID="ddpTipoDesp" Width="120px" runat="server" CssClass="form-control" onchange="tipoDespesa(value);">
-                                <asp:ListItem Text="Selecione.." Value="tipo"></asp:ListItem>
-                                <asp:ListItem Text="Despesa" Value="Despesa"></asp:ListItem>
-                                <asp:ListItem Text="Obra" Value="obra"></asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
 
                         <td id="tdDespesa" colspan="3">
                             <asp:TextBox ID="txtDespesa" runat="server" placeholder="Despesa" CssClass="form-control"></asp:TextBox>
                         </td>
 
+
+
                     </tr>
                     <tr>
-
-                        <td>
-                            <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
-                        </td>
-
-                        <td id="tdObras" colspan="3">
-                            <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
+                        <td id="tdFornec" colspan="3">
+                            <asp:DropDownList ID="ddlFornecedor" runat="server" CssClass="form-control">
                                 <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>
+                                <asp:ListItem Text="Fornec1" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="Fornec2" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="Fornec3" Value="3"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
-
                     </tr>
                     <tr style="height: 20px">
                         <td style="height: 20px"></td>

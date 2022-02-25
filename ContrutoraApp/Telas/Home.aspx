@@ -38,7 +38,7 @@
                         <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
                         <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
                         <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
-                           <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
+                        <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
                         <li><a href="About">Sobre</a></li>
                         <li><a href="Contact">Contato</a></li>
                     </ul>

@@ -196,8 +196,8 @@ namespace ContrutoraApp
 
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"insert into tb_temp_detalhes_contasPagar(id_conta,desc_detalhe,qtde,valor)
-								select id_conta,desc_detalhe,qtde,valor from tb_detalhes_contasPagar Where id_conta = @id_obra";
+                cmd.CommandText = @"insert into tb_temp_detalhes_contasPagar(id_contaPagar,desc_detalhe,qtde,valor)
+								select id_contaPagar,desc_detalhe,qtde,valor from tb_detalhes_contasPagar Where id_contaPagar = @id_obra";
 
                 cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
@@ -205,9 +205,9 @@ namespace ContrutoraApp
                 cmd.Parameters.Clear();
             }
 
-            cmd.CommandText = @"SELECT id, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
+            cmd.CommandText = @"SELECT id_temp_detalhes_contasPagar, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
                                 OUTER APPLY(select sum(valor*qtde) as total from tb_temp_detalhes_contasPagar)total  
-                                WHERE id_conta = @id_obra
+                                WHERE id_contaPagar = @id_obra
                                 ORDER BY 1 DESC";                           
                              
             cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
@@ -219,7 +219,7 @@ namespace ContrutoraApp
                 while (dr.Read())
                 {
                     Contas dadosTabelaDetalhes = new Contas();
-                    dadosTabelaDetalhes.id = Convert.ToInt32(dr["id"]);
+                    dadosTabelaDetalhes.id = Convert.ToInt32(dr["id_temp_detalhes_contasPagar"]);
                     dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
                     dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
                     dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
