@@ -49,7 +49,7 @@ public partial class Home : System.Web.UI.Page
 
         cn.Close();
 
-        divUsuario.InnerHtml = login.usuario.ToString();
+        //divUsuario.InnerHtml = login.usuario.ToString();
 
 
     }
