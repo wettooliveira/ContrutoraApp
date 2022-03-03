@@ -108,9 +108,9 @@
   <ItemGroup>
     <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Telas\cad_usuario.aspx" />
-    <Content Include="Imagens\list.png" />
-    <Content Include="Imagens\proibido.png" />
-    <Content Include="Imagens\retangulos-de-menu.png" />
+    <Content Include="Css\Imagens\list.png" />
+    <Content Include="Css\Imagens\proibido.png" />
+    <Content Include="Css\Imagens\retangulos-de-menu.png" />
     <Content Include="menunovo.aspx" />
     <Content Include="Telas\cad_cliente.aspx" />
     <Content Include="Telas\ContasPagar.aspx" />
@@ -120,7 +120,7 @@
     <Content Include="Css\Imagens\planeamento_servios_obras.png" />
     <Content Include="Css\Menu.css" />
     <Content Include="Css\style.css" />
-    <Content Include="Imagens\icons8-cardápio-24.png" />
+    <Content Include="Css\Imagens\icons8-cardápio-24.png" />
     <Content Include="Telas\Home.aspx" />
     <Content Include="Telas\About.aspx" />
     <Content Include="Telas\Contact.aspx" />

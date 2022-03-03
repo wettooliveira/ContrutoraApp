@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="ContrutoraApp.Home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="Home" %>
 
 
 <!DOCTYPE html>
@@ -22,13 +22,14 @@
     <script>
 
         $(document).ready(function () {
-            Menu();
+         
         });
 
 
         function abrirUsuario() {
-            window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
-
+            carregarForm();
+            //document.forms[0].submit(); window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
+            //onclick = "window.open('cad_usuario.aspx', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=YES, DIRECTORIES=NO, RESISABLE=YES, SCROLLBARS=YES, TOP=90%, LEFT=150%, WIDTH=1000, HEIGHT=600');
         }
         function Contaspagar() {
             window.open("ContasPagar.aspx", "toolbar=no,scrollbars=no,resizable=no,lr,left=500,width=400,height=400");
@@ -40,60 +41,20 @@
 
         }
 
+        function carregarForm() {
 
-        function Menu() {
-
-            var menu = "";
-            menu =  "  <div class='divMenuPrincipal'>";
-            menu += "     <div class='divMenuLogo'>";
-            menu += "       ";
-            menu += "     </div>";
-            menu += "     <div class='divMenu'>";
-            menu += "        <ul id='nav'>";
-            menu += "           <li><a href='#'>HOME</a></li> ";
-            menu += "           <li><a href='#'>CADASTROS</a> ";
-            menu += "             <ul> ";
-            menu += "              <li><a href='#''>Usuarios</a></li>";
-            menu += "              <li><a href='#''>Cliente</a></li>";
-            menu += "              <li><a href='#'>Sub Item</a></li> ";
-            menu += "                   <li><a href='#'>SUB SUB LIST »</a>                         ";
-            menu += "                       <ul>                                                   ";
-            menu += "                           <li><a href='#'>Sub Sub Item 1</a>                 ";
-            menu += "                               <li><a href='#'>Sub Sub Item 2</a>             ";
-            menu += "                       </ul>                                                  ";
-            menu += "                           </li>                                              ";
-            menu += "                       </ul>                                                  ";
-            menu += "                   </li>                                                      ";
-            menu += "             <li><a href='#''>FINANCEIRO</a>                            ";
-            menu += "                 <ul>                                                   ";
-            menu += "                     <li><a href='#'>Sub Item</a></li>                  ";
-            menu += "                     <li><a href='#'>Sub Item</a></li>                  ";
-            menu += "                     <li><a href='#'>SUB SUB LIST »</a>                 ";
-            menu += "                         <ul>                                           ";
-            menu += "                             <li><a href='#'>Sub Sub Item 1</a>         ";
-            menu += "                                 <li><a href='#'>Sub Sub Item 2</a>     ";
-            menu += "                 </ul>                                                  ";
-            menu += "                             </li>                                      ";
-            menu += "                         </ul>                                          ";
-            menu += "                     </li>                                              ";
-            menu += "                     <li><a href='#'>Main Item 3</a></li>               ";
-            menu += "                 </ul>                                                  ";
-
-            menu += "        </div >   ";
-
-            menu += "    <div class='divMenuFinal'> ";
-            menu += "            ";
-            menu += "     </div>  ";
-
-            menu += " </div >";
-
-            $('#divMenu').html(menu);
+            $.post('cad_cliente.aspx', function (html) {
+                //Essa é a função success
+                //O parâmetro é o retorno da requisição 
+                $('#form2').html(html);
+            });
+            //document.getElementById("form2").
+            //document.forms.open("cad_usuario.aspx", 'Pagina', "TOP=90%");
         }
-
-
 
     </script>
 
+    
 
     <%--/*Menu Anterior ou Site--%>
     <%--  <div class="navbar navbar-inverse navbar-fixed-top">
@@ -127,36 +88,34 @@
 </head>
 
 <body class="imagem_body">
-
-    <div id="divMenu"></div>
-    <%--<div class="divMenuPrincipal">
-        <div class="divMenuLogo">
-            <input type="image" src="~/Imagens/proibido.png" runat="server" width="40"/>
-            <img src="~/Imagens/proibido.png" style="width: 40px; position: center; padding-top: 8px" />
+   
+    <div class="divMenuPrincipal">
+        <div class="divMenuLogo">     
+            <img id="img" src="../Css/Imagens/proibido.png"  style="width:40px; position:center; padding-top:8px" />
         </div>
         <div class="divMenu">
             <ul id="nav">
-                <li><a href="#">HOME</a></li>
-                <li><a href="#">CADASTROS</a>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Cadastros</a>
                     <ul>
-                        <li><a href="#">Sub Item</a></li>
-                        <li><a href="#">Sub Item</a></li>
-                        <li><a href="#">SUB SUB LIST »</a>
+                        <li><a href="javascript:void(0)" onclick="abrirUsuario();return false;">Usuario</a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#">Financeiro »</a>
                             <ul>
-                                <li><a href="#">Sub Sub Item 1</a>
-                                    <li><a href="#">Sub Sub Item 2</a>
+                                <li><a href="ContasPagar.aspx">Contas a Pagar</a></li>
+                                    <li><a href="#">Contas a Receber</a></li>
                             </ul>
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">FINANCEIRO</a>
+                <li><a href="#">Financeiro</a>
                     <ul>
                         <li><a href="#">Sub Item</a></li>
                         <li><a href="#">Sub Item</a></li>
                         <li><a href="#">SUB SUB LIST »</a>
                             <ul>
-                                <li><a href="#">Sub Sub Item 1</a>
-                                    <li><a href="#">Sub Sub Item 2</a>
+                                <li><a href="#">Sub Sub Item 1</a></li>
+                                    <li><a href="#">Sub Sub Item 2</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -164,17 +123,14 @@
                 <li><a href="#">Main Item 3</a></li>
             </ul>
         </div>
-
+        <div id="divUsuario" class="divMenuUsuario" runat="server"> </div>
         <div class="divMenuFinal">
-            <img runat="server" src="~/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
+            <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
-
-    </div>--%>
+    </div>
     <br />
 
-    <form id="form2" runat="server">
-
-        <table style="width: 100%">
+      <table style="width: 100%">
             <tr>
                 <td>
                     <br />
@@ -187,14 +143,21 @@
             </tr>
         </table>
 
-        <div style="width: 80%">
-        </div>
+
+    <form id="form2" runat="server">
+
+      
+
 
     </form>
 
-    <%--<webopt:BundleReference runat="server" Path="~/Content/css" />--%>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <footer class="footer navbar-fixed-bottom" style="height:25px">
+       <hgroup>
+            <h5 style="background-color: #343434;color:white">Todos os direitos reservados LcRodrigues</h5>
+        </hgroup>
+    </footer>
 </body>
-
-
 </html>
 

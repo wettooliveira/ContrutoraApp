@@ -6,23 +6,29 @@
     width: 100%;
 }
 
+
 .divMenuLogo {
+    background-image: url('Imagens/bgbg.png');
     height: 60px;
     background-color: #343434;
     width: 10%;
     color: white;
 }
 
-.imgLogoMenu {
-    width: 40px;
-    position: center;
-    padding-top: 8px;
-}
 
 .divMenu {
     height: 60px;
     background-color: #343434;
     width: 85%;
+}
+
+
+.divMenuUsuario {
+    height: 60px;
+    background-color: #343434;
+    width: auto;
+    color: white;
+    align-items: center;
 }
 
 .divMenuFinal {
@@ -106,4 +112,3 @@
         margin-top: -35px;
         /* aligns top of sub menu with top of list item */
     }
-
