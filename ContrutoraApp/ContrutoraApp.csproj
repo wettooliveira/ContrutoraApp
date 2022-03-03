@@ -106,7 +106,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cad_despesa.aspx" />
+    <Content Include="Telas\cad_despesa.aspx" />
+    <Content Include="Telas\cad_usuario.aspx" />
     <Content Include="Imagens\list.png" />
     <Content Include="Imagens\proibido.png" />
     <Content Include="Imagens\retangulos-de-menu.png" />
@@ -163,12 +164,19 @@
     <Compile Include="App_Code\BuscaAPI.cs" />
     <Compile Include="App_Code\Endereco.cs" />
     <Compile Include="App_Code\Dao.cs" />
-    <Compile Include="cad_despesa.aspx.cs">
+    <Compile Include="Telas\cad_despesa.aspx.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="cad_despesa.aspx.designer.cs">
+    <Compile Include="Telas\cad_despesa.aspx.designer.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Telas\cad_usuario.aspx.cs">
+      <DependentUpon>cad_usuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\cad_usuario.aspx.designer.cs">
+      <DependentUpon>cad_usuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="menunovo.aspx.cs">
       <DependentUpon>menunovo.aspx</DependentUpon>

@@ -20,6 +20,12 @@
     <title><%: Page.Title %> - HOME </title>
 
     <script>
+
+        $(document).ready(function () {
+            Menu();
+        });
+
+
         function abrirUsuario() {
             window.open("cad_usuario.aspx", "toolbar=no,scrollbars=no,resizable=no,left=500,width=400,height=400");
 
@@ -36,42 +42,59 @@
 
 
         function Menu() {
-            var menu = "";          
-           menu =" <ul id='nav'>";
-           menu += "<li><a href='#'>HOME</a></li>";
-           menu += "<li><a href='#'>CADASTROS</a>";
-           menu += "<ul>";
-                        <li><a href="#">Sub Item</a></li>
-                        <li><a href="#">Sub Item</a></li>
-                        <li><a href="#">SUB SUB LIST »</a>
-                            <ul>
-                                <li><a href="#">Sub Sub Item 1</a>
-                                    <li><a href="#">Sub Sub Item 2</a>
-                            </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#">FINANCEIRO</a>
-                            <ul>
-                                <li><a href="#">Sub Item</a></li>
-                                <li><a href="#">Sub Item</a></li>
-                                <li><a href="#">SUB SUB LIST »</a>
-                                    <ul>
-                                        <li><a href="#">Sub Sub Item 1</a>
-                                            <li><a href="#">Sub Sub Item 2</a>
-                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Main Item 3</a></li>
-                            </ul>
-                            ";
-                        
+
+            var menu = "";
+            menu =  "  <div class='divMenuPrincipal'>";
+            menu += "     <div class='divMenuLogo'>";
+            menu += "       ";
+            menu += "     </div>";
+            menu += "     <div class='divMenu'>";
+            menu += "        <ul id='nav'>";
+            menu += "           <li><a href='#'>HOME</a></li> ";
+            menu += "           <li><a href='#'>CADASTROS</a> ";
+            menu += "             <ul> ";
+            menu += "              <li><a href='#''>Usuarios</a></li>";
+            menu += "              <li><a href='#''>Cliente</a></li>";
+            menu += "              <li><a href='#'>Sub Item</a></li> ";
+            menu += "                   <li><a href='#'>SUB SUB LIST »</a>                         ";
+            menu += "                       <ul>                                                   ";
+            menu += "                           <li><a href='#'>Sub Sub Item 1</a>                 ";
+            menu += "                               <li><a href='#'>Sub Sub Item 2</a>             ";
+            menu += "                       </ul>                                                  ";
+            menu += "                           </li>                                              ";
+            menu += "                       </ul>                                                  ";
+            menu += "                   </li>                                                      ";
+            menu += "             <li><a href='#''>FINANCEIRO</a>                            ";
+            menu += "                 <ul>                                                   ";
+            menu += "                     <li><a href='#'>Sub Item</a></li>                  ";
+            menu += "                     <li><a href='#'>Sub Item</a></li>                  ";
+            menu += "                     <li><a href='#'>SUB SUB LIST »</a>                 ";
+            menu += "                         <ul>                                           ";
+            menu += "                             <li><a href='#'>Sub Sub Item 1</a>         ";
+            menu += "                                 <li><a href='#'>Sub Sub Item 2</a>     ";
+            menu += "                 </ul>                                                  ";
+            menu += "                             </li>                                      ";
+            menu += "                         </ul>                                          ";
+            menu += "                     </li>                                              ";
+            menu += "                     <li><a href='#'>Main Item 3</a></li>               ";
+            menu += "                 </ul>                                                  ";
+
+            menu += "        </div >   ";
+
+            menu += "    <div class='divMenuFinal'> ";
+            menu += "            ";
+            menu += "     </div>  ";
+
+            menu += " </div >";
+
+            $('#divMenu').html(menu);
         }
+
+
 
     </script>
 
- 
+
     <%--/*Menu Anterior ou Site--%>
     <%--  <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
@@ -105,13 +128,14 @@
 
 <body class="imagem_body">
 
-    <div class="divMenuPrincipal">
+    <div id="divMenu"></div>
+    <%--<div class="divMenuPrincipal">
         <div class="divMenuLogo">
-            <img runat="server" src="~/Imagens/proibido.png" style="width: 40px; position: center; padding-top: 8px" />
+            <input type="image" src="~/Imagens/proibido.png" runat="server" width="40"/>
+            <img src="~/Imagens/proibido.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
         <div class="divMenu">
             <ul id="nav">
-
                 <li><a href="#">HOME</a></li>
                 <li><a href="#">CADASTROS</a>
                     <ul>
@@ -145,7 +169,7 @@
             <img runat="server" src="~/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
 
-    </div>
+    </div>--%>
     <br />
 
     <form id="form2" runat="server">
