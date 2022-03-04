@@ -4,13 +4,12 @@
     height: 60px;
     display: inline-flex;
     width: 100%;
+    
 }
 
-
-.divMenuLogo {
-    background-image: url('Imagens/bgbg.png');
+.divMenuLogo {    
     height: 60px;
-    background-color: #343434;
+    background-color: #343434 !important;
     width: 10%;
     color: white;
 }
@@ -89,11 +88,13 @@
         padding: 0;
         left: 0;
         display: none;
+        
         /* hides sublists */
     }
 
     #nav li:hover ul ul {
         display: none;
+     
     }
 
     /* hides sub-sublists */
@@ -111,4 +112,6 @@
         /* this should be the same width as the parent list item */
         margin-top: -35px;
         /* aligns top of sub menu with top of list item */
+        width:auto;
+       
     }

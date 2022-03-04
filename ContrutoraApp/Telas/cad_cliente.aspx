@@ -133,36 +133,7 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <img  src="imagem/logo.lampada.png.png" width="30px" height="50px"/>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="Home.aspx">Página inicial</a></li>
-
-                        <li><a style="cursor:pointer" onclick="abrirUsuario()">Usuario</a></li>
-                        <li><a style="cursor:pointer" onclick="Contaspagar()">Financeiro</a></li>
-                        <li><a style="cursor:pointer" onclick="cliente()">Cadastros</a></li>
-                           <li><a href="cad_cliente.aspx" style="cursor:pointer" >Cadastros</a></li>
-                        <li><a href="About">Sobre</a></li>
-                        <li><a href="Contact">Contato</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="Account/Register">Registrar</a></li>
-                        <li><a href="Login">Logon</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <form id="form1" runat="server">        
         <br />
         <br />
 

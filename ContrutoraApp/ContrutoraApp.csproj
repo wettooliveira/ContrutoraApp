@@ -106,6 +106,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\SweetAlert2\sweetalert2.all.min.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Telas\cad_usuario.aspx" />
     <Content Include="Css\Imagens\list.png" />

@@ -8,8 +8,7 @@ using System.Web.UI.WebControls;
 using ContrutoraApp;
 
 
-namespace ContrutoraApp    
-{
+
     public partial class Login : System.Web.UI.Page
     {
         string login;
@@ -29,58 +28,53 @@ namespace ContrutoraApp
         protected void btnLogin_Click(object sender, EventArgs e)
         {
 
-           //Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario();
 
-           // usuario.usuario = txtUsuario.Text;
-           // usuario.senha = password.Value;
+            usuario.usuario = txtUsuario.Text;
+            usuario.senha = password.Value;
 
-           // string sql;
+            string sql;
 
-           // // Passa o caminho do banco de dados para um string      
-           // string connectionString = Conexao.StrConexao;
+            // Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
 
-           // //chama o metodo de conexao com o banco
-           // SqlConnection cn = new SqlConnection();
-           // cn.ConnectionString = connectionString;
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
 
-           // //construtor command para obter dados
-           // SqlCommand cmd = new SqlCommand();
+            //construtor command para obter dados
+            SqlCommand cmd = new SqlCommand();
 
-           // //comando de instrução do banco de dados
-           // sql = "select * from tb_usuarios where nm_login = '" + usuario.usuario + "' And ds_senha = '" + usuario.senha + "'";
+            //comando de instrução do banco de dados
+            sql = "select * from tb_usuarios where nm_login = '" + usuario.usuario + "' And ds_senha = '" + usuario.senha + "'";
 
-           // cmd.Connection = cn;
-           // cmd.CommandText = sql;
+            cmd.Connection = cn;
+            cmd.CommandText = sql;
 
-           // //abre a conexao
-           // cn.Open();
-           // SqlDataReader dr = cmd.ExecuteReader();
+            //abre a conexao
+            cn.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
 
-           // while (dr.Read())
-           // {
-           //     login = dr["nm_login"].ToString();
-           //     senha = dr["ds_senha"].ToString();
+            while (dr.Read())
+            {
+                login = dr["nm_login"].ToString();
+                senha = dr["ds_senha"].ToString();
 
-           // }
+            }
+            dr.Close();
+            cn.Close();
 
-           // cn.Close();
-
-
-
-           // if (login == usuario.usuario && senha == usuario.senha)
-           // {
-
-           //     Session["usuario"] = usuario;
+            if (login == usuario.usuario && senha == usuario.senha)
+            {
+                Response.Write(usuario.ds_nome);
+                Session["usuario"] = usuario.ds_nome;
                 Response.Redirect("Home.aspx");
 
-           // }
-           // else
-           // {
+            }
+            else
+            {
+                lblAviso.Visible = true;
 
-
-           //     lblAviso.Visible = true;
-
-           // }
+            }
         }
     }
-}

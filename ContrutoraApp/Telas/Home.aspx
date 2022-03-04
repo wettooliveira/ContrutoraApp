@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="Home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="Home" %>
 
 
 <!DOCTYPE html>
@@ -16,8 +16,7 @@
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
 
-
-    <title><%: Page.Title %> - HOME </title>
+    <title> HOME </title>
 
     <script>
 
@@ -41,53 +40,25 @@
 
         }
 
-        function carregarForm() {
-
-            $.post('cad_cliente.aspx', function (html) {
+        function carregarForm(value) {
+            
+            $.post(value, function (html) {
                 //Essa é a função success
                 //O parâmetro é o retorno da requisição 
                 $('#form2').html(html);
             });
+
+            $('#body').removeClass();
             //document.getElementById("form2").
             //document.forms.open("cad_usuario.aspx", 'Pagina', "TOP=90%");
         }
 
     </script>
 
-    
-
-    <%--/*Menu Anterior ou Site--%>
-    <%--  <div class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <img src="imagem/logo.lampada.png.png" width="30px" height="50px" />
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li><a href="Home.aspx">Página inicial</a></li>
-
-                            <li><a style="cursor: pointer" onclick="abrirUsuario()">Usuario</a></li>
-                            <li><a style="cursor: pointer" onclick="Contaspagar()">Financeiro</a></li>
-                            <li><a style="cursor: pointer" onclick="cliente()">Cadastros</a></li>
-                            <li><a href="cad_cliente.aspx" style="cursor: pointer">Cadastros</a></li>
-                            <li><a href="About">Sobre</a></li>
-                            <li><a href="Contact">Contato</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="Account/Register">Registrar</a></li>
-                            <li><a href="Login">Logon</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>--%>
+     
 </head>
 
-<body class="imagem_body">
+<body id="body" class="imagem_body">
    
     <div class="divMenuPrincipal">
         <div class="divMenuLogo">     
@@ -98,21 +69,21 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Cadastros</a>
                     <ul>
-                        <li><a href="javascript:void(0)" onclick="abrirUsuario();return false;">Usuario</a></li>
-                        <li><a href="#"></a></li>
-                        <li><a href="#">Financeiro »</a>
+                        <li><a href="javascript:void(0)" onclick="carregarForm('cad_usuario.aspx');return false;"> Usuario </a></li>
+                        <li><a href="javascript:void(0)" onclick="carregarForm('cad_cliente.aspx');return false;" > Cliente </a></li>
+                        <%--<li><a href="#">Financeiro »</a>
                             <ul>
-                                <li><a href="ContasPagar.aspx">Contas a Pagar</a></li>
+                                <li><a href="javascript:void(0)" onclick="carregarForm(valeu);return false;">Contas a Pagar</a></li>
                                     <li><a href="#">Contas a Receber</a></li>
                             </ul>
-                        </li>
+                        </li>--%>
                     </ul>
                 </li>
                 <li><a href="#">Financeiro</a>
                     <ul>
                         <li><a href="#">Sub Item</a></li>
                         <li><a href="#">Sub Item</a></li>
-                        <li><a href="#">SUB SUB LIST »</a>
+                        <li><a href="#">Sub Sub List »</a>
                             <ul>
                                 <li><a href="#">Sub Sub Item 1</a></li>
                                     <li><a href="#">Sub Sub Item 2</a></li>
@@ -130,28 +101,8 @@
     </div>
     <br />
 
-      <table style="width: 100%">
-            <tr>
-                <td>
-                    <br />
-                    <br />
-                </td>
-                <td style="text-align: center">
-                    <asp:Label runat="server" ID="Label1" Font-Size="Medium" Text="Seja bem vindo:"></asp:Label>
-                    &nbsp;<asp:Label ID="Label2" Font-Size="Medium" runat="server"></asp:Label>
-                </td>
-            </tr>
-        </table>
-
-
     <form id="form2" runat="server">
-
-      
-
-
-    </form>
-
-    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    </form>  
 
     <footer class="footer navbar-fixed-bottom" style="height:25px">
        <hgroup>
