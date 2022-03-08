@@ -6,9 +6,8 @@
 
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="css/Content/bootstrap.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
     <script type="text/javascript" src="Scripts/jquery-3.3.1.js"></script>
     <%--<script type="text/javascript" src="Scripts/bootstrap.js"></script>--%>
     <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
@@ -122,13 +121,13 @@
 
 </head>
 
-<body >
+<body>
 
     <form id="form1" runat="server">
         <asp:HiddenField ID="nm_session" runat="server" />
         <asp:HiddenField ID="hdnId_usuario" runat="server" />
         <asp:HiddenField ID="hdnAcao" runat="server" />
-       
+
 
         <table width="100%">
             <tr>
@@ -170,6 +169,7 @@
                                 <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
                             </td>
                         </tr>
+                    </table>
                 </td>
             </tr>
             <tr>

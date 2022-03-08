@@ -41,14 +41,15 @@
         }
 
         function carregarForm(value) {
-            
+      
+            $('#Divform').val('');
             $.post(value, function (html) {
                 //Essa é a função success
                 //O parâmetro é o retorno da requisição 
-                $('#form2').html(html);
+                $('#Divform').html(html);
             });
 
-            $('#body').removeClass();
+            $('#body').removeClass('imagem_body');
             //document.getElementById("form2").
             //document.forms.open("cad_usuario.aspx", 'Pagina', "TOP=90%");
         }
@@ -102,6 +103,9 @@
     <br />
 
     <form id="form2" runat="server">
+        <div id="Divform">
+
+        </div>
     </form>  
 
     <footer class="footer navbar-fixed-bottom" style="height:25px">
