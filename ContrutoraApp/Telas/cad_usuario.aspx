@@ -6,12 +6,18 @@
 
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<script type="text/javascript" src="Scripts/bootstrap.js"></script>--%>
-<%--    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>--%>
+    <%--    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>--%>
     <%--<script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>--%>
+
+
+
+
 
     <title>Usuarios</title>
 
@@ -94,11 +100,11 @@
             document.getElementById("txtUsuarioModal").value = document.getElementById("txtUsuarioSenha").value;
         }
 
-        function GravarUsuario() {          
+        function GravarUsuario() {
 
             var nome = $('#txtNome').val();
             var login = $('#txtUsuarioSenha').val();
-            var senha = $('#txtSenha').val();           
+            var senha = $('#txtSenha').val();
             var usuario = $('#hdnUsuario').val();
 
             var Usuario = {
@@ -111,7 +117,7 @@
             var obj = { 'usuario': Usuario };
 
             console.log(obj);
-                
+
             $.ajax({
                 type: "POST",
                 url: "cad_usuario.aspx/Gravar_Usuario",
@@ -178,59 +184,55 @@
         <asp:HiddenField ID="hdnUsuario" runat="server" />
         <asp:HiddenField ID="hdnAcao" runat="server" />
 
+        <div>
+            <center>
+                <table>
+                    <tr>
+                        <td>
+                            <center>
+                                <h3>Cadastrar Usuario</h3>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtNome" placeholder="Nome" Width="400px" CssClass="form-control" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtUsuarioSenha" Width="250px" placeholder="Login" CssClass="form-control" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
 
-        <table width="100%">
-            <tr>
-                <td>
-                    <br />
-                    <br />
-                    <table style="width: 99%">
-                        <tr>
-                            <td style="height: 40px">
-                                <asp:Label ID="lblnome" Font-Size="Small" runat="server" Text="Nome Completo:"></asp:Label>
-                            </td>
-                            <td style="text-align: left; height: 40px">
-                                <asp:TextBox ID="txtNome" Width="400px"  CssClass="form-control-css" runat="server"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="height: 40px">
-                                <asp:Label ID="lblds_usuario" Font-Size="Small" runat="server" Text="Usuario:"></asp:Label></td>
-                            <td style="height: 40px">
-                                <asp:TextBox ID="txtUsuarioSenha"  CssClass="form-control-css" runat="server"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="height: 40px">
-                                <asp:Label ID="lblSenha" Font-Size="Small" runat="server" Text="Senha:"></asp:Label></td>
-                            <td style="height: 40px">
-                                <asp:TextBox ID="txtSenha" CssClass="form-control-css" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
-                                <input type="button" id="showPassword" value="Mostrar" class="btn btn-default" />
-                                <input type="button" id="btnAlterarSenha" value="Alterar" runat="server" class="btn btn-default hidden" onclick="CarregarInf()" data-toggle="modal" data-target="#myModal" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <asp:Button ID="btnGravar" Text="Gravar" runat="server" CssClass="btn btn-success" OnClientClick="GravarUsuario()"/>
-                                <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <br />
-                    <br />
-                </td>
-            </tr>
+                            </div>
+                            <asp:TextBox ID="txtSenha" Width="250px" placeholder="Senha" CssClass="form-control" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
+                            <input type="button" id="showPassword" value="Mostrar" class="btn btn-default" />
+                            <input type="button" id="btnAlterarSenha" value="Alterar" runat="server" class="btn btn-default" onclick="CarregarInf()" data-toggle="modal" data-target="#myModal" />
 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:Button ID="btnGravar" Text="Gravar" runat="server" CssClass="btn btn-success" OnClientClick="GravarUsuario()" />
+                            <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+
+        <table>
             <tr>
-                <td style="width: 260px"></td>
                 <td align="">
                     <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
                         AllowPaging="true" PageSize="8" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center">
@@ -251,6 +253,8 @@
                 </td>
             </tr>
         </table>
+
+
 
 
         <div class="container">

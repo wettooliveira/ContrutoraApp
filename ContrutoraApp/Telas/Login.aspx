@@ -4,15 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
+<%--    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />--%>
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
-
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
-  
+
     <script>
 
         $(document).ready(function () {
@@ -70,9 +71,6 @@
             .button:hover {
                 background: #ddd;
             }
-
-
-   
     </style>
 </head>
 <body class="">
@@ -91,7 +89,6 @@
                                 <td align="center">
                                     <h4>
                                         <label style="color: black">Faça seu login!</label></h4>
-
                                 </td>
                             </tr>
                             <tr>
@@ -103,6 +100,8 @@
                                 <td align="center" style="height: 45px">
 
                                     <asp:TextBox ID="txtUsuario" runat="server" Style="width: 225px" CssClass="form-control-css" placeholder="Usuario" />
+
+                                </td>
                             </tr>
                             <tr>
                                 <td align="center" style="height: 45px">

@@ -58,15 +58,6 @@ public partial class cad_usuario
     protected global::System.Web.UI.WebControls.HiddenField hdnAcao;
 
     /// <summary>
-    /// Controle lblnome.
-    /// </summary>
-    /// <remarks>
-    /// Campo gerado automaticamente.
-    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblnome;
-
-    /// <summary>
     /// Controle txtNome.
     /// </summary>
     /// <remarks>
@@ -76,15 +67,6 @@ public partial class cad_usuario
     protected global::System.Web.UI.WebControls.TextBox txtNome;
 
     /// <summary>
-    /// Controle lblds_usuario.
-    /// </summary>
-    /// <remarks>
-    /// Campo gerado automaticamente.
-    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblds_usuario;
-
-    /// <summary>
     /// Controle txtUsuarioSenha.
     /// </summary>
     /// <remarks>
@@ -92,15 +74,6 @@ public partial class cad_usuario
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtUsuarioSenha;
-
-    /// <summary>
-    /// Controle lblSenha.
-    /// </summary>
-    /// <remarks>
-    /// Campo gerado automaticamente.
-    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblSenha;
 
     /// <summary>
     /// Controle txtSenha.

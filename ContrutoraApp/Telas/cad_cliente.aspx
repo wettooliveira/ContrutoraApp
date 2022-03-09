@@ -5,14 +5,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
 
     <title></title>
 
@@ -62,7 +63,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
-                              
+
 
                     if (data.d == 'OK') {
                         $('#lblAviso').html('');
@@ -127,22 +128,21 @@
         }
 
     </script>
-
-    <style>
-      
-    </style>
 </head>
 <body>
-    <form id="form1" runat="server">        
-        <br />
-        <br />
+    <form id="form1" runat="server">
+           
 
-
-
-        <div>
-            <br />
+        <div>    
             <center>
                 <table>
+                    <tr>
+                        <td>
+                            <center>
+                                <h3>Cadastrar Cliente</h3>
+                            </center>
+                        </td>
+                    </tr>
                     <tr class="trBody">
                         <td>
                             <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="500px"></asp:TextBox>
@@ -213,9 +213,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-
-                        </td>
+                        <td></td>
                     </tr>
 
                     <%--<tr>
