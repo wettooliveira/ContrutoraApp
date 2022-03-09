@@ -40,6 +40,15 @@ public partial class cad_usuario
     protected global::System.Web.UI.WebControls.HiddenField hdnId_usuario;
 
     /// <summary>
+    /// Controle hdnUsuario.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
+
+    /// <summary>
     /// Controle hdnAcao.
     /// </summary>
     /// <remarks>

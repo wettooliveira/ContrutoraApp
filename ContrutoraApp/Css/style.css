@@ -15,24 +15,16 @@
     color: black;
     left: 0;
     overflow: auto;
-   
-    position: absolute;
+    position: fixed;
     right: 0;
     text-align: center;
     top: 0;
-}
-
-
-
-.texbox { 
+    width: 100%;
+    .texbox { 
     border:thin solid #c5c1c0;
     border-radius: 4px;
     margin-left: 0px;
 }
-
-
-
-
 
 
 .form-control-css {

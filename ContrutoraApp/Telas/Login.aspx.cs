@@ -46,7 +46,7 @@ using ContrutoraApp;
             SqlCommand cmd = new SqlCommand();
 
             //comando de instrução do banco de dados
-            sql = "select * from tb_usuarios where nm_login = '" + usuario.usuario + "' And ds_senha = '" + usuario.senha + "'";
+            sql = "select * from tb_usuarios where nm_login = '" + usuario.usuario + "' And ds_senha = '" + usuario.senha + "' and fl_ativo = 'A'";
 
             cmd.Connection = cn;
             cmd.CommandText = sql;
@@ -66,10 +66,8 @@ using ContrutoraApp;
 
             if (login == usuario.usuario && senha == usuario.senha)
             {
-                Response.Write(usuario.ds_nome);
-                Session["usuario"] = usuario.ds_nome;
+                Session["usuario"] = usuario.usuario;                
                 Response.Redirect("Home.aspx");
-
             }
             else
             {

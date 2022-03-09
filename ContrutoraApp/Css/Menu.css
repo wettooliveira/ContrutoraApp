@@ -3,31 +3,38 @@
 .divMenuPrincipal {
     height: 60px;
     display: inline-flex;
-    width: 100%;
+    width: 100% !important;  
     
 }
 
 .divMenuLogo {    
     height: 60px;
     background-color: #343434 !important;
-    width: 10%;
+    width: 5%;
     color: white;
+}
+
+.imgLogo {
+    width: 40px;
+    position: center;
+    padding-top: 8px;
 }
 
 
 .divMenu {
     height: 60px;
     background-color: #343434;
-    width: 85%;
+    width: 75%;
 }
 
 
 .divMenuUsuario {
     height: 60px;
     background-color: #343434;
-    width: auto;
+    width: 15%;
     color: white;
     align-items: center;
+    padding-top: 20px;
 }
 
 .divMenuFinal {

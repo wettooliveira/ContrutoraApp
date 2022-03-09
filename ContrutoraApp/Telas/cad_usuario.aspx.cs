@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ContrutoraApp;
@@ -15,7 +16,7 @@ public partial class cad_usuario : System.Web.UI.Page
     {
 
         user = (String)Session["usuario"];
-
+        hdnUsuario.Value = user;
         //if (user == null)
         //{
         //    Response.Redirect("Login.aspx");
@@ -34,7 +35,7 @@ public partial class cad_usuario : System.Web.UI.Page
         {
             if (hdnAcao.Value == "usuario")
             {
-                CarregarUsuario(hdnId_usuario.Value);
+                //CarregarUsuario(hdnId_usuario.Value);
                 hdnAcao.Value = "";
             }
         }
@@ -47,6 +48,58 @@ public partial class cad_usuario : System.Web.UI.Page
         //HttpContext.Current.Response.Write(@"<script language=""javascript"">alertCss('" + mensagem + "');</script>");
         //ScriptManager.RegisterClientScriptBlock(this, GetType(),"alertMessage", @"alertCss(mensagem)", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alertCss('" + mensagem + "');", true);
+    }
+
+    [WebMethod]
+    public static String Gravar_Usuario(Usuario usuario)
+    {
+        string retorno = "";
+        //// Passa o caminho do banco de dados para um string      
+        string connectionString = Conexao.StrConexao;
+
+        //chama o metodo de conexao com o banco
+        SqlConnection cn = new SqlConnection();
+        cn.ConnectionString = connectionString;
+
+        //construtor command para obter dados44
+        SqlCommand cmd = new SqlCommand();
+        cmd.Connection = cn;
+        cmd.CommandText = cmd.CommandText;
+
+        //abre a conexao
+        cn.Open();
+        try
+        {
+            //comando de instrução do banco de dados
+            //comando de instrução do banco de dados
+            cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
+                              "VALUES(@ds_nome, @nm_login, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
+
+            cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
+            cmd.Parameters.AddWithValue("@nm_login", usuario.nm_login);
+            cmd.Parameters.AddWithValue("@senha", usuario.senha);
+            cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);
+            cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
+
+
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+
+            retorno = "OK";
+
+        }
+        catch (Exception ex)
+        {
+            retorno = "NOK";
+        //    throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+        }
+        finally
+        {            
+            cn.Close();
+        }
+
+        return retorno;
     }
 
     protected void btnGravar_Click(object sender, EventArgs e)
@@ -76,8 +129,8 @@ public partial class cad_usuario : System.Web.UI.Page
 
 
             //comando de instrução do banco de dados
-            cmd.CommandText = "INSERT INTO tb_usuario (ds_nome,nm_login,ds_senha,nm_cadastrou,dt_cadastrou)" +
-                   "VALUES(@ds_nome, @usuario, @senha, @nm_cadastrou, @dt_cadastrou)";
+            cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
+                              "VALUES(@ds_nome, @usuario, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
 
 
             cmd.Connection = cn;    

@@ -9,19 +9,19 @@ using ContrutoraApp;
 
 
 
-    public partial class Home : System.Web.UI.Page
+public partial class Home : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void consultarUsuario(String nm_usuario)
-        {
-
-            
-
-
-        }
+        lblusuario.Text = Session["usuario"].ToString();
     }
+
+    protected void consultarUsuario(String nm_usuario)
+    {
+
+
+
+
+    }
+}
 

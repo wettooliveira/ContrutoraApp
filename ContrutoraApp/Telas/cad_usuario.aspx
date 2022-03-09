@@ -8,10 +8,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" />
-    <script type="text/javascript" src="Scripts/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<script type="text/javascript" src="Scripts/bootstrap.js"></script>--%>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
+<%--    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>--%>
+    <%--<script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>--%>
+
     <title>Usuarios</title>
 
     <script type="text/javascript">
@@ -44,13 +45,13 @@
             });
         });
 
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        });
+        //const swalWithBootstrapButtons = Swal.mixin({
+        //    customClass: {
+        //        confirmButton: 'btn btn-success',
+        //        cancelButton: 'btn btn-danger'
+        //    },
+        //    buttonsStyling: false
+        //});
 
 
         function openCidade() {
@@ -93,6 +94,54 @@
             document.getElementById("txtUsuarioModal").value = document.getElementById("txtUsuarioSenha").value;
         }
 
+        function GravarUsuario() {          
+
+            var nome = $('#txtNome').val();
+            var login = $('#txtUsuarioSenha').val();
+            var senha = $('#txtSenha').val();           
+            var usuario = $('#hdnUsuario').val();
+
+            var Usuario = {
+                ds_nome: nome,
+                nm_login: login,
+                senha: senha,
+                nm_cadastrou: usuario
+            };
+
+            var obj = { 'usuario': Usuario };
+
+            console.log(obj);
+                
+            $.ajax({
+                type: "POST",
+                url: "cad_usuario.aspx/Gravar_Usuario",
+                /*data: "{'m':'m'}",*/
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+                    $('#menu').html(source);
+
+
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
+        }
+
     </script>
 
     <style type="text/css">
@@ -126,6 +175,7 @@
     <form id="form1" runat="server">
         <asp:HiddenField ID="nm_session" runat="server" />
         <asp:HiddenField ID="hdnId_usuario" runat="server" />
+        <asp:HiddenField ID="hdnUsuario" runat="server" />
         <asp:HiddenField ID="hdnAcao" runat="server" />
 
 
@@ -140,21 +190,21 @@
                                 <asp:Label ID="lblnome" Font-Size="Small" runat="server" Text="Nome Completo:"></asp:Label>
                             </td>
                             <td style="text-align: left; height: 40px">
-                                <asp:TextBox ID="txtNome" Width="400px" Enabled="false" CssClass="form-control-css" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtNome" Width="400px"  CssClass="form-control-css" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td style="height: 40px">
                                 <asp:Label ID="lblds_usuario" Font-Size="Small" runat="server" Text="Usuario:"></asp:Label></td>
                             <td style="height: 40px">
-                                <asp:TextBox ID="txtUsuarioSenha" Enabled="false" CssClass="form-control-css" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtUsuarioSenha"  CssClass="form-control-css" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td style="height: 40px">
                                 <asp:Label ID="lblSenha" Font-Size="Small" runat="server" Text="Senha:"></asp:Label></td>
                             <td style="height: 40px">
-                                <asp:TextBox ID="txtSenha" Enabled="false" CssClass="form-control-css" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
+                                <asp:TextBox ID="txtSenha" CssClass="form-control-css" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
                                 <input type="button" id="showPassword" value="Mostrar" class="btn btn-default" />
                                 <input type="button" id="btnAlterarSenha" value="Alterar" runat="server" class="btn btn-default hidden" onclick="CarregarInf()" data-toggle="modal" data-target="#myModal" />
                             </td>
@@ -165,7 +215,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <asp:Button ID="btnGravar" Text="Gravar" runat="server" CssClass="btn btn-success" OnClick="btnGravar_Click" />
+                                <asp:Button ID="btnGravar" Text="Gravar" runat="server" CssClass="btn btn-success" OnClientClick="GravarUsuario()"/>
                                 <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
                             </td>
                         </tr>
