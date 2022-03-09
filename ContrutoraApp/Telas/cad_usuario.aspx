@@ -10,13 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/style.css" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
-    <%--<script type="text/javascript" src="Scripts/bootstrap.js"></script>--%>
-    <%--    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>--%>
-    <%--<script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>--%>
-
-
-
+    <%--    <script type="text/javascript" src="../Scripts/bootstrap.js"></script>--%>
+    <%--   <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>--%>
+    <script type="text/javascript" src="../Scripts/jquery-3.3.1.js"></script>
+    <%--    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>--%>
+    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
 
     <title>Usuarios</title>
@@ -51,13 +49,13 @@
             });
         });
 
-        //const swalWithBootstrapButtons = Swal.mixin({
-        //    customClass: {
-        //        confirmButton: 'btn btn-success',
-        //        cancelButton: 'btn btn-danger'
-        //    },
-        //    buttonsStyling: false
-        //});
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
 
 
         function openCidade() {
@@ -65,13 +63,14 @@
         }
 
         function alertCss(mensagem) {
+
             texto == '';
             icon == '';
-            if (mensagem == ('Gravado')) {
+            if (mensagem == ('Gravar')) {
                 var texto = ('Gravado com sucesso');
                 var icon = ('success');
             }
-            else if (mensagem == ('Alterado')) {
+            else if (mensagem == ('Alterar')) {
                 var texto = ('Alterado com Sucesso');
                 var icon = ('success');
             }
@@ -89,10 +88,9 @@
             });
         }
 
-        function nome(id_usuario) {
-            document.getElementById("hdnId_usuario").value = id_usuario;
-            document.getElementById("hdnAcao").value = "usuario"
-            form1.submit();
+        function nome(id_usuario) {            
+            $('#hdnId_usuario').val('');
+            $('#hdnId_usuario').val(id_usuario);
         }
 
         function CarregarInf() {
@@ -102,21 +100,27 @@
 
         function GravarUsuario() {
 
+            var id = $('#hdnId_usuario').val();
             var nome = $('#txtNome').val();
             var login = $('#txtUsuarioSenha').val();
             var senha = $('#txtSenha').val();
             var usuario = $('#hdnUsuario').val();
+            var btn = $('#btnGravar').val()
 
             var Usuario = {
+                id_usuario: id,
                 ds_nome: nome,
                 nm_login: login,
                 senha: senha,
-                nm_cadastrou: usuario
+                nm_cadastrou: usuario,
+                usuario: btn
+
             };
 
-            var obj = { 'usuario': Usuario };
+            console.log(Usuario);
 
-            console.log(obj);
+            var obj = { 'usuario': Usuario };
+                       
 
             $.ajax({
                 type: "POST",
@@ -127,10 +131,11 @@
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
-                    $('#menu').html(source);
 
-
-
+                    if (source.split(';')[0] == 'OK') {
+                        alertCss(source.split(';')[1]);
+                    }
+               
                 },
                 error: function (request, status, error) {
                     alert(request.responseText);
@@ -161,18 +166,62 @@
             font-size: medium !important;
         }
         /*Termina aqui o style do Alert*/
-    </style>
 
-    <style type="text/css">
-        .Grid {
+        /* #GridUsuario {
             background-color: #fff;
             margin: 5px 0 10px 0;
             border: solid 1px #525252;
             border-collapse: collapse;
             font-family: Calibri;
             color: #474747;
+        }*/
+
+        .Grid td {
+            padding: 2px;
+            border: solid 1px #c1c1c1;
         }
+
+        .Grid th {
+            padding: 4px 2px;
+            color: #fff;
+            background: #363670 ;
+            border-left: solid 1px #525252;
+            font-size: 0.9em;
+        }
+
+        .Grid .alt {
+            background: #fcfcfc;
+        }
+
+        .Grid .pgr {
+            background: #363670 ;
+        }
+
+            .Grid .pgr table {
+                margin: 3px 0;
+            }
+
+            .Grid .pgr td {
+                border-width: 0;
+                padding: 0 6px;
+                border-left: solid 1px #666;
+                font-weight: bold;
+                color: #fff;
+                line-height: 12px;
+            }
+
+            .Grid .pgr a {
+                color: Gray;
+                text-decoration: none;
+            }
+
+                .Grid .pgr a:hover {
+                    color: #000;
+                    text-decoration: none;
+                }
     </style>
+
+
 
 </head>
 
@@ -205,14 +254,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <div>
-
+                        <td style="width: 500px;" class="input-group">
+                            <div style="display: inline-block">
+                                <asp:TextBox ID="txtSenha" Width="250px" placeholder="Senha" CssClass="form-control" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
+                                <input type="button" id="showPassword" style="height: 35px" value="Mostrar" class="btn btn-default" />
+                                <input type="button" id="btnAlterarSenha" value="Alterar" visible="false" runat="server" class="btn btn-default" onclick="CarregarInf()" data-toggle="modal" data-target="#myModal" />
                             </div>
-                            <asp:TextBox ID="txtSenha" Width="250px" placeholder="Senha" CssClass="form-control" name="password" type="Password" runat="server" AutoComplete="new-password"></asp:TextBox>
-                            <input type="button" id="showPassword" value="Mostrar" class="btn btn-default" />
-                            <input type="button" id="btnAlterarSenha" value="Alterar" runat="server" class="btn btn-default" onclick="CarregarInf()" data-toggle="modal" data-target="#myModal" />
-
                         </td>
                     </tr>
                     <tr>
@@ -228,31 +275,33 @@
                         </td>
                     </tr>
                 </table>
+
+
+                <table>
+                    <tr>
+                        <td align="">
+                            <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
+                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" OnPageIndexChanging="GridUsuario_PageIndexChanging">
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <HeaderTemplate>
+                                            Nome
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <span style="cursor: pointer;" onclick="nome( '<%# DataBinder.Eval(Container.DataItem, "id_usuario")%> ')" />
+                                            <%# DataBinder.Eval(Container.DataItem, "ds_nome")%>
+                                       </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="usuario" HeaderText="usuario" />
+                                </Columns>
+                            </asp:GridView>
+                        </td>
+                    </tr>
+                </table>
+
             </center>
         </div>
-
-        <table>
-            <tr>
-                <td align="">
-                    <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
-                        AllowPaging="true" PageSize="8" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center">
-                        <Columns>
-                            <asp:TemplateField>
-                                <HeaderTemplate>
-                                    Nome
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <span style="cursor: pointer;" onclick="nome( '<%# DataBinder.Eval(Container.DataItem, "id_usuario")%> ')" />
-                                    <%# DataBinder.Eval(Container.DataItem, "ds_nome")%>
-                                       </span>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="usuario" HeaderText="usuario" />
-                        </Columns>
-                    </asp:GridView>
-                </td>
-            </tr>
-        </table>
 
 
 

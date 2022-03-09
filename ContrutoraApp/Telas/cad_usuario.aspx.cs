@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ContrutoraApp;
@@ -17,17 +18,18 @@ public partial class cad_usuario : System.Web.UI.Page
 
         user = (String)Session["usuario"];
         hdnUsuario.Value = user;
-        //if (user == null)
-        //{
-        //    Response.Redirect("Login.aspx");
-        //}
-        //else
-        //{
+        if (user == null)
+        {
+            Response.Redirect("Login.aspx");
+        }
+        else
+        {
 
-        //}
+        }
 
         if (!IsPostBack)
         {
+            
             txtSenha.Text = "";
             txtUsuarioSenha.Text = "";
         }
@@ -35,7 +37,7 @@ public partial class cad_usuario : System.Web.UI.Page
         {
             if (hdnAcao.Value == "usuario")
             {
-                //CarregarUsuario(hdnId_usuario.Value);
+                CarregarUsuario(hdnId_usuario.Value);
                 hdnAcao.Value = "";
             }
         }
@@ -45,6 +47,7 @@ public partial class cad_usuario : System.Web.UI.Page
 
     public void alertCss(string mensagem)
     {
+       
         //HttpContext.Current.Response.Write(@"<script language=""javascript"">alertCss('" + mensagem + "');</script>");
         //ScriptManager.RegisterClientScriptBlock(this, GetType(),"alertMessage", @"alertCss(mensagem)", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alertCss('" + mensagem + "');", true);
@@ -68,34 +71,49 @@ public partial class cad_usuario : System.Web.UI.Page
 
         //abre a conexao
         cn.Open();
+                
         try
         {
+
+            if(usuario.usuario == "Gravar")
+            {
+
+           
             //comando de instrução do banco de dados
             //comando de instrução do banco de dados
             cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
-                              "VALUES(@ds_nome, @nm_login, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
+                              "VALUES(@ds_nome, @nm_login, @senha,'A',@nm_cadastrou, @dt_cadastrou)";
+            }
+            else
+            {
+                cmd.CommandText = "UPDATE tb_usuarios SET ds_nome = @ds_nome , nm_login = @nm_login, ds_senha = @senha, nm_alterou = @nm_alterou, dt_alterou = @dt_alterou where id_usuario = @id_usuario";
+            }
 
+
+            cmd.Parameters.AddWithValue("@id_usuario", usuario.id_usuario);
             cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
             cmd.Parameters.AddWithValue("@nm_login", usuario.nm_login);
             cmd.Parameters.AddWithValue("@senha", usuario.senha);
+            cmd.Parameters.AddWithValue("@nm_alterou", usuario.nm_cadastrou);
+            cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
             cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);
             cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
-
+         
 
             cmd.ExecuteNonQuery();
 
             cn.Close();
 
-            retorno = "OK";
+            retorno = "OK;" + usuario.usuario;
 
         }
         catch (Exception ex)
         {
             retorno = "NOK";
-        //    throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+            //    throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
         }
         finally
-        {            
+        {
             cn.Close();
         }
 
@@ -133,7 +151,7 @@ public partial class cad_usuario : System.Web.UI.Page
                               "VALUES(@ds_nome, @usuario, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
 
 
-            cmd.Connection = cn;    
+            cmd.Connection = cn;
             //abre a conexao
             cn.Open();
 
@@ -251,7 +269,7 @@ public partial class cad_usuario : System.Web.UI.Page
 
         string sql;
 
-      
+
         //chama o metodo de conexao com o banco
         SqlConnection cn = new SqlConnection();
         cn.ConnectionString = Conexao.StrConexao;
@@ -261,7 +279,7 @@ public partial class cad_usuario : System.Web.UI.Page
 
 
         //comando de instrução do banco de dados
-        cmd.CommandText = "select * from tb_usuarios where id_usuario =" + id_usuario;
+        cmd.CommandText = "select * from tb_usuarios where fl_ativo = 'A' and id_usuario =" + id_usuario;
 
         cmd.Connection = cn;
         //abre a conexao
@@ -289,4 +307,13 @@ public partial class cad_usuario : System.Web.UI.Page
 
 
     }
+
+    protected void GridUsuario_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridUsuario.PageIndex = e.NewPageIndex;
+
+        btnFiltrar_Click(null, null);
+    }
+        
+
 }
