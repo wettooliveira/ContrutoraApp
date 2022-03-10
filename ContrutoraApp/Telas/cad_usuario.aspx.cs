@@ -29,7 +29,7 @@ public partial class cad_usuario : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-            
+
             txtSenha.Text = "";
             txtUsuarioSenha.Text = "";
         }
@@ -47,7 +47,7 @@ public partial class cad_usuario : System.Web.UI.Page
 
     public void alertCss(string mensagem)
     {
-       
+
         //HttpContext.Current.Response.Write(@"<script language=""javascript"">alertCss('" + mensagem + "');</script>");
         //ScriptManager.RegisterClientScriptBlock(this, GetType(),"alertMessage", @"alertCss(mensagem)", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alertCss('" + mensagem + "');", true);
@@ -71,18 +71,18 @@ public partial class cad_usuario : System.Web.UI.Page
 
         //abre a conexao
         cn.Open();
-                
+
         try
         {
 
-            if(usuario.usuario == "Gravar")
+            if (usuario.usuario == "Gravar")
             {
 
-           
-            //comando de instrução do banco de dados
-            //comando de instrução do banco de dados
-            cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
-                              "VALUES(@ds_nome, @nm_login, @senha,'A',@nm_cadastrou, @dt_cadastrou)";
+
+                //comando de instrução do banco de dados
+                //comando de instrução do banco de dados
+                cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
+                                  "VALUES(@ds_nome, @nm_login, @senha,'A',@nm_cadastrou, @dt_cadastrou)";
             }
             else
             {
@@ -98,7 +98,55 @@ public partial class cad_usuario : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
             cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);
             cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
-         
+
+
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+
+            retorno = "OK;" + usuario.usuario;
+
+        }
+        catch (Exception ex)
+        {
+            retorno = "NOK";
+            //    throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+        }
+        finally
+        {
+            cn.Close();
+        }
+
+        return retorno;
+    }
+
+    [WebMethod]
+    public static String Cancelar_Usuario(Usuario usuario)
+    {
+        string retorno = "";
+        //// Passa o caminho do banco de dados para um string      
+        string connectionString = Conexao.StrConexao;
+
+        //chama o metodo de conexao com o banco
+        SqlConnection cn = new SqlConnection();
+        cn.ConnectionString = connectionString;
+
+        //construtor command para obter dados44
+        SqlCommand cmd = new SqlCommand();
+        cmd.Connection = cn;
+        cmd.CommandText = cmd.CommandText;
+
+        //abre a conexao
+        cn.Open();
+
+        try
+        {
+
+            //comando de instrução do banco de dados
+            //comando de instrução do banco de dados
+            cmd.CommandText = "delete tb_usuarios where id_usuario = @id_usuario";
+
+            cmd.Parameters.AddWithValue("@id_usuario", usuario.id_usuario);
 
             cmd.ExecuteNonQuery();
 
@@ -142,65 +190,65 @@ public partial class cad_usuario : System.Web.UI.Page
         //construtor command para obter dados
         SqlCommand cmd = new SqlCommand();
 
-        if (btnGravar.Text == "Gravar")
-        {
+        //if (btnGravar.Text == "Gravar")
+        //{
 
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
-                              "VALUES(@ds_nome, @usuario, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
+        //comando de instrução do banco de dados
+        cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
+                          "VALUES(@ds_nome, @usuario, @senha, 'A',@nm_cadastrou, @dt_cadastrou)";
 
 
-            cmd.Connection = cn;
-            //abre a conexao
-            cn.Open();
+        cmd.Connection = cn;
+        //abre a conexao
+        cn.Open();
 
-            cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
-            cmd.Parameters.AddWithValue("@usuario", usuario.usuario);
-            cmd.Parameters.AddWithValue("@senha", usuario.senha);
-            cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);
-            cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
+        cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
+        cmd.Parameters.AddWithValue("@usuario", usuario.usuario);
+        cmd.Parameters.AddWithValue("@senha", usuario.senha);
+        cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);
+        cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 
-            cmd.ExecuteNonQuery();
+        cmd.ExecuteNonQuery();
 
-            cn.Close();
+        cn.Close();
 
-            alertCss("Gravado");
-        }
-        else
-        {
+        alertCss("Gravado");
+        //}
+        //else
+        //{
 
-            //comando de instrução do banco de dados
-            sql = "UPDATE tb_usuarios SET ds_nome = @ds_nome , nm_login = @nm_login, ds_senha = @ds_senha, nm_alterou = @nm_alterou, dt_alterou = @dt_alterou where id_usuario = @id_usuario";
-
-
-            cmd.Connection = cn;
-            cmd.CommandText = sql;
-
-            //abre a conexao
-            cn.Open();
-
-            cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
-            cmd.Parameters.AddWithValue("@nm_login", usuario.usuario);
-            cmd.Parameters.AddWithValue("@ds_senha", usuario.senha);
-            cmd.Parameters.AddWithValue("@nm_alterou", usuario.nm_cadastrou);
-            cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
-            cmd.Parameters.AddWithValue("@id_usuario", usuario.nm_login);
-
-            cmd.ExecuteNonQuery();
-
-            cn.Close();
+        //comando de instrução do banco de dados
+        sql = "UPDATE tb_usuarios SET ds_nome = @ds_nome , nm_login = @nm_login, ds_senha = @ds_senha, nm_alterou = @nm_alterou, dt_alterou = @dt_alterou where id_usuario = @id_usuario";
 
 
-            alertCss("Alterado");
+        cmd.Connection = cn;
+        cmd.CommandText = sql;
 
-            btnFiltrar_Click(null, null);
+        //abre a conexao
+        cn.Open();
 
-            txtNome.Text = "";
-            txtSenha.Text = "";
-            txtUsuarioSenha.Text = "";
+        cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
+        cmd.Parameters.AddWithValue("@nm_login", usuario.usuario);
+        cmd.Parameters.AddWithValue("@ds_senha", usuario.senha);
+        cmd.Parameters.AddWithValue("@nm_alterou", usuario.nm_cadastrou);
+        cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
+        cmd.Parameters.AddWithValue("@id_usuario", usuario.nm_login);
 
-        }
+        cmd.ExecuteNonQuery();
+
+        cn.Close();
+
+
+        alertCss("Alterado");
+
+        btnFiltrar_Click(null, null);
+
+        txtNome.Text = "";
+        txtSenha.Text = "";
+        txtUsuarioSenha.Text = "";
+
+        //}
 
     }
 
@@ -303,8 +351,8 @@ public partial class cad_usuario : System.Web.UI.Page
         txtSenha.Text = usuario.senha;
         btnAlterarSenha.Attributes.Add("class", "btn btn-default");
 
-        btnGravar.Text = "Alterar";
-
+        btnGravar.Value = "Alterar";
+        BtnCancelar.Visible = true;
 
     }
 
@@ -314,6 +362,6 @@ public partial class cad_usuario : System.Web.UI.Page
 
         btnFiltrar_Click(null, null);
     }
-        
+
 
 }

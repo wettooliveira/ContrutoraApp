@@ -13,7 +13,7 @@ public partial class Home : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        lblusuario.Text = Session["usuario"].ToString();
+        lblusuario.Text = Session["nm_login"].ToString();
     }
 
     protected void consultarUsuario(String nm_usuario)

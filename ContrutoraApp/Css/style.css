@@ -1,6 +1,8 @@
-﻿body {
-    
+﻿.body {
+  
+  
 }
+
 
 .imagem_body {
     background-image: url('Imagens/bgbg.png');
@@ -20,7 +22,7 @@
     text-align: center;
     top: 0;
     width: 100%;
-    .texbox { 
+    
     border:thin solid #c5c1c0;
     border-radius: 4px;
     margin-left: 0px;

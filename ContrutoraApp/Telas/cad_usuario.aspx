@@ -74,9 +74,10 @@
                 var texto = ('Alterado com Sucesso');
                 var icon = ('success');
             }
-            else if (mensagem == ('tipo')) {
-                var texto = ('Campo Obrigatório');
-                var icon = ('error');
+            else if (mensagem == ('Cancelar')) {
+                var texto = ('Cancelado com Sucesso');
+                var icon = ('success');
+                /*var icon = ('error');*/
             }
 
             swalWithBootstrapButtons.fire({
@@ -88,10 +89,16 @@
             });
         }
 
-        function nome(id_usuario) {            
+        function nome(id_usuario) {
             $('#hdnId_usuario').val('');
             $('#hdnId_usuario').val(id_usuario);
+            $('#hdnAcao').val('usuario');
+            $('#form1').submit();
+
         }
+
+
+
 
         function CarregarInf() {
             document.getElementById("txtNomeModal").value = document.getElementById("txtNome").value;
@@ -107,6 +114,10 @@
             var usuario = $('#hdnUsuario').val();
             var btn = $('#btnGravar').val()
 
+            if (id == '') {
+                id = 0;
+            }
+
             var Usuario = {
                 id_usuario: id,
                 ds_nome: nome,
@@ -120,7 +131,7 @@
             console.log(Usuario);
 
             var obj = { 'usuario': Usuario };
-                       
+
 
             $.ajax({
                 type: "POST",
@@ -135,7 +146,50 @@
                     if (source.split(';')[0] == 'OK') {
                         alertCss(source.split(';')[1]);
                     }
-               
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
+        }
+
+        function CancelarUsuario() {
+
+            var id = $('#hdnId_usuario').val();
+            var btn = 'Cancelar';
+
+            var Usuario = {
+                id_usuario: id,               
+                usuario: btn
+            };
+                      
+            var obj = { 'usuario': Usuario };
+
+            $.ajax({
+                type: "POST",
+                url: "cad_usuario.aspx/Cancelar_Usuario",
+                /*data: "{'m':'m'}",*/
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    if (source.split(';')[0] == 'OK') {
+                        alertCss(source.split(';')[1]);
+                    }
+
                 },
                 error: function (request, status, error) {
                     alert(request.responseText);
@@ -184,7 +238,7 @@
         .Grid th {
             padding: 4px 2px;
             color: #fff;
-            background: #363670 ;
+            background: #363670;
             border-left: solid 1px #525252;
             font-size: 0.9em;
         }
@@ -194,7 +248,7 @@
         }
 
         .Grid .pgr {
-            background: #363670 ;
+            background: #363670;
         }
 
             .Grid .pgr table {
@@ -220,8 +274,6 @@
                     text-decoration: none;
                 }
     </style>
-
-
 
 </head>
 
@@ -264,8 +316,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:Button ID="btnGravar" Text="Gravar" runat="server" CssClass="btn btn-success" OnClientClick="GravarUsuario()" />
-                            <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
+                            <br />
+                            <center>
+                                <input type="button" id="btnGravar" value="Gravar" runat="server" class="btn btn-success" onclick="GravarUsuario()" />
+                                <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
+                                <input type="button" id="BtnCancelar" value="Cancelar" visible="false" runat="server" class="btn btn-danger" onclick="CancelarUsuario()" />
+                            </center>
                         </td>
                     </tr>
                     <tr>

@@ -37,7 +37,8 @@
 
         function CarregaPaginaFrame(value) {           
             var frame = document.querySelector("iframe");       
-            frame.setAttribute("src",''+value+'');
+            frame.setAttribute("src", '' + value + '');          
+           
         }
 
         function abrirUsuario() {
@@ -69,14 +70,11 @@
 
     </script>
 
-    <style type="">
 
-}
-    </style>
 
 </head>
 
-<body id="body" class="imagem_body">
+<body id="body"  class="imagem_body">
 
     <div class="divMenuPrincipal" style="width:100%">
         <div class="divMenuLogo">
@@ -116,12 +114,20 @@
             <asp:Label ID="lblusuario" runat="server"></asp:Label>
         </div>
         <div class="divMenuFinal">
-            <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
+            <ul>
+                <li>
+                    <a  style="display:">
+                        <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />
+                    </a>
+                    
+                </li>
+                
+            </ul>            
         </div>
     </div>
     <br />   
 
-    <iframe id="iframePaginas"  style="width: 100%; height: 100%; border: none;position:center"></iframe>
+    <iframe id="iframePaginas"  style="width: 100%; height: 100%; border: none; position:center"></iframe>
 
     <footer class="footer navbar-fixed-bottom" style="height: 25px">
         <hgroup>
