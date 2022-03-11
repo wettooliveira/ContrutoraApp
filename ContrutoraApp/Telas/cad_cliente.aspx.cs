@@ -12,7 +12,7 @@ namespace ContrutoraApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            hdnUsuario.Value = (String)Session["usuario"];
         }
 
         [WebMethod]

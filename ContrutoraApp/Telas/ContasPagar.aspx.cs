@@ -127,7 +127,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor, fornec_despesa, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+            cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor, id_fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
                                 values(@desc_conta,@tipo,@num_parcela,@valor, @fornec_despesa, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
             cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());

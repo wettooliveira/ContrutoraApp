@@ -97,7 +97,7 @@
                 </li>
                 <li><a href="#">Financeiro</a>
                     <ul>
-                        <li><a href="#">Sub Item</a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasPagar.aspx');return false;">Contas Pagar </a></li>
                         <li><a href="#">Sub Item</a></li>
                         <li><a href="#">Sub Sub List »</a>
                             <ul>
@@ -113,7 +113,23 @@
         <div id="divUsuario" class="divMenuUsuario" runat="server">
             <asp:Label ID="lblusuario" runat="server"></asp:Label>
         </div>
-        <div class="divMenuFinal">
+         <div style="background-color: #343434">
+            <%--      <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />--%>
+            <ul id="nav1">
+                <li>
+                    <a>
+                        <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: -10px" /></a>
+                    <ul>
+                        <li>
+                            <img id="img2" class="imgLogo" src="../Css/Imagens/001-sair.png" style="width: 15%; display: inline; padding-top: 0" />
+                            <a href="Login.aspx" style="text-align: center; display: inline; width: 90%; padding-top:0">Sair</a>
+                        </li>
+                       
+                    </ul>
+                </li>
+            </ul>
+        </div>
+      <%--  <div class="divMenuFinal">
             <ul>
                 <li>
                     <a  style="display:">
@@ -123,7 +139,7 @@
                 </li>
                 
             </ul>            
-        </div>
+        </div>--%>
     </div>
     <br />   
 

@@ -12,12 +12,21 @@
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+      <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
 
 
     <title></title>
 
     <script type="text/javascript" language="javascript">
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
 
         function Inserir() {
 
@@ -33,6 +42,7 @@
             var bairro = $('#txtBairro').val();
             var cidade = $('#txtCidade').val();
             var UF = $('#txtUF').val();
+            var usuario = $('#hdnUsuario').val();
 
             var Endereco = {
                 cep: CEP,
@@ -50,7 +60,7 @@
                 IE: IE,
                 tel: Tel,
                 obs: obs,
-                nm_cadastrou: "SISTEMA",
+                nm_cadastrou: usuario,
                 endereco: Endereco
             };
 
@@ -66,9 +76,12 @@
 
 
                     if (data.d == 'OK') {
+                        //$('#lblAviso').html('');
+                        //$('#lblAviso').html('Gravado com sucesso!');
+                        //$('#lblAviso').css('color', 'green');
                         $('#lblAviso').html('');
-                        $('#lblAviso').html('Gravado com sucesso!');
-                        $('#lblAviso').css('color', 'green');
+                        alertCss('Gravar');
+                      
 
                     } else if (data.d == 'ERRO') {
                         $('#lblAviso').html('');
@@ -91,6 +104,33 @@
                 }
             });
 
+        }
+
+        function alertCss(mensagem) {
+
+            texto == '';
+            icon == '';
+            if (mensagem == ('Gravar')) {
+                var texto = ('Gravado com sucesso');
+                var icon = ('success');
+            }
+            else if (mensagem == ('Alterar')) {
+                var texto = ('Alterado com Sucesso');
+                var icon = ('success');
+            }
+            else if (mensagem == ('Cancelar')) {
+                var texto = ('Cancelado com Sucesso');
+                var icon = ('success');
+                /*var icon = ('error');*/
+            }
+
+            swalWithBootstrapButtons.fire({
+                title: '',
+                text: texto,
+                icon: icon,
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            });
         }
 
         function BuscarCep(cep) {
@@ -128,9 +168,23 @@
         }
 
     </script>
+
+    <style>
+          /* Estilo do alert */
+        .swal2-popup {
+            font-size: medium !important;
+        }
+
+        .btn {
+            margin: 0 0.5rem;
+            font-size: medium !important;
+        }
+        /*Termina aqui o style do Alert*/
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
+         <asp:HiddenField ID="hdnUsuario" runat="server" />
            
 
         <div>    

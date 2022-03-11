@@ -67,15 +67,7 @@
     </script>
 
     <style>
-         .divMenuFinal {
-        /*    height: 60px;*/
-           /* background-color: #343434;*/
-           /* width: 5%;*/
-         /*   color: white;*/
-        }
-
-
-        #nav1 {
+        #nav {
             list-style: none inside;
             margin: 0;
             padding: 15px;
@@ -84,7 +76,7 @@
             background-color: #343434;
         }
 
-            #nav1 li {
+            #nav li {
                 display: block;
                 position: relative;
                 float: left;
@@ -92,7 +84,11 @@
                 /* menu background color */
             }
 
-                #nav1 li a {
+                #nav li:last-child {
+                    border-radius: 0 0 0px 4px;
+                }
+
+                #nav li a {
                     display: block;
                     padding: 0;
                     text-decoration: none;
@@ -105,8 +101,97 @@
                     /* list item font color */
                 }
 
+                #nav li li a {
+                    font-size: 90%;
+                }
+
+                /* smaller font size for sub menu items */
+
+                #nav li:hover {
+                }
+
+                #nav li a:hover {
+                    opacity: 0.9;
+                }
+
+            /* highlights current hovered list item and the parent list items when hovering over sub menues */
+
+            #nav ul {
+                position: absolute;
+                padding: 0;
+                left: 0;
+                display: none;
+                /* hides sublists */
+            }
+
+            #nav li:hover ul ul {
+                display: none;
+            }
+
+            /* hides sub-sublists */
+
+            #nav li:hover ul {
+                display: block;
+                padding-top: 10px;
+            }
+
+            /* shows sublist on hover */
+
+            #nav li li:hover ul {
+                display: block;
+                /* shows sub-sublist on hover */
+                margin-left: 100px;
+                /* this should be the same width as the parent list item */
+                margin-top: -35px;
+                /* aligns top of sub menu with top of list item */
+                width: auto;
+            }
+
+
+
+
+        .divMenuFinal {
+            /*    height: 60px;*/
+            /* background-color: #343434;*/
+            /* width: 5%;*/
+            /*   color: white;*/
+        }
+
+
+        #nav1 {
+            list-style: none inside;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            background-color: #343434;
+        }
+
+            #nav1 li {
+                display: block;
+                position: relative;
+                float: left;
+                background-color: #343434;
+                border-radius: 0 0 4px 4px;
+                /* menu background color */
+            }
+
+                #nav1 li a {
+                    display: block;
+                    padding: 0px;
+                    text-decoration: none;
+                    width: 100px;
+                    /* this is the width of the menu items */
+                    line-height: 40px;
+                    /* this is the hieght of the menu items */
+                    color: #ffffff;
+                    opacity: 0.6;
+                    /* list item font color */
+                }
+
                 #nav1 li li a {
                     font-size: 90%;
+                    align-items: center
                 }
 
                 /* smaller font size for sub menu items */
@@ -117,6 +202,7 @@
                 #nav1 li a:hover {
                     opacity: 0.9;
                 }
+
 
             /* highlights current hovered list item and the parent list items when hovering over sub menues */
 
@@ -136,6 +222,7 @@
 
             #nav1 li:hover ul {
                 display: block;
+                padding-top: 9px;
             }
 
             /* shows sublist on hover */
@@ -192,16 +279,18 @@
         <div id="divUsuario" class="divMenuUsuario" runat="server">
             <asp:Label ID="lblusuario" runat="server"></asp:Label>
         </div>
-        <div class="" style="background-color:#343434">
+        <div class="" style="background-color: #343434">
             <%--      <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />--%>
             <ul id="nav1">
                 <li>
                     <a>
-                        <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center;" /></a>
+                        <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: -10px" /></a>
                     <ul>
                         <li>
-                            <a href="#">Sub Item</a>
+                            <img id="img2" class="imgLogo" src="Css/Imagens/001-sair.png" style="width: 15%; display: inline; padding-top: 0" />
+                            <a href="Telas/Login.aspx" style="text-align: center; display: inline; width: 90%; padding-top: 0px">Sair</a>
                         </li>
+
                     </ul>
                 </li>
             </ul>

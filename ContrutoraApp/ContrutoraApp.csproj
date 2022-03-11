@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Css\Imagens\001-sair.png" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\SweetAlert2\sweetalert2.all.min.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />

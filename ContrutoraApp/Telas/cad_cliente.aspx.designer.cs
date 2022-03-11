@@ -24,6 +24,15 @@ namespace ContrutoraApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// Controle hdnUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
+
+        /// <summary>
         /// Controle txtRazaoSocial.
         /// </summary>
         /// <remarks>

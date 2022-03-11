@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
     <title></title>
 
@@ -27,8 +28,16 @@
     $(document).ready(function () {
 
         TabelaLancarDados();
-        Menu();
+        /*  Menu();*/
 
+    });
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
     });
 
     function validateDate(id) {
@@ -141,37 +150,37 @@
         }
     }
 
-    function Menu() {
+    //function Menu() {
 
 
-        $.ajax({
-            type: "POST",
-            url: "ContasPagar.aspx/Menu",
-            data: "{'m':'m'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            success: function (data) {
-                var source = data.d;
-                $('#menu').html(source);
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "ContasPagar.aspx/Menu",
+    //        data: "{'m':'m'}",
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "JSON",
+    //        success: function (data) {
+    //            var source = data.d;
+    //            $('#menu').html(source);
 
 
 
-            },
-            error: function (request, status, error) {
-                alert(request.responseText);
-                console.log(request.responseText);
-                //swalWithBootstrapButtons.fire({
-                //    title: '',
-                //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //    icon: 'error',
-                //    confirmButtonText: 'OK',
-                //    allowOutsideClick: false
-                //}).then((result) => {
-                /*  });*/
-            }
-        });
+    //        },
+    //        error: function (request, status, error) {
+    //            alert(request.responseText);
+    //            console.log(request.responseText);
+    //            //swalWithBootstrapButtons.fire({
+    //            //    title: '',
+    //            //    text: 'Erro ao abrir tabela! Tente novamente!',
+    //            //    icon: 'error',
+    //            //    confirmButtonText: 'OK',
+    //            //    allowOutsideClick: false
+    //            //}).then((result) => {
+    //            /*  });*/
+    //        }
+    //    });
 
-    }
+    //}
 
     function TabelaLancarDados() {
 
@@ -247,7 +256,9 @@
                 var source = data.d;
 
                 if (source == "OK") {
+                    alertCss('Gravar');
                     lancarDados();
+
                 }
 
 
@@ -498,14 +509,54 @@
         }
     }
 
+    function alertCss(mensagem) {
+
+        texto == '';
+        icon == '';
+        if (mensagem == ('Gravar')) {
+            var texto = ('Gravado com sucesso');
+            var icon = ('success');
+        }
+        else if (mensagem == ('Alterar')) {
+            var texto = ('Alterado com Sucesso');
+            var icon = ('success');
+        }
+        else if (mensagem == ('Cancelar')) {
+            var texto = ('Cancelado com Sucesso');
+            var icon = ('success');
+            /*var icon = ('error');*/
+        }
+
+        swalWithBootstrapButtons.fire({
+            title: '',
+            text: texto,
+            icon: icon,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false
+        });
+    }
+
 </script>
+
+<style type="text/css">
+    /* Estilo do alert */
+    .swal2-popup {
+        font-size: medium !important;
+    }
+
+    .btn {
+        margin: 0 0.5rem;
+        font-size: medium !important;
+    }
+    /*Termina aqui o style do Alert*/
+</style>
 
 <body>
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <div id="menu">
         </div>
-
+        <br />
         <div>
             <center>
                 <table>
@@ -586,7 +637,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: center">
-                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarContas();return false;" />
+                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                     </tr>
                 </table>

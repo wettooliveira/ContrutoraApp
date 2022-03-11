@@ -29,7 +29,8 @@ namespace ContrutoraApp
             {
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"INSERT INTO tb_cliente(razaoSocial,
+                cmd.CommandText = @"INSERT INTO tb_cliente(id,
+                                                       razaoSocial,
                                                        CNPJ, 
                                                        IE,
                                                        tel,
@@ -43,7 +44,8 @@ namespace ContrutoraApp
                                                        obs,
                                                        nm_cadastrou,
                                                        dt_cadastrou)
-                                                values(@razaoSocial,
+                                                values(next value for dbo.CLIENTE,
+                                                       @razaoSocial,
                                                        @CNPJ, 
                                                        @IE,
                                                        @tel,
