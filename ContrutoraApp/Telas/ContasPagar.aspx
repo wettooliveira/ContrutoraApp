@@ -224,8 +224,8 @@
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
         var desc_despesa = '';
         var id_obra = 0;
-        if ($('#txtDespesa').val() != '') {
-            desc_despesa = $('#txtDespesa').val();
+        if ($('#ddlDespesa').val() != '') {
+            desc_despesa = $('#ddlDespesa').val();
         }
         if ($('#ddlObra').val() != '') {
             id_obra = $('#ddlObra').val();
@@ -561,24 +561,36 @@
             <center>
                 <table>
                     <tr>
-                        <td style="width: 100px;">
-                            <asp:DropDownList ID="ddpTipoDesp" Width="120px" runat="server" CssClass="form-control" onchange="tipoDespesa(value);">
-                                <asp:ListItem Text="Selecione.." Value="tipo"></asp:ListItem>
-                                <asp:ListItem Text="Despesa" Value="Despesa"></asp:ListItem>
-                                <asp:ListItem Text="Obra" Value="obra"></asp:ListItem>
+                        <td id="tdFornec" colspan="3">
+                            <asp:DropDownList ID="ddlFornecedor" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Fornec1" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="Fornec2" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="Fornec3" Value="3"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
-
+                    </tr>
+                    <tr>
                         <td id="tdObras" colspan="3">
                             <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Selecione Obra" Value="0"></asp:ListItem>
                                 <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
                                 <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>
                                 <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
-
                     </tr>
+                    <tr>
+                        <td id="tdObras" colspan="3">
+                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Selecione Tipo Despesa" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Despesa1" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="Despesa2" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="Despesa3" Value="3"></asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                 
                     <tr>
                         <td>
                             <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
@@ -614,24 +626,8 @@
                     </tr>
 
                     <tr>
-
-                        <td id="tdDespesa" colspan="3">
-                            <asp:TextBox ID="txtDespesa" runat="server" placeholder="Despesa" CssClass="form-control"></asp:TextBox>
-                        </td>
-
-
-
                     </tr>
-                    <tr>
-                        <td id="tdFornec" colspan="3">
-                            <asp:DropDownList ID="ddlFornecedor" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Fornec1" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="Fornec2" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Fornec3" Value="3"></asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
+
                     <tr style="height: 20px">
                         <td style="height: 20px"></td>
                     </tr>

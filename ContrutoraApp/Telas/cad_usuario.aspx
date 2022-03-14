@@ -277,7 +277,7 @@
 
 </head>
 
-<body>
+<body class="bodyTela">
 
     <form id="form1" runat="server">
         <asp:HiddenField ID="nm_session" runat="server" />

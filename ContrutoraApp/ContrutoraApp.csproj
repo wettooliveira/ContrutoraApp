@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Css\Imagens\001-sair.png" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\SweetAlert2\sweetalert2.all.min.js" />
@@ -119,7 +120,6 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Telas\cad_usuario.aspx" />
     <Content Include="Css\Imagens\list.png" />
     <Content Include="Css\Imagens\proibido.png" />

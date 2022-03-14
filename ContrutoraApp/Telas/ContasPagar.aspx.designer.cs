@@ -33,13 +33,13 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnIDContasPagar;
 
         /// <summary>
-        /// Controle ddpTipoDesp.
+        /// Controle ddlFornecedor.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddpTipoDesp;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFornecedor;
 
         /// <summary>
         /// Controle ddlObras.
@@ -49,6 +49,15 @@ namespace ContrutoraApp
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlObras;
+
+        /// <summary>
+        /// Controle ddlDespesa.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlDespesa;
 
         /// <summary>
         /// Controle txtData.
@@ -94,24 +103,6 @@ namespace ContrutoraApp
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtValor;
-
-        /// <summary>
-        /// Controle txtDespesa.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDespesa;
-
-        /// <summary>
-        /// Controle ddlFornecedor.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFornecedor;
 
         /// <summary>
         /// Controle hdnIdLiberacao.

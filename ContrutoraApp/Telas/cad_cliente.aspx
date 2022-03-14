@@ -182,7 +182,7 @@
         /*Termina aqui o style do Alert*/
     </style>
 </head>
-<body>
+<body class="=bodyTela">
     <form id="form1" runat="server">
          <asp:HiddenField ID="hdnUsuario" runat="server" />
            
