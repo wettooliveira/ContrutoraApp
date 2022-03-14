@@ -12,7 +12,7 @@
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-      <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
 
 
@@ -29,7 +29,14 @@
         });
 
         function Inserir() {
-
+           
+            var btnradio;
+            if ($("#riCliente").cheked()) {
+                btnradio = "cliente";
+            } else if ($('#riFornecedor').cheked()) {
+                btnradio = "fornecedor";
+            }
+            alert(btnradio);
             var RazaoSocial = $('#txtRazaoSocial').val();
             var CNPJ = $('#txtCnpj').val();
             var IE = $('#txtInscricao').val();
@@ -81,7 +88,7 @@
                         //$('#lblAviso').css('color', 'green');
                         $('#lblAviso').html('');
                         alertCss('Gravar');
-                      
+
 
                     } else if (data.d == 'ERRO') {
                         $('#lblAviso').html('');
@@ -170,7 +177,7 @@
     </script>
 
     <style>
-          /* Estilo do alert */
+        /* Estilo do alert */
         .swal2-popup {
             font-size: medium !important;
         }
@@ -180,14 +187,19 @@
             font-size: medium !important;
         }
         /*Termina aqui o style do Alert*/
+
+        .radioinput{
+            width:18px;
+            height:18px;
+        }
     </style>
 </head>
 <body class="=bodyTela">
     <form id="form1" runat="server">
-         <asp:HiddenField ID="hdnUsuario" runat="server" />
-           
+        <asp:HiddenField ID="hdnUsuario" runat="server" />
 
-        <div>    
+
+        <div>
             <center>
                 <table>
                     <tr>
@@ -195,6 +207,18 @@
                             <center>
                                 <h3>Cadastrar Cliente</h3>
                             </center>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                          
+                                <input type="radio" runat="server" class="radioinput" id="riCliente" name="fav_language" value="cliente" />
+                                <label>Cliente</label>
+                            &nbsp;&nbsp;
+                                <input type="radio" runat="server" class="radioinput" id="riFornecedor" name="fav_language" value="fornecedor" />
+                                <label>Fornecedor</label>
+                          
                         </td>
                     </tr>
                     <tr class="trBody">

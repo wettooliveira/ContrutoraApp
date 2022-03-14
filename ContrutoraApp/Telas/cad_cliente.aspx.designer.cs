@@ -33,6 +33,24 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
 
         /// <summary>
+        /// Controle riCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton riCliente;
+
+        /// <summary>
+        /// Controle riFornecedor.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton riFornecedor;
+
+        /// <summary>
         /// Controle txtRazaoSocial.
         /// </summary>
         /// <remarks>

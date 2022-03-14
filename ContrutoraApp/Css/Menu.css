@@ -52,6 +52,7 @@
         position: relative;
         float: left;
         background-color: #343434;
+        width: 120px;
         /* menu background color */
     }
 
@@ -63,7 +64,7 @@
             display: block;
             padding: 0;
             text-decoration: none;
-            width: 150px;
+            width: 120px;
             /* this is the width of the menu items */
             line-height: 35px;
             /* this is the hieght of the menu items */
@@ -111,7 +112,7 @@
     #nav li li:hover ul {
         display: block;
         /* shows sub-sublist on hover */
-        margin-left: 150px;
+        margin-left: 120px;
         /* this should be the same width as the parent list item */
         margin-top: -35px;
         /* aligns top of sub menu with top of list item */
