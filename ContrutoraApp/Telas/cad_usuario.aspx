@@ -57,7 +57,6 @@
             buttonsStyling: false
         });
 
-
         function openCidade() {
             abrir_janela("loc_regiao.aspx", "lr", 600, 350, 1);
         }
@@ -96,9 +95,6 @@
             $('#form1').submit();
 
         }
-
-
-
 
         function CarregarInf() {
             document.getElementById("txtNomeModal").value = document.getElementById("txtNome").value;
@@ -142,7 +138,7 @@
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
-
+                  
                     if (source.split(';')[0] == 'OK') {
                         alertCss(source.split(';')[1]);
                     }
@@ -277,7 +273,7 @@
 
 </head>
 
-<body class="bodyTela">
+<body >
 
     <form id="form1" runat="server">
         <asp:HiddenField ID="nm_session" runat="server" />

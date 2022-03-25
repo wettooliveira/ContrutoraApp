@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cad_cliente.aspx.cs" Inherits="ContrutoraApp.cad_cliente" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cad_cliente.aspx.cs" Inherits="cad_cliente" %>
 
 <!DOCTYPE html>
 
@@ -7,14 +7,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
-    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
-
-
+       <%-- <script type="text/javascript" src="../Scripts/jquery-3.3.1.js"></script>--%>
+    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>   
+     <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
     <title></title>
 
@@ -29,14 +28,16 @@
         });
 
         function Inserir() {
+            
+            var tipo;
            
-            var btnradio;
-            if ($("#riCliente").cheked()) {
-                btnradio = "cliente";
-            } else if ($('#riFornecedor').cheked()) {
-                btnradio = "fornecedor";
+            if ($("#riCliente").is(':checked')) {
+                tipo = "cliente";
+            } else if ($('#riFornecedor').is(':checked'))
+            {
+                tipo = "fornecedor";
             }
-            alert(btnradio);
+        
             var RazaoSocial = $('#txtRazaoSocial').val();
             var CNPJ = $('#txtCnpj').val();
             var IE = $('#txtInscricao').val();
@@ -68,11 +69,12 @@
                 tel: Tel,
                 obs: obs,
                 nm_cadastrou: usuario,
-                endereco: Endereco
+                endereco: Endereco,
+                tp_cli_fornc: tipo
             };
 
             var obj = { 'cliente': Cliente };
-
+            console.log(obj);
             $.ajax({
                 type: "POST",
                 url: "cad_cliente.aspx/Gravar",
@@ -194,7 +196,7 @@
         }
     </style>
 </head>
-<body class="=bodyTela">
+<body >
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnUsuario" runat="server" />
 

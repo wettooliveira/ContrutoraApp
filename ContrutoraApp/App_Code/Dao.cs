@@ -42,6 +42,7 @@ namespace ContrutoraApp
                                                        cidade,
                                                        uf,
                                                        obs,
+                                                       tp_cli_fornc,
                                                        nm_cadastrou,
                                                        dt_cadastrou)
                                                 values(next value for dbo.CLIENTE,
@@ -57,8 +58,10 @@ namespace ContrutoraApp
                                                        @cidade,
                                                        @uf,
                                                        @obs,
+                                                       @tp_cli_fornc,
                                                        @nm_cadastrou,
                                                        @dt_cadastrou)";
+
                 cmd.Parameters.AddWithValue("@razaoSocial", cliente.RazaoSocial);
                 cmd.Parameters.AddWithValue("@CNPJ", cliente.CNPJ);
                 cmd.Parameters.AddWithValue("@IE", cliente.IE);
@@ -71,6 +74,7 @@ namespace ContrutoraApp
                 cmd.Parameters.AddWithValue("@cidade", cliente.endereco.cidade);
                 cmd.Parameters.AddWithValue("@uf", cliente.endereco.uf);
                 cmd.Parameters.AddWithValue("@obs", cliente.obs);
+                cmd.Parameters.AddWithValue("@tp_cli_fornc", cliente.tp_cli_fornc);
                 cmd.Parameters.AddWithValue("@nm_cadastrou", cliente.nm_cadastrou);
                 cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 

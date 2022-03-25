@@ -81,8 +81,8 @@ public partial class cad_usuario : System.Web.UI.Page
 
                 //comando de instrução do banco de dados
                 //comando de instrução do banco de dados
-                cmd.CommandText = "INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)" +
-                                  "VALUES(@ds_nome, @nm_login, @senha,'A',@nm_cadastrou, @dt_cadastrou)";
+                cmd.CommandText = @"INSERT INTO tb_usuarios (ds_nome,nm_login,ds_senha,fl_ativo, nm_cadastrou, dt_cadastrou)
+                                   VALUES(@ds_nome, @nm_login, @senha,'A',@nm_cadastrou, @dt_cadastrou)";
             }
             else
             {
