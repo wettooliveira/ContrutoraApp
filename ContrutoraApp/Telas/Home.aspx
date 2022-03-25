@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" style="background-color:transparent">
+<html xmlns="http://www.w3.org/1999/xhtml" style="background-color: transparent">
 
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -35,10 +35,10 @@
         //    document.body.insertBefore(ifrm, Divform);
         //}
 
-        function CarregaPaginaFrame(value) {           
-            var frame = document.querySelector("iframe");       
-            frame.setAttribute("src", '' + value + '');          
-           
+        function CarregaPaginaFrame(value) {
+            var frame = document.querySelector("iframe");
+            frame.setAttribute("src", '' + value + '');
+
         }
 
         function abrirUsuario() {
@@ -70,13 +70,11 @@
 
     </script>
 
-
-
 </head>
 
-<body id="body"  class="imagem_body">
+<body id="body" class="">
 
-    <div class="divMenuPrincipal" style="width:100%">
+    <div class="divMenuPrincipal" style="width: 100%; position: fixed">
         <div class="divMenuLogo">
             <img id="img" class="imgLogo" src="../Css/Imagens/proibido.png" style="width: 40px; position: center; padding-top: 8px" />
         </div>
@@ -114,7 +112,7 @@
         <div id="divUsuario" class="divMenuUsuario" runat="server">
             <asp:Label ID="lblusuario" runat="server"></asp:Label>
         </div>
-         <div style="background-color: #343434">
+        <div style="background-color: #343434">
             <%--      <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />--%>
             <ul id="nav1">
                 <li>
@@ -123,14 +121,14 @@
                     <ul>
                         <li>
                             <img id="img2" class="imgLogo" src="../Css/Imagens/001-sair.png" style="width: 15%; display: inline; padding-top: 0" />
-                            <a href="Login.aspx" style="text-align: center; display: inline; width: 90%; padding-top:0">Sair</a>
+                            <a href="Login.aspx" style="text-align: center; display: inline; width: 90%; padding-top: 0">Sair</a>
                         </li>
-                       
+
                     </ul>
                 </li>
             </ul>
         </div>
-      <%--  <div class="divMenuFinal">
+        <%--  <div class="divMenuFinal">
             <ul>
                 <li>
                     <a  style="display:">
@@ -142,9 +140,13 @@
             </ul>            
         </div>--%>
     </div>
-    <br />   
 
-    <iframe id="iframePaginas"  style="width: 100%; height: 100%; border: none; position:center"></iframe>
+    <br />
+    <br />
+    <br />
+
+
+    <iframe id="iframe" style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;"></iframe>
 
     <footer class="footer navbar-fixed-bottom" style="height: 25px">
         <hgroup>
