@@ -80,7 +80,7 @@ public partial class consultar_cliente : System.Web.UI.Page
             {
                 Cliente usu = new Cliente();
                 usu.id = Convert.ToInt32(dr["id"]);
-                usu.RazaoSocial = dr["razaoSocial"].ToString();
+                usu.RazaoSocial = dr["razaoSocial"].ToString().ToUpper();
                 usu.CNPJ = dr["CNPJ"].ToString();
                 listCliente.Add(usu);
             }

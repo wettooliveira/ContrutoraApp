@@ -176,6 +176,12 @@
 
         }
 
+
+        function BuscarCliente() {
+       
+            window.open("consultar_cliente.aspx","popup","toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        }
+
     </script>
 
     <style>
@@ -212,7 +218,6 @@
                         </td>
                     </tr>
                     <tr>
-
                         <td>
                           
                                 <input type="radio" runat="server" class="radioinput" id="riCliente" name="fav_language" value="cliente" />
@@ -224,8 +229,10 @@
                         </td>
                     </tr>
                     <tr class="trBody">
-                        <td>
+                        <td style="display:inline-flex">
                             <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="500px"></asp:TextBox>
+                              &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width:30px;height:30px" title="Consultar Cliente" onclick="BuscarCliente();return false;"/>
                         </td>
                     </tr>
 

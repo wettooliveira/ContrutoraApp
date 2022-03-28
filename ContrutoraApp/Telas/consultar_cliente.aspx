@@ -160,6 +160,7 @@
             font-family: Calibri;
             color: #474747;
         }*/
+     
 
        .Grid td {
             padding: 2px;
@@ -196,13 +197,18 @@
                 line-height: 12px;
             }
 
+               .Grid  tr:hover {
+               background-color:  #4682B4;
+               color:white
+            }
+
             .Grid .pgr a {
                 color: Gray;
                 text-decoration: none;
             }
 
                 .Grid .pgr a:hover {
-                    color: #000;
+                    color: #fff;
                     text-decoration: none;
                 }
     </style>
@@ -228,6 +234,7 @@
                 </td>
                 <td>
                     <asp:TextBox ID="txtRazaoSocial" CssClass="form-control" runat="server" Width="280px"></asp:TextBox>
+                  
                 </td>
                 <td class="hidden">
                     <label for="txtRazaoSocial">
@@ -264,7 +271,7 @@
         </center>
 
         <asp:GridView ID="gdvCliente" runat="server" CssClass="Grid" AutoGenerateColumns="False"  Width="100%" AllowPaging="true" PageSize="10" 
-            AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center">
+            AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" SelectedRowStyle-CssClass="row" >
             <HeaderStyle CssClass="titulo" />
             <Columns>
                 <asp:TemplateField>
