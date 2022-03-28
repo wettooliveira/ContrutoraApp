@@ -234,13 +234,14 @@
         .Grid th {
             padding: 4px 2px;
             color: #fff;
-            background: #363670;
+            background:#4682B4;
             border-left: solid 1px #525252;
             font-size: 0.9em;
+            
         }
 
         .Grid .alt {
-            background: #fcfcfc;
+            background: #F8F8FF;
         }
 
         .Grid .pgr {
@@ -333,10 +334,10 @@
                     <tr>
                         <td align="">
                             <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
-                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" OnPageIndexChanging="GridUsuario_PageIndexChanging">
-                                <Columns>
-                                    <asp:TemplateField>
-                                        <HeaderTemplate>
+                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center"  OnPageIndexChanging="GridUsuario_PageIndexChanging">
+                                <Columns>                                    
+                                    <asp:TemplateField>  
+                                        <HeaderTemplate>                                             
                                             Nome
                                         </HeaderTemplate>
                                         <ItemTemplate>
@@ -345,7 +346,7 @@
                                        </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="usuario" HeaderText="usuario" />
+                                    <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Bottom" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="usuario" HeaderText="Usuario" />
                                 </Columns>
                             </asp:GridView>
                         </td>

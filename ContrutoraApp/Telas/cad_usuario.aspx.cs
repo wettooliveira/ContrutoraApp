@@ -203,7 +203,7 @@ public partial class cad_usuario : System.Web.UI.Page
         //abre a conexao
         cn.Open();
 
-        cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome);
+        cmd.Parameters.AddWithValue("@ds_nome", usuario.ds_nome.ToUpper());
         cmd.Parameters.AddWithValue("@usuario", usuario.usuario);
         cmd.Parameters.AddWithValue("@senha", usuario.senha);
         cmd.Parameters.AddWithValue("@nm_cadastrou", usuario.nm_cadastrou);

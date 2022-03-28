@@ -120,6 +120,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Telas\consultar_cliente.aspx" />
     <Content Include="Telas\cad_usuario.aspx" />
     <Content Include="Css\Imagens\list.png" />
     <Content Include="Css\Imagens\proibido.png" />
@@ -183,6 +184,13 @@
     </Compile>
     <Compile Include="Telas\cad_despesa.aspx.designer.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Telas\consultar_cliente.aspx.cs">
+      <DependentUpon>consultar_cliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\consultar_cliente.aspx.designer.cs">
+      <DependentUpon>consultar_cliente.aspx</DependentUpon>
     </Compile>
     <Compile Include="Telas\cad_usuario.aspx.cs">
       <DependentUpon>cad_usuario.aspx</DependentUpon>
