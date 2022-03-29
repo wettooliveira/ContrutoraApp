@@ -37,12 +37,11 @@ public partial class cad_cliente : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static String CarregarCliente(String id)
+    public static Cliente CarregarCliente(String id)
     {
-       
-        String retorno = "";
+        Cliente getCliente = new Cliente();
         Dao consultarCliente = new Dao();
-        retorno = consultarCliente.ConsultarCliente(id);
-        return retorno;
+        getCliente = consultarCliente.ConsultarCliente(id);
+        return getCliente;
     }
 }

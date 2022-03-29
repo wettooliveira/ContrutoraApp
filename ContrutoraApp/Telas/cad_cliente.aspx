@@ -193,9 +193,23 @@
                 success: function (data) {
                     var source = data.d;
 
-                    $('#txtRazaoSocial').val(source);
-                 
-
+                    if (source.tp_cli_fornc == 'cliente') {
+                        $("#riCliente").is(':checked');
+                    } else {
+                        $("#riFornecedor").is(':checked');
+                    }
+                  
+                    $('#txtRazaoSocial').val(source.RazaoSocial);
+                    $('#txtCnpj').val(source.CNPJ);
+                    $('#txtInscricao').val(source.IE);
+                    $('#txtTel').val(source.tel);
+                    $('#txtCEP').val(source.endereco.cep);                    
+                    $('#txtEndereco').val(source.endereco.logradouro);
+                    $('#txtNumero').val(source.endereco.numero);
+                    $('#txtComplemento').val(source.endereco.complemento);
+                    $('#txtBairro').val(source.endereco.bairro);
+                    $('#txtCidade').val(source.endereco.cidade);
+                    $('#txtUF').val(source.endereco.uf);
 
                 },
                 error: function (request, status, error) {

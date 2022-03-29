@@ -329,11 +329,11 @@ namespace ContrutoraApp
             return retorno;
         }
 
-        public String ConsultarCliente(String id)
+        public Cliente ConsultarCliente(String id)
         {
-
-            String RETORNO = "";
-            List<Contas> listaDados2 = new List<Contas>();
+                       
+            List<Cliente> listaCliente = new List<Cliente>();
+            Cliente cliente = new Cliente();
 
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
@@ -350,7 +350,21 @@ namespace ContrutoraApp
 
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"select id, razaoSocial, CNPJ from tb_cliente where id = @id";
+            cmd.CommandText = @"select id,
+                                       razaoSocial,
+                                       CNPJ,
+                                       IE,
+                                       tel,
+                                       cep,
+                                       logradouro,
+                                       numero,
+                                       complemento,
+                                       bairro,
+                                       cidade,
+                                       uf,
+                                       obs,
+                                       tp_cli_fornc,                                      
+                                       fl_ativo from tb_cliente WHERE id = @id";
 
 
             cmd.Parameters.AddWithValue("@id", id);
@@ -358,19 +372,34 @@ namespace ContrutoraApp
             SqlDataReader dr = cmd.ExecuteReader();
 
 
-                while (dr.Read())
+            while (dr.Read())
+            {
+                
+                cliente.id = Convert.ToInt32(dr["id"]);
+                cliente.RazaoSocial = dr["razaoSocial"].ToString();
+                cliente.CNPJ = dr["CNPJ"].ToString();
+                cliente.IE = dr["IE"].ToString();
+                cliente.tel = dr["tel"].ToString();
+                cliente.endereco = new Endereco
                 {
-                    
-                    RETORNO = dr["id"].ToString();
-             
-                }
-            
-            
+                    logradouro = dr["logradouro"].ToString(),
+                    cep = dr["cep"].ToString(),
+                    numero = dr["numero"].ToString(),
+                    complemento = dr["complemento"].ToString(),
+                    bairro = dr["bairro"].ToString(),
+                    cidade = dr["cidade"].ToString(),
+                    uf = dr["uf"].ToString()
+                };
+                cliente.obs = dr["obs"].ToString();
+                cliente.tp_cli_fornc = dr["tp_cli_fornc"].ToString();                
+            }
+
+
 
             dr.Close();
             cn.Close();
 
-            return RETORNO;
+            return cliente;
         }
 
 
