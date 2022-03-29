@@ -20,7 +20,6 @@
     <script type="text/javascript" language="javascript">
         const { checked } = require("modernizr");
 
-
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success',
@@ -248,7 +247,6 @@
         .swal2-popup {
             font-size: medium !important;
         }
-
         .btn {
             margin: 0 0.5rem;
             font-size: medium !important;
@@ -260,12 +258,11 @@
             height: 18px;
         }
     </style>
+
 </head>
 <body>
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnUsuario" runat="server" />
-
-
         <div>
             <center>
                 <table>
@@ -278,7 +275,6 @@
                     </tr>
                     <tr>
                         <td>
-
                             <input type="radio" runat="server" class="radioinput" id="riCliente" name="fav_language" value="cliente" />
                             <label>Cliente</label>
                             &nbsp;&nbsp;
@@ -348,7 +344,6 @@
                                 <tr>
                                     <td>
                                         <asp:TextBox ID="txtCidade" runat="server" placeholder="Cidade" CssClass="form-control" Width="200px"></asp:TextBox>
-
                                     </td>
                                     <td style="width: 220px"></td>
                                     <td>
@@ -383,8 +378,6 @@
 
                        
                     </tr>--%>
-
-
                     <tr>
                         <td style="text-align: center">
                             <br />
