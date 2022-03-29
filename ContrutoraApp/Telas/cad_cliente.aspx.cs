@@ -35,4 +35,14 @@ public partial class cad_cliente : System.Web.UI.Page
         return inserirdados.GravarCliente(cliente);
 
     }
+
+    [WebMethod]
+    public static String CarregarCliente(String id)
+    {
+       
+        String retorno = "";
+        Dao consultarCliente = new Dao();
+        retorno = consultarCliente.ConsultarCliente(id);
+        return retorno;
+    }
 }

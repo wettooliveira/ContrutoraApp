@@ -182,6 +182,37 @@
             window.open("consultar_cliente.aspx","popup","toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
         }
 
+        function selCliente(id,nome,cnpj) {
+     
+            $.ajax({
+                type: "POST",
+                url: "cad_cliente.aspx/CarregarCliente",
+                data: "{'id':'" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    $('#txtRazaoSocial').val(source);
+                 
+
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+        }
+
     </script>
 
     <style>

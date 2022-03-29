@@ -134,7 +134,7 @@ namespace ContrutoraApp
         public String GravarTempDetalhesDao(Contas Contas)
         {
             String retorno = "";
-           
+
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -171,7 +171,7 @@ namespace ContrutoraApp
                 retorno = "ERRO";
             }
 
-             return retorno;
+            return retorno;
         }
 
         public Contas BuscarDadosDetalhesModal(Contas contas, string tipo)
@@ -214,8 +214,8 @@ namespace ContrutoraApp
             cmd.CommandText = @"SELECT id_temp_detalhes_contasPagar, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
                                 OUTER APPLY(select sum(valor*qtde) as total from tb_temp_detalhes_contasPagar)total  
                                 WHERE id_contaPagar = @id_obra
-                                ORDER BY 1 DESC";                           
-                             
+                                ORDER BY 1 DESC";
+
             cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
             SqlDataReader dr = cmd.ExecuteReader();
@@ -234,7 +234,7 @@ namespace ContrutoraApp
                     //dadosTabelaDetalhes.valor_string = soma.ToString("N2");
 
                     listaDados1.Add(dadosTabelaDetalhes);
-                    retorno.listaContas1 = listaDados1; 
+                    retorno.listaContas1 = listaDados1;
                 }
             }
             else
@@ -248,7 +248,7 @@ namespace ContrutoraApp
             dr.Close();
             //cmd.Parameters.Clear();
 
-         
+
 
             ////comando de instrução do banco de dados
             //cmd.CommandText = @"SELECT id, desc_detalhe, qtde, valor, total FROM tb_detalhes_contasPagar 
@@ -259,7 +259,7 @@ namespace ContrutoraApp
             //cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
             //dr = cmd.ExecuteReader();
-      
+
 
             //if (dr.HasRows)
             //{
@@ -327,6 +327,50 @@ namespace ContrutoraApp
 
             cn.Close();
             return retorno;
+        }
+
+        public String ConsultarCliente(String id)
+        {
+
+            String RETORNO = "";
+            List<Contas> listaDados2 = new List<Contas>();
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"select id, razaoSocial, CNPJ from tb_cliente where id = @id";
+
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+                while (dr.Read())
+                {
+                    
+                    RETORNO = dr["id"].ToString();
+             
+                }
+            
+            
+
+            dr.Close();
+            cn.Close();
+
+            return RETORNO;
         }
 
 

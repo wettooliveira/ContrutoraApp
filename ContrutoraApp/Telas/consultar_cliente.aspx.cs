@@ -66,7 +66,7 @@ public partial class consultar_cliente : System.Web.UI.Page
         {
 
             //comando de instrução do banco de dados
-            sql = "select id, razaoSocial, CNPJ from tb_cliente";
+            sql = "select id, razaoSocial, CNPJ from tb_cliente where fl_ativo = 'A'";
 
 
             cmd.CommandText = sql;
@@ -100,14 +100,16 @@ public partial class consultar_cliente : System.Web.UI.Page
         gdvCliente.DataSource = listCliente;
         gdvCliente.DataBind();
 
-    }  
+    }
 
-    protected void GridUsuario_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    protected void gdvCliente_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gdvCliente.PageIndex = e.NewPageIndex;
 
         btnFiltrar_Click(null, null);
     }
+
+
 
 
 }

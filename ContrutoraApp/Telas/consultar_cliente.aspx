@@ -23,94 +23,9 @@
             window.resizeTo(800, 600);
         }
 
-        function seleciona(cod, cnpj, nome, siglaTipoPessoa, ie) {
-            if (location.search.match(/EmissaoCTE/)) {
-                if (location.search.match(/Remetente/)) {
-                    window.opener.selCliente('Remetente', cod, cnpj, nome, siglaTipoPessoa, ie);
-                }
-                else if (location.search.match(/Destinatario/)) {
-                    window.opener.selCliente('Destinatario', cod, cnpj, nome, siglaTipoPessoa, ie);
-                }
-                else if (location.search.match(/Consignatario/)) {
-                    window.opener.selCliente('Consignatario', cod, cnpj, nome, siglaTipoPessoa, ie);
-                }
-                else if (location.search.match(/Expedidor/)) {
-                    window.opener.selCliente('Expedidor', cod, cnpj, nome, siglaTipoPessoa, ie);
-                }
-                else if (location.search.match(/Recebedor/)) {
-                    window.opener.selCliente('Recebedor', cod, cnpj, nome, siglaTipoPessoa, ie);
-                }
-            }
-            else if (location.search.match(/__inmodal=true/)) {
-                if (location.search.match(/Remetente/)) {
-                    window.parent.selCliente('Remetente', cod, cnpj, nome, siglaTipoPessoa);
-                }
-                else if (location.search.match(/Destinatario/)) {
-                    window.parent.selCliente('Destinatario', cod, cnpj, nome, siglaTipoPessoa)
-                }
-                else if (location.search.match(/Consignatario/)) {
-                    window.parent.selCliente('Consignatario', cod, cnpj, nome, siglaTipoPessoa);
-                }
-                else if (location.search.match(/Expedidor/)) {
-                    window.parent.selCliente('Expedidor', cod, cnpj, nome, siglaTipoPessoa);
-                }
-                else if (location.search.match(/Recebedor/)) {
-                    window.parent.selCliente('Recebedor', cod, cnpj, nome, siglaTipoPessoa);
-                }
-            }
-            else if (location.search.match(/Remetente/)) {
-                window.opener.selCliente('Remetente', cod, cnpj, nome, siglaTipoPessoa);
-            }
-            else if (location.search.match(/Destinatario/)) {
-                window.opener.selCliente('Destinatario', cod, cnpj, nome, siglaTipoPessoa);
-            }
-            else if (location.search.match(/Consignatario/)) {
-                window.opener.selCliente('Consignatario', cod, cnpj, nome, siglaTipoPessoa);
-            }
-            else if (location.search.match(/Expedidor/)) {
-                window.opener.selCliente('Expedidor', cod, cnpj, nome, siglaTipoPessoa);
-            }
-            else if (location.search.match(/Recebedor/)) {
-                window.opener.selCliente('Recebedor', cod, cnpj, nome, siglaTipoPessoa);
-            }
-            else if (location.search.match(/RegraCliente/)) {
-                window.opener.selCliente(cod, cnpj, nome);
-            }
-            else if (location.search.match(/RegraAgend/)) {
-                window.opener.selAgend(cod, nome);
-            }
-            else if (location.search.match(/ClienteGp/)) {
-                window.opener.selClienteGp(cod, cnpj, nome);
-            }
-            else if (location.search.match(/RegraTI/)) {
-                window.opener.selTI(cod, nome);
-            }
-            else if (location.search.match(/seleciona/)) {
-                window.opener.selecionaCliente(cod, cnpj, nome);
-            }
-            else if (location.search.match(/Nota/)) {
-                window.opener.selCliente('Nota', cod, cnpj, nome);
-            }
-            else if (location.search.match(/ClienteTerc/)) {
-                window.opener.selCliTerc(cod, nome);
-            }
-            else if (location.search.match(/OcorrDescarga/)) {
-                window.opener.selCliente(cod, nome);
-            }
-            else {
-                if (document.form1.hdnAdm.value == 'N') {
-                    window.opener.selProduto(cod, nome);
-                } else {
-                    window.opener.selCliente(cod);
-                }
-            }
-
-            if (location.search.match(/__inmodal=true/)) {
-                window.parent.$.modalLink("close");
-            }
-            else {
-                window.close();
-            }
+        function seleciona(id, nome, cnpj) {           
+            window.opener.selCliente(id, nome, cnpj);
+            window.close();
         }
 
         function cadCliente() {
@@ -160,9 +75,9 @@
             font-family: Calibri;
             color: #474747;
         }*/
-     
 
-       .Grid td {
+
+        .Grid td {
             padding: 2px;
             border: solid 1px #c1c1c1;
         }
@@ -170,10 +85,9 @@
         .Grid th {
             padding: 4px 2px;
             color: #fff;
-            background:#4682B4;
+            background: #4682B4;
             border-left: solid 1px #525252;
             font-size: 0.9em;
-            
         }
 
         .Grid .alt {
@@ -197,20 +111,28 @@
                 line-height: 12px;
             }
 
-               .Grid  tr:hover {
-               background-color:  #4682B4;
-               color:white
-            }
+        .Grid tr:hover {
+            background-color: #4682B4;
+            color: white;
+        }
 
-            .Grid .pgr a {
-                color: Gray;
+        .Grid td:hover {
+            cursor: pointer;
+        }
+
+        .Grid pgr:hover {
+            cursor: pointer;
+        }
+
+        .Grid .pgr a {
+            color: Gray;
+            text-decoration: none;
+        }
+
+            .Grid .pgr a:hover {
+                color: #fff;
                 text-decoration: none;
             }
-
-                .Grid .pgr a:hover {
-                    color: #fff;
-                    text-decoration: none;
-                }
     </style>
 
 </head>
@@ -234,7 +156,7 @@
                 </td>
                 <td>
                     <asp:TextBox ID="txtRazaoSocial" CssClass="form-control" runat="server" Width="280px"></asp:TextBox>
-                  
+
                 </td>
                 <td class="hidden">
                     <label for="txtRazaoSocial">
@@ -270,21 +192,23 @@
             <asp:Label runat="server" ID="lblCliente" Visible="false">Nenhum cliente encontrado!</asp:Label>
         </center>
 
-        <asp:GridView ID="gdvCliente" runat="server" CssClass="Grid" AutoGenerateColumns="False"  Width="100%" AllowPaging="true" PageSize="10" 
-            AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" SelectedRowStyle-CssClass="row" >
-            <HeaderStyle CssClass="titulo" />
+        <asp:GridView ID="gdvCliente" runat="server" CssClass="Grid" AutoGenerateColumns="False" Width="100%" AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" SelectedRowStyle-CssClass="row" OnPageIndexChanging="gdvCliente_PageIndexChanging" >
+            
+         <%--   <HeaderStyle CssClass="titulo" />--%>
             <Columns>
                 <asp:TemplateField>
                     <HeaderTemplate>
-                        Razão Social
+                        Código
                     </HeaderTemplate>
                     <ItemStyle HorizontalAlign="Center" />
                     <ItemTemplate>
                         <div>
-                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>','<%# DataBinder.Eval(Container.DataItem, "RazaoSocial")%>','<%# DataBinder.Eval(Container.DataItem, "CNPJ")%>')"> </span> </b>
+                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>','<%# DataBinder.Eval(Container.DataItem, "RazaoSocial")%>','<%# DataBinder.Eval(Container.DataItem, "CNPJ")%>')">
+                                <%# DataBinder.Eval(Container.DataItem, "id")%> </span></b>                              
                         </div>
                     </ItemTemplate>
                 </asp:TemplateField>
+            
                 <asp:BoundField HeaderText="Nome Fantasia" DataField="RazaoSocial" ItemStyle-HorizontalAlign="Center" />
                 <asp:BoundField HeaderText="CPF/CNPJ" DataField="CNPJ" ItemStyle-HorizontalAlign="Center" />
                 <%--<asp:TemplateField>
@@ -296,7 +220,7 @@
                         <%# DataBinder.Eval(Container.DataItem, "cod_interno")%>
                     </ItemTemplate>
                 </asp:TemplateField>--%>
-               <%-- <asp:TemplateField>
+                <%-- <asp:TemplateField>
                     <HeaderTemplate>
                         Cidade
                     </HeaderTemplate>
@@ -308,7 +232,7 @@
                     </ItemTemplate>
                 </asp:TemplateField>--%>
                 <%--<asp:BoundField HeaderText="Cidade" DataField='' ItemStyle-HorizontalAlign="Center" />--%>
-               <%-- <asp:BoundField HeaderText="Status" DataField="fl_ativo" ItemStyle-HorizontalAlign="Center" />--%>
+                <%-- <asp:BoundField HeaderText="Status" DataField="fl_ativo" ItemStyle-HorizontalAlign="Center" />--%>
             </Columns>
         </asp:GridView>
 
