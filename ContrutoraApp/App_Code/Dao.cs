@@ -81,11 +81,166 @@ namespace ContrutoraApp
                 cmd.ExecuteNonQuery();
 
 
-                retorno = "OK";
+                retorno = "OK,gravar";
             }
             catch (Exception ex)
             {
-                retorno = "ERRO";
+                retorno = "ERRO,";
+            }
+
+            cn.Close();
+            return retorno;
+        }
+        public Cliente ConsultarCliente(String id)
+        {
+
+            List<Cliente> listaCliente = new List<Cliente>();
+            Cliente cliente = new Cliente();
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"select id,
+                                       razaoSocial,
+                                       CNPJ,
+                                       IE,
+                                       tel,
+                                       cep,
+                                       logradouro,
+                                       numero,
+                                       complemento,
+                                       bairro,
+                                       cidade,
+                                       uf,
+                                       obs,
+                                       tp_cli_fornc,                                      
+                                       fl_ativo from tb_cliente WHERE id = @id";
+
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+            while (dr.Read())
+            {
+
+                cliente.id = Convert.ToInt32(dr["id"]);
+                cliente.RazaoSocial = dr["razaoSocial"].ToString();
+                cliente.CNPJ = dr["CNPJ"].ToString();
+                cliente.IE = dr["IE"].ToString();
+                cliente.tel = dr["tel"].ToString();
+                cliente.endereco = new Endereco
+                {
+                    logradouro = dr["logradouro"].ToString(),
+                    cep = dr["cep"].ToString(),
+                    numero = dr["numero"].ToString(),
+                    complemento = dr["complemento"].ToString(),
+                    bairro = dr["bairro"].ToString(),
+                    cidade = dr["cidade"].ToString(),
+                    uf = dr["uf"].ToString()
+                };
+                cliente.obs = dr["obs"].ToString();
+                cliente.tp_cli_fornc = dr["tp_cli_fornc"].ToString();
+            }
+
+
+
+            dr.Close();
+            cn.Close();
+
+            return cliente;
+        }
+        public String AlterarClientes(Cliente cliente)
+        {
+            String retorno = "";
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+            //abre a conexao
+            cn.Open();
+
+            try
+            {
+
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"update table tb_cliente(id,
+                                                       razaoSocial,
+                                                       CNPJ, 
+                                                       IE,
+                                                       tel,
+                                                       cep,
+                                                       logradouro,
+                                                       numero,
+                                                       complemento,
+                                                       bairro,
+                                                       cidade,
+                                                       uf,
+                                                       obs,
+                                                       tp_cli_fornc,
+                                                       nm_cadastrou,
+                                                       dt_cadastrou)
+                                                values(next value for dbo.CLIENTE,
+                                                       @razaoSocial,
+                                                       @CNPJ, 
+                                                       @IE,
+                                                       @tel,
+                                                       @cep,
+                                                       @logradouro,
+                                                       @numero,
+                                                       @complemento,
+                                                       @bairro,
+                                                       @cidade,
+                                                       @uf,
+                                                       @obs,
+                                                       @tp_cli_fornc,
+                                                       @nm_cadastrou,
+                                                       @dt_cadastrou)";
+
+                cmd.Parameters.AddWithValue("@razaoSocial", cliente.RazaoSocial);
+                cmd.Parameters.AddWithValue("@CNPJ", cliente.CNPJ);
+                cmd.Parameters.AddWithValue("@IE", cliente.IE);
+                cmd.Parameters.AddWithValue("@tel", cliente.tel);
+                cmd.Parameters.AddWithValue("@cep", cliente.endereco.cep);
+                cmd.Parameters.AddWithValue("@logradouro", cliente.endereco.logradouro);
+                cmd.Parameters.AddWithValue("@numero", cliente.endereco.numero);
+                cmd.Parameters.AddWithValue("@complemento", cliente.endereco.complemento);
+                cmd.Parameters.AddWithValue("@bairro", cliente.endereco.bairro);
+                cmd.Parameters.AddWithValue("@cidade", cliente.endereco.cidade);
+                cmd.Parameters.AddWithValue("@uf", cliente.endereco.uf);
+                cmd.Parameters.AddWithValue("@obs", cliente.obs);
+                cmd.Parameters.AddWithValue("@tp_cli_fornc", cliente.tp_cli_fornc);
+                cmd.Parameters.AddWithValue("@nm_cadastrou", cliente.nm_cadastrou);
+                cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
+
+                cmd.ExecuteNonQuery();
+
+
+                retorno = "OK,gravar";
+            }
+            catch (Exception ex)
+            {
+                retorno = "ERRO,";
             }
 
             cn.Close();
@@ -329,78 +484,8 @@ namespace ContrutoraApp
             return retorno;
         }
 
-        public Cliente ConsultarCliente(String id)
-        {
-                       
-            List<Cliente> listaCliente = new List<Cliente>();
-            Cliente cliente = new Cliente();
+      
 
-            //// Passa o caminho do banco de dados para um string      
-            string connectionString = Conexao.StrConexao;
-
-            //chama o metodo de conexao com o banco
-            SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = connectionString;
-
-            //construtor command para obter dados44
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            //abre a conexao
-            cn.Open();
-
-
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"select id,
-                                       razaoSocial,
-                                       CNPJ,
-                                       IE,
-                                       tel,
-                                       cep,
-                                       logradouro,
-                                       numero,
-                                       complemento,
-                                       bairro,
-                                       cidade,
-                                       uf,
-                                       obs,
-                                       tp_cli_fornc,                                      
-                                       fl_ativo from tb_cliente WHERE id = @id";
-
-
-            cmd.Parameters.AddWithValue("@id", id);
-
-            SqlDataReader dr = cmd.ExecuteReader();
-
-
-            while (dr.Read())
-            {
-                
-                cliente.id = Convert.ToInt32(dr["id"]);
-                cliente.RazaoSocial = dr["razaoSocial"].ToString();
-                cliente.CNPJ = dr["CNPJ"].ToString();
-                cliente.IE = dr["IE"].ToString();
-                cliente.tel = dr["tel"].ToString();
-                cliente.endereco = new Endereco
-                {
-                    logradouro = dr["logradouro"].ToString(),
-                    cep = dr["cep"].ToString(),
-                    numero = dr["numero"].ToString(),
-                    complemento = dr["complemento"].ToString(),
-                    bairro = dr["bairro"].ToString(),
-                    cidade = dr["cidade"].ToString(),
-                    uf = dr["uf"].ToString()
-                };
-                cliente.obs = dr["obs"].ToString();
-                cliente.tp_cli_fornc = dr["tp_cli_fornc"].ToString();                
-            }
-
-
-
-            dr.Close();
-            cn.Close();
-
-            return cliente;
-        }
 
 
     }

@@ -11,13 +11,15 @@
     <link rel="stylesheet" type="text/css" href="../Css/style.css" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
-       <%-- <script type="text/javascript" src="../Scripts/jquery-3.3.1.js"></script>--%>
-    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>   
-     <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
+    <%-- <script type="text/javascript" src="../Scripts/jquery-3.3.1.js"></script>--%>
+    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
+    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
     <title></title>
 
     <script type="text/javascript" language="javascript">
+        const { checked } = require("modernizr");
+
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -28,16 +30,15 @@
         });
 
         function Inserir() {
-            
+
             var tipo;
-           
+
             if ($("#riCliente").is(':checked')) {
                 tipo = "cliente";
-            } else if ($('#riFornecedor').is(':checked'))
-            {
+            } else if ($('#riFornecedor').is(':checked')) {
                 tipo = "fornecedor";
             }
-        
+         
             var RazaoSocial = $('#txtRazaoSocial').val();
             var CNPJ = $('#txtCnpj').val();
             var IE = $('#txtInscricao').val();
@@ -74,25 +75,35 @@
             };
 
             var obj = { 'cliente': Cliente };
-            console.log(obj);
+
+            var URL
+            if ($('#btnGravar').val() == 'Gravar') {
+                URL = "cad_cliente.aspx/Gravar";
+            } else {
+                URL = "cad_cliente.aspx/Alterar";
+            }
+
             $.ajax({
                 type: "POST",
-                url: "cad_cliente.aspx/Gravar",
+                url: URL,
                 data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
 
 
-                    if (data.d == 'OK') {
-                        //$('#lblAviso').html('');
-                        //$('#lblAviso').html('Gravado com sucesso!');
-                        //$('#lblAviso').css('color', 'green');
+                    if (data.d.split(',')[0] == 'OK') {
                         $('#lblAviso').html('');
-                        alertCss('Gravar');
+                        if (data.d.split(',')[1] == 'gravar') {
+                           
+                            alertCss('Gravar');
+                        } else {
+                           
+                            alertCss('Alterar');
+                        }
+                      
 
-
-                    } else if (data.d == 'ERRO') {
+                    } else if (data.d.split(',')[0] == 'ERRO') {
                         $('#lblAviso').html('');
                         $('#lblAviso').html('Tente novamente, algo deu errado!');
                         $('#lblAviso').css('color', 'red');
@@ -176,14 +187,13 @@
 
         }
 
-
         function BuscarCliente() {
-       
-            window.open("consultar_cliente.aspx","popup","toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+
+            window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
         }
 
-        function selCliente(id,nome,cnpj) {
-     
+        function selCliente(id, nome, cnpj) {
+
             $.ajax({
                 type: "POST",
                 url: "cad_cliente.aspx/CarregarCliente",
@@ -192,24 +202,28 @@
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
-
+                    alert(source.tp_cli_fornc);
                     if (source.tp_cli_fornc == 'cliente') {
-                        $("#riCliente").is(':checked');
+                        $("#riCliente").prop("checked", true);
+
                     } else {
-                        $("#riFornecedor").is(':checked');
+
+                        $("#riFornecedor").prop("checked", true);
                     }
-                  
+
                     $('#txtRazaoSocial').val(source.RazaoSocial);
                     $('#txtCnpj').val(source.CNPJ);
                     $('#txtInscricao').val(source.IE);
                     $('#txtTel').val(source.tel);
-                    $('#txtCEP').val(source.endereco.cep);                    
+                    $('#txtCEP').val(source.endereco.cep);
                     $('#txtEndereco').val(source.endereco.logradouro);
                     $('#txtNumero').val(source.endereco.numero);
                     $('#txtComplemento').val(source.endereco.complemento);
                     $('#txtBairro').val(source.endereco.bairro);
                     $('#txtCidade').val(source.endereco.cidade);
                     $('#txtUF').val(source.endereco.uf);
+
+                    $('#btnGravar').val('Alterar');
 
                 },
                 error: function (request, status, error) {
@@ -241,13 +255,13 @@
         }
         /*Termina aqui o style do Alert*/
 
-        .radioinput{
-            width:18px;
-            height:18px;
+        .radioinput {
+            width: 18px;
+            height: 18px;
         }
     </style>
 </head>
-<body >
+<body>
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnUsuario" runat="server" />
 
@@ -264,20 +278,20 @@
                     </tr>
                     <tr>
                         <td>
-                          
-                                <input type="radio" runat="server" class="radioinput" id="riCliente" name="fav_language" value="cliente" />
-                                <label>Cliente</label>
+
+                            <input type="radio" runat="server" class="radioinput" id="riCliente" name="fav_language" value="cliente" />
+                            <label>Cliente</label>
                             &nbsp;&nbsp;
                                 <input type="radio" runat="server" class="radioinput" id="riFornecedor" name="fav_language" value="fornecedor" />
-                                <label>Fornecedor</label>
-                          
+                            <label>Fornecedor</label>
+
                         </td>
                     </tr>
                     <tr class="trBody">
-                        <td style="display:inline-flex">
+                        <td style="display: inline-flex">
                             <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Nome\Razão Social" CssClass="form-control" Width="500px"></asp:TextBox>
-                              &nbsp;&nbsp;
-                            <input type="image" src="../Css/Imagens/lupa.png" style="width:30px;height:30px" title="Consultar Cliente" onclick="BuscarCliente();return false;"/>
+                            &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente();return false;" />
                         </td>
                     </tr>
 
@@ -374,7 +388,7 @@
                     <tr>
                         <td style="text-align: center">
                             <br />
-                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="Inserir();return false;" />
+                            <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success" Text="Gravar" OnClientClick="Inserir();return false;" />
                         </td>
                     </tr>
                     <tr>

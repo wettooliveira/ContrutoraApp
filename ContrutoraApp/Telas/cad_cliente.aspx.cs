@@ -44,4 +44,13 @@ public partial class cad_cliente : System.Web.UI.Page
         getCliente = consultarCliente.ConsultarCliente(id);
         return getCliente;
     }
+
+    [WebMethod]
+    public static String AlterarCliente(Cliente cliente)
+    {
+        String retorno = "";  
+        Dao consultarCliente = new Dao();
+        return retorno;
+      
+    }
 }
