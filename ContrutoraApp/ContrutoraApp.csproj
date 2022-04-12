@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\Imagens\lupa.png" />
+    <Content Include="Telas\cad_obra.aspx" />
     <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Css\Imagens\001-sair.png" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -180,6 +181,14 @@
     <Compile Include="App_Code\Endereco.cs" />
     <Compile Include="App_Code\Dao.cs" />
     <Compile Include="App_Code\Despesa.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Telas\cad_obra.aspx.cs">
+      <DependentUpon>cad_obra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\cad_obra.aspx.designer.cs">
+      <DependentUpon>cad_obra.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Telas\cad_despesa.aspx.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

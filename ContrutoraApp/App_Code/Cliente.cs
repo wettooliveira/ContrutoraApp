@@ -17,6 +17,8 @@ namespace ContrutoraApp
         public Endereco endereco { get; set; }
         public String nm_cadastrou { get; set; }
         public DateTime dt_cadastrou { get; set; }
+
+        public DateTime data { get; set; }
         public String tp_cli_fornc { get; set; }
 
 
