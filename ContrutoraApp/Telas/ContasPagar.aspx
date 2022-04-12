@@ -581,12 +581,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td id="tdObras" colspan="3">
+                        <td colspan="3">
                             <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Selecione Tipo Despesa" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Despesa1" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="Despesa2" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Despesa3" Value="3"></asp:ListItem>
+                     
                             </asp:DropDownList>
                         </td>
                     </tr>

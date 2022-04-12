@@ -17,11 +17,11 @@ namespace ContrutoraApp
 
             if (!IsPostBack)
             {
-
+                CarregaDespesa();
             }
             else
             {
-
+                
             }
         }
 
@@ -219,6 +219,48 @@ namespace ContrutoraApp
             cn.Close();
 
             return "OK";
+
+        }
+               
+        public void  CarregaDespesa()
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+                                  
+            //abre a conexao
+            cn.Open();
+
+            cmd.CommandText = @"SELECT * FROM tb_despesa ORDER BY 2 DESC";
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            List<Despesa> lista = new List<Despesa>();
+            while (dr.Read())
+            {
+                Despesa desp = new Despesa();
+                desp.id_despesa = Convert.ToInt32(dr["id_despesa"]);
+                desp.desc_despesa = dr["desc_despesa"].ToString();
+                lista.Add(desp);
+            }
+
+            dr.Close();
+            cn.Close();
+
+            ddlDespesa.DataSource = lista;
+            ddlDespesa.DataTextField = "desc_despesa";
+            ddlDespesa.DataValueField = "id_despesa";
+            ddlDespesa.DataBind();
+            ddlDespesa.Items.Add(new ListItem("Selecione...", "0"));
+            ddlDespesa.SelectedValue = "0";
+           
 
         }
 

@@ -179,6 +179,7 @@
     <Compile Include="App_Code\BuscaAPI.cs" />
     <Compile Include="App_Code\Endereco.cs" />
     <Compile Include="App_Code\Dao.cs" />
+    <Compile Include="App_Code\Despesa.cs" />
     <Compile Include="Telas\cad_despesa.aspx.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
