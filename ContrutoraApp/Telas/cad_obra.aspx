@@ -53,16 +53,50 @@
         function Gravar() {
 
 
-            var despesa = $('#txtNome').val();
-            //var login = $('#txtUsuarioSenha').val();
-            //var senha = $('#txtSenha').val();
-            //var usuario = $('#hdnUsuario').val();
+            var id_cliente = $('#hdnCliente').val();
+            var nm_obra = $('#txtNomeObra').val();
+            var resp = $('#txtResponsavel').val();
+            var CEP = $('#txtCEP').val();
+            var logradouro = $('#txtEndereco').val();
+            var numero = $('#txtNumero').val();
+            var complemento = '';
+            var bairro = $('#txtBairro').val();
+            var cidade = $('#txtCidade').val();
+            var UF = $('#txtUF').val();
+            var usuario = $('#hdnUsuario').val();
+
+            var Cliente = {
+
+                id: id_cliente,
+                nm_cadastrou: usuario
+            }
+
+            var Endereco = {
+                cep: CEP,
+                logradouro: logradouro,
+                numero: numero,
+                complemento: complemento,
+                bairro: bairro,
+                cidade: cidade,
+                uf: UF
+            };
+
+            var Obra = {
+                nome: nm_obra,
+                responsavel: resp,
+                endereco: Endereco,
+                cliente: Cliente
+
+            };
+
+            var obj = { 'obra': Obra };
+
+            console.log(obj);
 
             $.ajax({
                 type: "POST",
                 url: "cad_obra.aspx/Gravar",
-                /*data: "{'m':'m'}",*/
-                data: "{'despesa':'" + despesa + "'}",
+                data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
@@ -89,6 +123,94 @@
 
         }
 
+        function BuscarCep(cep) {
+
+            $.ajax({
+                type: "POST",
+                url: "cad_obra.aspx/BuscarCEP",
+                data: "{'cep':'" + cep + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    $('#txtEndereco').val('');
+                    $('#txtBairro').val('');
+                    $('#txtCidade').val('');
+                    $('#txtUF').val('');
+
+                    if (source.logradouro == 'ERRO') {
+
+                    } else {
+
+                        $('#txtEndereco').val(source.logradouro);
+                        $('#txtBairro').val(source.bairro);
+                        $('#txtCidade').val(source.cidade);
+                        $('#txtUF').val(source.uf);
+                    }
+
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
+        }
+
+        function BuscarCliente() {
+
+            window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        }
+
+        function selCliente(id, nome, cnpj) {
+
+            $.ajax({
+                type: "POST",
+                url: "cad_cliente.aspx/CarregarCliente",
+                data: "{'id':'" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    $('#hdnCliente').val(source.id);
+                    $('#txtRazaoSocial').val(source.RazaoSocial);
+                    $('#txtCEP').val(source.endereco.cep);
+                    $('#txtEndereco').val(source.endereco.logradouro);
+                    $('#txtNumero').val(source.endereco.numero);
+                    $('#txtComplemento').val(source.endereco.complemento);
+                    $('#txtBairro').val(source.endereco.bairro);
+                    $('#txtCidade').val(source.endereco.cidade);
+                    $('#txtUF').val(source.endereco.uf);
+
+
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+        }
+
     </script>
 
     <style type="text/css">
@@ -105,23 +227,98 @@
     </style>
 </head>
 <body runat="server">
-    <asp:HiddenField ID="hdnUsuario" runat="server"/>
     <form id="form1" runat="server">
+        <asp:HiddenField runat="server" ID="hdnUsuario" />
+        <asp:HiddenField runat="server" ID="hdnCliente" />
         <div>
             <center>
                 <table>
                     <tr>
                         <td>
                             <center>
-                                <h3>Cadastrar Tipo Despesa</h3>
+                                <h3>Cadastrar Obra</h3>
                             </center>
+                        </td>
+                    </tr>
+                    <tr class="trBody">
+                        <td style="display: inline-flex">
+                            <asp:TextBox ID="txtObra" runat="server" placeholder="Obra" CssClass="form-control" Width="500px"></asp:TextBox>
+                            &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Obra" onclick="BuscarCliente();return false;" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <asp:TextBox ID="txtNome" placeholder="Nome" Width="400px" CssClass="form-control" runat="server"></asp:TextBox>
+                            <br />
                         </td>
                     </tr>
+                    <tr class="trBody">
+                        <td style="display: inline-flex">
+                            <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Cliente" CssClass="form-control" Width="500px"></asp:TextBox>
+                            &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente();return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtNomeObra" placeholder="Nome Obra" Width="400px" CssClass="form-control" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtCEP" runat="server" placeholder="CEP" CssClass="form-control" Width="200px" onkeypress="return txtBoxFormat(this, '99999-999', event);" onblur="BuscarCep(this.value);" MaxLength="9"></asp:TextBox>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width: 500px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="txtEndereco" runat="server" placeholder="Endereco" CssClass="form-control" Width="400px"></asp:TextBox>
+                                    </td>
+                                    <td style="width: 20px"></td>
+                                    <td>
+                                        <asp:TextBox ID="txtNumero" runat="server" placeholder="numero" CssClass="form-control" Width="80px"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtBairro" runat="server" placeholder="Bairro" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 500px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="txtCidade" runat="server" placeholder="Cidade" CssClass="form-control" Width="200px"></asp:TextBox>
+                                    </td>
+                                    <td style="width: 220px"></td>
+                                    <td>
+                                        <asp:TextBox ID="txtUF" runat="server" placeholder="UF" CssClass="form-control" Width="80px"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtResponsavel" runat="server" placeholder="Responsavel" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtValorObra" runat="server" placeholder="Valor $" CssClass="form-control" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+
+
 
                     <tr>
                         <td>

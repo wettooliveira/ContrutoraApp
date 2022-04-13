@@ -89,6 +89,7 @@
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_usuario.aspx');return false;">Usuario </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_cliente.aspx');return false;">Cliente/Fornecedor </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_despesa.aspx');return false;">Despesa </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_obra.aspx');return false;">Obras </a></li>
                         <%--<li><a href="#">Financeiro »</a>
                             <ul>
                                 <li><a href="javascript:void(0)" onclick="carregarForm(valeu);return false;">Contas a Pagar</a></li>
@@ -144,7 +145,7 @@
         </div>--%>
     </div>
 
-    <iframe id="iframe" style="width:100%; height:100%; padding-top:50px"<%--style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;--%>></iframe>
+    <iframe id="iframe" style="width: 100%; height: 100%; padding-top: 50px" <%--style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;--%>></iframe>
 
     <footer class="footer navbar-fixed-bottom" style="height: 25px">
         <hgroup>

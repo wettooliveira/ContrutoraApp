@@ -181,6 +181,7 @@
     <Compile Include="App_Code\Endereco.cs" />
     <Compile Include="App_Code\Dao.cs" />
     <Compile Include="App_Code\Despesa.cs" />
+    <Compile Include="Obra.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Telas\cad_obra.aspx.cs">
       <DependentUpon>cad_obra.aspx</DependentUpon>

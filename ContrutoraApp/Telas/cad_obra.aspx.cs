@@ -13,13 +13,24 @@ public partial class cad_obra : System.Web.UI.Page
     String user = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-       
+
         user = (String)Session["usuario"];
         hdnUsuario.Value = user;
     }
 
     [WebMethod]
-    public static String Gravar(Cliente cliente)
+    public static Endereco BuscarCEP(String cep)
+    {
+        BuscaAPI buscarcep = new BuscaAPI();
+        Endereco end = new Endereco();
+        end = buscarcep.BuscaCEP(cep);
+
+        return end;
+
+    }
+
+    [WebMethod]
+    public static String Gravar(Obra obra)
     {
         string retorno = "";
         //// Passa o caminho do banco de dados para um string      
@@ -40,28 +51,62 @@ public partial class cad_obra : System.Web.UI.Page
         try
         {
 
-            cmd.CommandText = "insert into obra(desc_obra,desc_endereco,id_cliente,dt_inicio_obra,dt_fim_obra,nm_cadastrou,dt_cadastrou) " +
-                               "values(@desc_obra,@desc_endereco,@id_cliente,@dt_inicio_obra,@dt_fim_obra,@nm_cadastrou,@dt_cadastrou)";
+            cmd.CommandText = @"INSERT INTO obra
+           (desc_obra
+           ,id_cliente
+           ,cep
+           ,logradouro
+           ,numero
+           ,complemento
+           ,bairro
+           ,cidade
+           ,uf
+           ,responsavel
+           ,dt_inicio_obra
+           ,dt_fim_obra
+           ,nm_cadastrou
+           ,dt_cadastrou)
+     VALUES
+           ( @desc_obra
+           , @id_cliente
+           , @cep
+           , @logradouro
+           , @numero
+           , @complemento
+           , @bairro
+           , @cidade
+           , @uf
+           , @responsavel
+           , @dt_inicio_obra
+           , @dt_fim_obra
+           , @nm_cadastrou
+           , @dt_cadastrou)";
 
-            cmd.Parameters.AddWithValue("@desc_obra", cliente.RazaoSocial);
-            cmd.Parameters.AddWithValue("@desc_endereco", cliente.endereco.logradouro);
-            cmd.Parameters.AddWithValue("@id_cliente", cliente.id);
-            cmd.Parameters.AddWithValue("@dt_inicio_obra", cliente.dt_cadastrou);
-            cmd.Parameters.AddWithValue("@dt_fim_obra", cliente.data);
-            cmd.Parameters.AddWithValue("@nm_cadastrou", cliente.nm_cadastrou);
+            cmd.Parameters.AddWithValue("@desc_obra", obra.nome);
+            cmd.Parameters.AddWithValue("@id_cliente", obra.cliente.id);
+            cmd.Parameters.AddWithValue("@cep", obra.endereco.cep);
+            cmd.Parameters.AddWithValue("@logradouro", obra.endereco.logradouro);
+            cmd.Parameters.AddWithValue("@numero", obra.endereco.numero);
+            cmd.Parameters.AddWithValue("@complemento", obra.endereco.complemento);
+            cmd.Parameters.AddWithValue("@bairro", obra.endereco.bairro);
+            cmd.Parameters.AddWithValue("@cidade", obra.endereco.cidade);
+            cmd.Parameters.AddWithValue("@uf", obra.endereco.uf);
+            cmd.Parameters.AddWithValue("@responsavel", obra.responsavel);
+            cmd.Parameters.AddWithValue("@dt_inicio_obra", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dt_fim_obra", DateTime.Now);
+            cmd.Parameters.AddWithValue("@nm_cadastrou", obra.cliente.nm_cadastrou);
             cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 
-            cmd.ExecuteNonQuery();
-
-            cn.Close();
+            cmd.ExecuteNonQuery();      
 
             retorno = "OK";
 
         }
         catch (Exception ex)
         {
+            cn.Close();
             retorno = "NOK";
-            //    throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+             throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
         }
         finally
         {

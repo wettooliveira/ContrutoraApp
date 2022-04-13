@@ -163,10 +163,22 @@
                 success: function (data) {
                     var source = data.d;
 
-                    $('#txtEndereco').val(source.logradouro);
-                    $('#txtBairro').val(source.bairro);
-                    $('#txtCidade').val(source.cidade);
-                    $('#txtUF').val(source.uf);
+                    $('#txtEndereco').val('');
+                    $('#txtBairro').val('');
+                    $('#txtCidade').val('');
+                    $('#txtUF').val('');
+
+                    if (source.logradouro == 'ERRO') {
+
+                    } else {
+
+                        $('#txtEndereco').val(source.logradouro);
+                        $('#txtBairro').val(source.bairro);
+                        $('#txtCidade').val(source.cidade);
+                        $('#txtUF').val(source.uf);
+                    }
+
+      
 
 
                 },
@@ -201,7 +213,7 @@
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
-                    alert(source.tp_cli_fornc);
+                   
                     if (source.tp_cli_fornc == 'cliente') {
                         $("#riCliente").prop("checked", true);
 

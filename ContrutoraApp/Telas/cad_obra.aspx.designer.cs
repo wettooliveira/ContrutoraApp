@@ -13,15 +13,6 @@ public partial class cad_obra
 {
 
     /// <summary>
-    /// Controle hdnUsuario.
-    /// </summary>
-    /// <remarks>
-    /// Campo gerado automaticamente.
-    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
-
-    /// <summary>
     /// Controle form1.
     /// </summary>
     /// <remarks>
@@ -31,13 +22,121 @@ public partial class cad_obra
     protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
     /// <summary>
-    /// Controle txtNome.
+    /// Controle hdnUsuario.
     /// </summary>
     /// <remarks>
     /// Campo gerado automaticamente.
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtNome;
+    protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
+
+    /// <summary>
+    /// Controle hdnCliente.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnCliente;
+
+    /// <summary>
+    /// Controle txtObra.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtObra;
+
+    /// <summary>
+    /// Controle txtRazaoSocial.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtRazaoSocial;
+
+    /// <summary>
+    /// Controle txtNomeObra.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtNomeObra;
+
+    /// <summary>
+    /// Controle txtCEP.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtCEP;
+
+    /// <summary>
+    /// Controle txtEndereco.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtEndereco;
+
+    /// <summary>
+    /// Controle txtNumero.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtNumero;
+
+    /// <summary>
+    /// Controle txtBairro.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtBairro;
+
+    /// <summary>
+    /// Controle txtCidade.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtCidade;
+
+    /// <summary>
+    /// Controle txtUF.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtUF;
+
+    /// <summary>
+    /// Controle txtResponsavel.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtResponsavel;
+
+    /// <summary>
+    /// Controle txtValorObra.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtValorObra;
 
     /// <summary>
     /// Controle btnGravar.
