@@ -64,6 +64,7 @@
             var cidade = $('#txtCidade').val();
             var UF = $('#txtUF').val();
             var usuario = $('#hdnUsuario').val();
+            var valorObra = $('#txtValorObra').val().trim().replace('.', '').replace(',', '.');
 
             var Cliente = {
 
@@ -84,6 +85,7 @@
             var Obra = {
                 nome: nm_obra,
                 responsavel: resp,
+                valor: valorObra,
                 endereco: Endereco,
                 cliente: Cliente
 
@@ -169,7 +171,7 @@
 
         function BuscarCliente() {
 
-            window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+            window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
         }
 
         function selCliente(id, nome, cnpj) {

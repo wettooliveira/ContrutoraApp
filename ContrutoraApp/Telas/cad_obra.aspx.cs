@@ -64,6 +64,7 @@ public partial class cad_obra : System.Web.UI.Page
            ,responsavel
            ,dt_inicio_obra
            ,dt_fim_obra
+           ,valor 
            ,nm_cadastrou
            ,dt_cadastrou)
      VALUES
@@ -79,6 +80,7 @@ public partial class cad_obra : System.Web.UI.Page
            , @responsavel
            , @dt_inicio_obra
            , @dt_fim_obra
+           , @valor
            , @nm_cadastrou
            , @dt_cadastrou)";
 
@@ -94,6 +96,7 @@ public partial class cad_obra : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@responsavel", obra.responsavel);
             cmd.Parameters.AddWithValue("@dt_inicio_obra", DateTime.Now);
             cmd.Parameters.AddWithValue("@dt_fim_obra", DateTime.Now);
+            cmd.Parameters.AddWithValue("@valor", obra.valor);
             cmd.Parameters.AddWithValue("@nm_cadastrou", obra.cliente.nm_cadastrou);
             cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 
