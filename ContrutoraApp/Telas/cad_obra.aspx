@@ -52,7 +52,7 @@
 
         function Gravar() {
 
-
+            var id_obra = $('#hdnObra').val();
             var id_cliente = $('#hdnCliente').val();
             var nm_obra = $('#txtNomeObra').val();
             var resp = $('#txtResponsavel').val();
@@ -65,6 +65,7 @@
             var UF = $('#txtUF').val();
             var usuario = $('#hdnUsuario').val();
             var valorObra = $('#txtValorObra').val().trim().replace('.', '').replace(',', '.');
+            var tipoAcao = $('#btnGravar').val()
 
             var Cliente = {
 
@@ -83,12 +84,13 @@
             };
 
             var Obra = {
+                id: id_obra,
                 nome: nm_obra,
                 responsavel: resp,
                 valor: valorObra,
                 endereco: Endereco,
-                cliente: Cliente
-
+                cliente: Cliente,
+                acao: tipoAcao
             };
 
             var obj = { 'obra': Obra };
@@ -104,8 +106,10 @@
                 success: function (data) {
                     var source = data.d;
 
-                    if (source == 'OK') {
+                    if (source == 'gravou') {
                         alertCss('Gravar');
+                    } else {
+                        alertCss('Alterar');
                     }
 
                 },
@@ -185,7 +189,8 @@
                 success: function (data) {
                     var source = data.d;
 
-                    $('#hdnClinte').val(source.cliente.id_cliente);
+                    
+                    $('#hdnCliente').val(source.cliente.id);
                     $('#hdnObra').val(source.id);
                     $('#txtRazaoSocial').val(source.cliente.RazaoSocial);
                     $('#txtNomeObra').val(source.nome);
@@ -197,7 +202,7 @@
                     $('#txtCidade').val(source.endereco.cidade);
                     $('#txtUF').val(source.endereco.uf);
                     $('#txtResponsavel').val(source.responsavel);
-                    $('#txtValorObra').val(source.valor);
+                    $('#txtValorObra').val(source.valor_string);
                     $('#txtObra').val(source.id);
 
                     $('#btnGravar').val('Alterar');
@@ -281,6 +286,7 @@
     <form id="form1" runat="server">
         <asp:HiddenField runat="server" ID="hdnUsuario" />
         <asp:HiddenField runat="server" ID="hdnCliente" />
+        <asp:HiddenField runat="server" ID="hdnObra" />
         <div>
             <center>
                 <table>

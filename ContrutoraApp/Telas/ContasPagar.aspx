@@ -555,11 +555,17 @@
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <div id="menu">
-        </div>
-        <br />
+        </div>     
         <div>
             <center>
                 <table>
+                    <tr>
+                        <td colspan="3">
+                            <center>
+                                <h3>Contas a Pagar</h3>
+                            </center>
+                        </td>
+                    </tr>
                     <tr>
                         <td id="tdFornec" colspan="3">
                             <asp:DropDownList ID="ddlFornecedor" runat="server" CssClass="form-control">

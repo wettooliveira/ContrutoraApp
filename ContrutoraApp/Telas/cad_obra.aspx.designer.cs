@@ -40,6 +40,15 @@ public partial class cad_obra
     protected global::System.Web.UI.WebControls.HiddenField hdnCliente;
 
     /// <summary>
+    /// Controle hdnObra.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnObra;
+
+    /// <summary>
     /// Controle txtObra.
     /// </summary>
     /// <remarks>

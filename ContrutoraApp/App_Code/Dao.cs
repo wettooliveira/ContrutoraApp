@@ -544,7 +544,7 @@ namespace ContrutoraApp
                                                cidade = dr["logradouro"].ToString(),
                                                uf = dr["uf"].ToString() };
                 obra.responsavel = dr["responsavel"].ToString();
-                obra.valor = Convert.ToDouble(dr["valor"]);
+                obra.valor_string = Convert.ToDouble(dr["valor"]).ToString("N2");
             
             }
 

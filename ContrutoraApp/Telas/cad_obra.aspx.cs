@@ -51,7 +51,9 @@ public partial class cad_obra : System.Web.UI.Page
         try
         {
 
-            cmd.CommandText = @"INSERT INTO obra
+            if (obra.acao == "Gravar")
+            {
+                cmd.CommandText = @"INSERT INTO obra
            (desc_obra
            ,id_cliente
            ,cep
@@ -84,6 +86,38 @@ public partial class cad_obra : System.Web.UI.Page
            , @nm_cadastrou
            , @dt_cadastrou)";
 
+                cmd.Parameters.AddWithValue("@nm_cadastrou", obra.cliente.nm_cadastrou);
+                cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
+
+                retorno = "gravou";
+            }
+            else if (obra.acao == "Alterar")
+            {
+                cmd.CommandText = @"update obra set
+           desc_obra         = @desc_obra
+           ,id_cliente        = @id_cliente
+           ,cep               = @cep
+           ,logradouro        = @logradouro
+           ,numero            = @numero
+           ,complemento       = @complemento
+           ,bairro            = @bairro
+           ,cidade            = @cidade
+           ,uf                = @uf
+           ,responsavel       = @responsavel
+           ,dt_inicio_obra    = @dt_inicio_obra
+           ,dt_fim_obra       = @dt_fim_obra
+           ,valor             = @valor
+           ,nm_alterou      = @nm_alterou
+           ,dt_alterou      = @dt_alterou where id_obra = @id_obra";
+
+
+                cmd.Parameters.AddWithValue("@id_obra", obra.id);
+                cmd.Parameters.AddWithValue("@nm_alterou", obra.cliente.nm_cadastrou);
+                cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
+
+                retorno = "alterou";
+            }
+
             cmd.Parameters.AddWithValue("@desc_obra", obra.nome);
             cmd.Parameters.AddWithValue("@id_cliente", obra.cliente.id);
             cmd.Parameters.AddWithValue("@cep", obra.endereco.cep);
@@ -97,19 +131,15 @@ public partial class cad_obra : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@dt_inicio_obra", DateTime.Now);
             cmd.Parameters.AddWithValue("@dt_fim_obra", DateTime.Now);
             cmd.Parameters.AddWithValue("@valor", obra.valor);
-            cmd.Parameters.AddWithValue("@nm_cadastrou", obra.cliente.nm_cadastrou);
-            cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
 
-            cmd.ExecuteNonQuery();      
-
-            retorno = "OK";
+            cmd.ExecuteNonQuery();
 
         }
         catch (Exception ex)
         {
             cn.Close();
             retorno = "NOK";
-             throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+            throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
         }
         finally
         {

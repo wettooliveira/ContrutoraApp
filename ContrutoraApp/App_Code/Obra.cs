@@ -15,5 +15,7 @@ namespace ContrutoraApp
         public Cliente cliente { get; set; }
         public Double valor { get; set; }
 
+        public String valor_string { get; set; }
+
     }
 }
