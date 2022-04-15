@@ -24,7 +24,7 @@
         }
 
         function seleciona(id, nome, cnpj) {           
-            window.opener.selCliente(id, nome, cnpj);
+            window.opener.selObra(id);
             window.close();
         }
 
@@ -203,7 +203,7 @@
                     <ItemStyle HorizontalAlign="Center" />
                     <ItemTemplate>
                         <div>
-                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>','<%# DataBinder.Eval(Container.DataItem, "cliente.RazaoSocial")%>','<%# DataBinder.Eval(Container.DataItem, "id")%>')">
+                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>')">
                                 <%# DataBinder.Eval(Container.DataItem, "id")%> </span></b>                              
                         </div>
                     </ItemTemplate>
@@ -211,7 +211,7 @@
             
                 <asp:BoundField HeaderText="Nome Obra" DataField="nome" ItemStyle-HorizontalAlign="Center" />
                 <asp:BoundField HeaderText="Endereco" DataField="endereco.logradouro" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField HeaderText="Cliente" DataField="cliente.RazaoSocial" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField HeaderText="Cliente" DataField="cliente.RazaoSocial" ItemStyle-HorizontalAlign="Center" /> 
                 <%--<asp:TemplateField>
                     <HeaderTemplate>
                         Código Interno

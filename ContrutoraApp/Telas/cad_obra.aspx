@@ -169,9 +169,58 @@
 
         }
 
+        function BuscarObra() {
+            
+            window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        }
+
+        function selObra(id, nome, cnpj) {
+
+            $.ajax({
+                type: "POST",
+                url: "cad_obra.aspx/CarregarObra",
+                data: "{'id':'" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    $('#hdnClinte').val(source.cliente.id_cliente);
+                    $('#hdnObra').val(source.id);
+                    $('#txtRazaoSocial').val(source.cliente.RazaoSocial);
+                    $('#txtNomeObra').val(source.nome);
+                    $('#txtCEP').val(source.endereco.cep);
+                    $('#txtEndereco').val(source.endereco.logradouro);
+                    $('#txtNumero').val(source.endereco.numero);
+                    $('#txtComplemento').val(source.endereco.complemento);
+                    $('#txtBairro').val(source.endereco.bairro);
+                    $('#txtCidade').val(source.endereco.cidade);
+                    $('#txtUF').val(source.endereco.uf);
+                    $('#txtResponsavel').val(source.responsavel);
+                    $('#txtValorObra').val(source.valor);
+                    $('#txtObra').val(source.id);
+
+                    $('#btnGravar').val('Alterar');
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+        }
+
         function BuscarCliente() {
 
-            window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+            window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
         }
 
         function selCliente(id, nome, cnpj) {
@@ -246,7 +295,7 @@
                         <td style="display: inline-flex">
                             <asp:TextBox ID="txtObra" runat="server" placeholder="Obra" CssClass="form-control" Width="500px"></asp:TextBox>
                             &nbsp;&nbsp;
-                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Obra" onclick="BuscarCliente();return false;" />
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Obra" onclick="BuscarObra();return false;" />
                         </td>
                     </tr>
                     <tr>

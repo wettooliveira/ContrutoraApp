@@ -118,4 +118,13 @@ public partial class cad_obra : System.Web.UI.Page
 
         return retorno;
     }
+
+    [WebMethod]
+    public static Obra CarregarObra(String id)
+    {
+        Obra getObra = new Obra();
+        Dao consultarObra = new Dao();
+        getObra = consultarObra.ConsultarObra(id);
+        return getObra;
+    }
 }

@@ -483,7 +483,79 @@ namespace ContrutoraApp
             return retorno;
         }
 
-      
+        public Obra ConsultarObra(String id)
+        {
+
+            List<Cliente> listaCliente = new List<Cliente>();
+            Obra obra = new Obra();
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"SELECT TOP (1000) id_obra
+                               ,o.desc_obra
+                               ,o.id_cliente
+                               ,o.cep
+                               ,o.logradouro
+                               ,o.numero
+                               ,o.complemento
+                               ,o.bairro
+                               ,o.cidade
+                               ,o.uf
+                               ,responsavel
+                               ,dt_inicio_obra
+                               ,dt_fim_obra
+                               ,valor
+                               ,o.nm_cadastrou
+                               ,o.dt_cadastrou, cliente.RazaoSocial
+                                FROM obra o
+                                inner join tb_cliente cliente on cliente.id = o.id_cliente
+                                WHERE o.id_obra = @id";
+
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+            while (dr.Read())
+            {
+
+                obra.id = Convert.ToInt32(dr["id_obra"]);
+                obra.nome = dr["desc_obra"].ToString();
+                obra.cliente = new Cliente { id = Convert.ToInt32(dr["id_cliente"]), RazaoSocial = dr["RazaoSocial"].ToString() };
+                obra.endereco = new Endereco { logradouro = dr["logradouro"].ToString(), 
+                                               cep = dr["cep"].ToString(), 
+                                               bairro = dr["bairro"].ToString(),
+                                               numero = dr["numero"].ToString(),
+                                               complemento = dr["complemento"].ToString(),
+                                               cidade = dr["logradouro"].ToString(),
+                                               uf = dr["uf"].ToString() };
+                obra.responsavel = dr["responsavel"].ToString();
+                obra.valor = Convert.ToDouble(dr["valor"]);
+            
+            }
+
+
+            dr.Close();
+            cn.Close();
+
+            return obra;
+        }
+
+
 
 
 

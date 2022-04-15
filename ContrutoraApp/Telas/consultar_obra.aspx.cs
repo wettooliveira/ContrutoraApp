@@ -66,7 +66,7 @@ public partial class consultar_obra : System.Web.UI.Page
         {
 
             //comando de instrução do banco de dados
-            sql = "select id_obra, desc_obra, obra.logradouro + '-' + obra.cidade as logradouro, obra.cidade, c.razaoSocial from obra obra" +
+            sql = "select id_obra, desc_obra, obra.logradouro + '-' + obra.cidade as logradouro, obra.cidade, c.razaoSocial, obra.id_cliente from obra obra" +
                   " inner join tb_CLIENTE c on c.id = obra.id_cliente";
 
 
@@ -83,7 +83,7 @@ public partial class consultar_obra : System.Web.UI.Page
                 o.id = Convert.ToInt32(dr["id_obra"]);
                 o.nome = dr["desc_obra"].ToString().ToUpper();                
                 o.endereco = new Endereco { logradouro = dr["logradouro"].ToString()};
-                o.cliente = new Cliente { RazaoSocial = dr["razaoSocial"].ToString() };
+                o.cliente = new Cliente { id = Convert.ToInt32(dr["id_cliente"]), RazaoSocial = dr["razaoSocial"].ToString() };
              
                 listCliente.Add(o);
             }
