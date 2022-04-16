@@ -90,6 +90,7 @@
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_cliente.aspx');return false;">Cliente/Fornecedor </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_despesa.aspx');return false;">Despesa </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_obra.aspx');return false;">Obras </a></li>
+                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_conta_banco.aspx');return false;">Contas </a></li>
                         <%--<li><a href="#">Financeiro »</a>
                             <ul>
                                 <li><a href="javascript:void(0)" onclick="carregarForm(valeu);return false;">Contas a Pagar</a></li>
