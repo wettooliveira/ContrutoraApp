@@ -64,7 +64,7 @@ public partial class cad_conta_banco : System.Web.UI.Page
             if (conta.tipo == "Gravar")
             {
                 cmd.CommandText = @"INSERT INTO tb_conta
-                                           (cod_banco
+                                           (id_banco
                                            ,ds_agencia
                                            ,ds_conta)
                                      VALUES
@@ -76,22 +76,11 @@ public partial class cad_conta_banco : System.Web.UI.Page
             else if (conta.tipo == "Alterar")
             {
                 cmd.CommandText = @"update obra set
-           desc_obra         = @desc_obra
-           ,id_cliente        = @id_cliente
-           ,cep               = @cep
-           ,logradouro        = @logradouro
-           ,numero            = @numero
-           ,complemento       = @complemento
-           ,bairro            = @bairro
-           ,cidade            = @cidade
-           ,uf                = @uf
-           ,responsavel       = @responsavel
-           ,dt_inicio_obra    = @dt_inicio_obra
-           ,dt_fim_obra       = @dt_fim_obra
-           ,valor             = @valor
-           ,nm_alterou      = @nm_alterou
-           ,dt_alterou      = @dt_alterou where id_obra = @id_obra";
-                
+                                                    id_banco         = @cod_banco
+                                                   ,ds_agencia        = @ds_agencia
+                                                   ,ds_conta          = @ds_conta where id_obra = @id_obra";
+
+
 
                 retorno = "alterou";
             }
@@ -116,7 +105,6 @@ public partial class cad_conta_banco : System.Web.UI.Page
 
         return retorno;
     }
-
 
     [WebMethod]
     public static Obra CarregarObra(String id)

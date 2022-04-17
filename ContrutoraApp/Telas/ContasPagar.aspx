@@ -536,6 +536,101 @@
         });
     }
 
+    function BuscarCliente() {
+
+        window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+    }
+
+    function selCliente(id, nome, cnpj) {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/CarregarCliente",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#hdnCliente').val(source.id);
+                $('#txtRazaoSocial').val(source.RazaoSocial);
+                $('#txtCEP').val(source.endereco.cep);
+                $('#txtEndereco').val(source.endereco.logradouro);
+                $('#txtNumero').val(source.endereco.numero);
+                $('#txtComplemento').val(source.endereco.complemento);
+                $('#txtBairro').val(source.endereco.bairro);
+                $('#txtCidade').val(source.endereco.cidade);
+                $('#txtUF').val(source.endereco.uf);
+
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+    }
+
+
+    function BuscarObra() {
+
+        window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+    }
+
+    function selObra(id, nome, cnpj) {
+
+        $.ajax({
+            type: "POST",
+            url: "cad_obra.aspx/CarregarObra",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+
+                $('#hdnCliente').val(source.cliente.id);
+                $('#hdnObra').val(source.id);
+                $('#txtRazaoSocial').val(source.cliente.RazaoSocial);
+                $('#txtNomeObra').val(source.nome);
+                $('#txtCEP').val(source.endereco.cep);
+                $('#txtEndereco').val(source.endereco.logradouro);
+                $('#txtNumero').val(source.endereco.numero);
+                $('#txtComplemento').val(source.endereco.complemento);
+                $('#txtBairro').val(source.endereco.bairro);
+                $('#txtCidade').val(source.endereco.cidade);
+                $('#txtUF').val(source.endereco.uf);
+                $('#txtResponsavel').val(source.responsavel);
+                $('#txtValorObra').val(source.valor_string);
+                $('#txtObra').val(source.id);
+
+                $('#btnGravar').val('Alterar');
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+    }
+
 </script>
 
 <style type="text/css">
@@ -555,54 +650,56 @@
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <div id="menu">
-        </div>     
+        </div>
         <div>
             <center>
                 <table>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             <center>
                                 <h3>Contas a Pagar</h3>
                             </center>
                         </td>
                     </tr>
                     <tr>
-                        <td id="tdFornec" colspan="3">
-                            <asp:DropDownList ID="ddlFornecedor" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Selecione" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Fornec1" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="Fornec2" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Fornec3" Value="3"></asp:ListItem>
+                        <td colspan="2">
+                            <asp:DropDownList ID="ddlConta" runat="server" CssClass="form-control" Width="350px">
                             </asp:DropDownList>
                         </td>
-                    </tr>
-                    <tr>
-                        <td id="tdObras" colspan="3">
-                            <asp:DropDownList ID="ddlObras" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Selecione Obra" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Obra1" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="Obra2" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Obra3" Value="3"></asp:ListItem>
-                            </asp:DropDownList>
+                        <td style="width: 20px"></td>
+                        <td>Data:
                         </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control">
-                     
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                 
-                    <tr>
                         <td>
                             <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
                         </td>
 
 
+                    </tr>
+                    <tr>
+                        <td style="display: inline-flex" colspan="4">
+                            <asp:TextBox ID="txtFornecedor" runat="server" placeholder="Fornecedor" CssClass="form-control" Width="350px"></asp:TextBox>
+                            &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('fonecedor');return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="display: inline-flex" colspan="4">
+                            <asp:TextBox ID="txtObras" runat="server" placeholder="Obra" CssClass="form-control" Width="350px"></asp:TextBox>
+                            &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarObra();return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
+                            </asp:DropDownList>
+                        </td>
 
                     </tr>
-                    <tr class="trBody">
+
+                    <tr>
+                    </tr>
+                    <%--<tr class="trBody">
                         <td>
                             <asp:TextBox ID="txtConta" runat="server" Width="300px" placeholder="Conta" CssClass="form-control"></asp:TextBox>
                         </td>
@@ -618,22 +715,21 @@
                             </asp:DropDownList>
                         </td>
 
-                        <td>
+                        <td colspan="2">
                             <asp:TextBox ID="txtParcela" runat="server" Width="100px" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
                         </td>
+                 
+                       
 
-                        <td>
+                    </tr>  --%>
+
+                    <tr>
+                        <td colspan="4">
                             <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="100px" CssClass="form-control"></asp:TextBox>
                         </td>
 
                     </tr>
 
-                    <tr>
-                    </tr>
-
-                    <tr style="height: 20px">
-                        <td style="height: 20px"></td>
-                    </tr>
                     <tr>
                         <td colspan="4" style="text-align: center">
                             <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />

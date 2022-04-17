@@ -33,31 +33,13 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnIDContasPagar;
 
         /// <summary>
-        /// Controle ddlFornecedor.
+        /// Controle ddlConta.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFornecedor;
-
-        /// <summary>
-        /// Controle ddlObras.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlObras;
-
-        /// <summary>
-        /// Controle ddlDespesa.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDespesa;
+        protected global::System.Web.UI.WebControls.DropDownList ddlConta;
 
         /// <summary>
         /// Controle txtData.
@@ -69,31 +51,31 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.TextBox txtData;
 
         /// <summary>
-        /// Controle txtConta.
+        /// Controle txtFornecedor.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConta;
+        protected global::System.Web.UI.WebControls.TextBox txtFornecedor;
 
         /// <summary>
-        /// Controle ddlTipo.
+        /// Controle txtObras.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipo;
+        protected global::System.Web.UI.WebControls.TextBox txtObras;
 
         /// <summary>
-        /// Controle txtParcela.
+        /// Controle ddlDespesa.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtParcela;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDespesa;
 
         /// <summary>
         /// Controle txtValor.

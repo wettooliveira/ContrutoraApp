@@ -245,6 +245,78 @@ namespace ContrutoraApp
             cn.Close();
             return retorno;
         }
+        public Cliente ConsultarFornecedor(String id)
+        {
+
+            List<Cliente> listaCliente = new List<Cliente>();
+            Cliente cliente = new Cliente();
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"select id,
+                                       razaoSocial,
+                                       CNPJ,
+                                       IE,
+                                       tel,
+                                       cep,
+                                       logradouro,
+                                       numero,
+                                       complemento,
+                                       bairro,
+                                       cidade,
+                                       uf,
+                                       obs,
+                                       tp_cli_fornc,                                      
+                                       fl_ativo from tb_cliente WHERE id = @id ";
+
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+            while (dr.Read())
+            {
+
+                cliente.id = Convert.ToInt32(dr["id"]);
+                cliente.RazaoSocial = dr["razaoSocial"].ToString();
+                cliente.CNPJ = dr["CNPJ"].ToString();
+                cliente.IE = dr["IE"].ToString();
+                cliente.tel = dr["tel"].ToString();
+                cliente.endereco = new Endereco
+                {
+                    logradouro = dr["logradouro"].ToString(),
+                    cep = dr["cep"].ToString(),
+                    numero = dr["numero"].ToString(),
+                    complemento = dr["complemento"].ToString(),
+                    bairro = dr["bairro"].ToString(),
+                    cidade = dr["cidade"].ToString(),
+                    uf = dr["uf"].ToString()
+                };
+                cliente.obs = dr["obs"].ToString();
+                cliente.tp_cli_fornc = dr["tp_cli_fornc"].ToString();
+            }
+
+
+            dr.Close();
+            cn.Close();
+
+            return cliente;
+        }
+
 
         public String Menu()
         {

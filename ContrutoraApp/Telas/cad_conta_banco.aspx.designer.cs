@@ -31,13 +31,13 @@ public partial class cad_conta_banco
     protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
 
     /// <summary>
-    /// Controle hdnCliente.
+    /// Controle hdnBanco.
     /// </summary>
     /// <remarks>
     /// Campo gerado automaticamente.
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField hdnCliente;
+    protected global::System.Web.UI.WebControls.HiddenField hdnBanco;
 
     /// <summary>
     /// Controle hdnObra.

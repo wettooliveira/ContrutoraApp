@@ -18,6 +18,7 @@ namespace ContrutoraApp
             if (!IsPostBack)
             {
                 CarregaDespesa();
+                CarregaContasBancos();
             }
             else
             {
@@ -262,6 +263,101 @@ namespace ContrutoraApp
             ddlDespesa.SelectedValue = "0";
            
 
+        }
+
+        public void CarregaContasBancos()
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //abre a conexao
+            cn.Open();
+
+            cmd.CommandText = @"select c.id ,ds_agencia + ' - ' + ds_conta  + ' ' + b.ds_banco   as conta from tb_conta c
+                                inner join tb_bancos b on b.id = c.id_banco";
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            List<Despesa> lista = new List<Despesa>();
+            while (dr.Read())
+            {
+                Despesa desp = new Despesa();
+                desp.id_despesa = Convert.ToInt32(dr["id"]);
+                desp.desc_despesa = dr["conta"].ToString();
+                lista.Add(desp);
+            }
+
+            dr.Close();
+            cn.Close();
+
+            ddlConta.DataSource = lista;
+            ddlConta.DataTextField = "desc_despesa";
+            ddlConta.DataValueField = "id_despesa";
+            ddlConta.DataBind();
+            //ddlConta.Items.Add(new ListItem("Selecione...", "0"));
+            
+
+
+        }
+
+        public void CarregaObras()
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //abre a conexao
+            cn.Open();
+
+            cmd.CommandText = @"select c.id ,ds_agencia + ' - ' + ds_conta  + ' ' + b.ds_banco   as conta from tb_conta c
+                                inner join tb_bancos b on b.id = c.id_banco";
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            List<Despesa> lista = new List<Despesa>();
+            while (dr.Read())
+            {
+                Despesa desp = new Despesa();
+                desp.id_despesa = Convert.ToInt32(dr["id"]);
+                desp.desc_despesa = dr["conta"].ToString();
+                lista.Add(desp);
+            }
+
+            dr.Close();
+            cn.Close();
+
+            ddlConta.DataSource = lista;
+            ddlConta.DataTextField = "desc_despesa";
+            ddlConta.DataValueField = "id_despesa";
+            ddlConta.DataBind();
+            //ddlConta.Items.Add(new ListItem("Selecione...", "0"));
+
+
+
+        }
+
+        [WebMethod]
+        public static Cliente ConsultarFornecedor(String id)
+        {
+            Cliente getCliente = new Cliente();
+            Dao consultarCliente = new Dao();
+            getCliente = consultarCliente.ConsultarFornecedor(id);
+            return getCliente;
         }
 
 

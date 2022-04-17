@@ -258,7 +258,7 @@
 <body runat="server">
     <form id="form1" runat="server">
         <asp:HiddenField runat="server" ID="hdnUsuario" />
-        <asp:HiddenField runat="server" ID="hdnCliente" />
+        <asp:HiddenField runat="server" ID="hdnBanco" />
         <asp:HiddenField runat="server" ID="hdnObra" />
         <div>
             <center>
