@@ -366,7 +366,7 @@
             success: function (data) {
 
                 var dados = JSON.parse(data.d);
-
+                
                 BuscaTabelaDetalhesModal(dados);
 
             },
@@ -780,6 +780,7 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <label id="lblAvisoGravadoModal" style="color:green"></label>
                                         <br />
                                     </td>
                                 </tr>
