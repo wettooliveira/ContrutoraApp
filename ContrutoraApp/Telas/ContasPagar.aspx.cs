@@ -109,7 +109,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaDetalhesContas()
+        public static String TabelaTempDetalhesContas()
         {
 
             //// Passa o caminho do banco de dados para um string      
@@ -130,6 +130,71 @@ namespace ContrutoraApp
 
 
             String table = "";
+
+
+            table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+
+            String cor_r = "#FFFFFF";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>qtde</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>vlr unit</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>nf</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
+            table += "          </tr> ";
+
+            cmd.CommandText = cmd.CommandText;
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+
+                if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_detalhe"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid;'>" + dr["qtde"].ToString() + "</th>";
+                table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
+                table += "          <th style='border-bottom: 1px solid;'>" + dr["nf"].ToString() + "</th>";
+                //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' /> </th>";
+                table += "          </tr> ";
+
+
+            }
+
+            dr.Close();
+
+            table += "      </table> ";
+
+            return table;
+
+        }
+
+        [WebMethod]
+        public static String TabelaDetalhesContas(String id)
+        {
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"select  id, desc_detalhe, qtde, valor, nf from tb_detalhes_contasPagar where id_conta =" + id;
+
+
+            String table = "";
+            String nf = "";
 
 
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
@@ -161,14 +226,14 @@ namespace ContrutoraApp
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' /> </th>";
                 table += "          </tr> ";
 
-
+                nf = dr["nf"].ToString();
             }
 
             dr.Close();
 
             table += "      </table> ";
 
-            return table;
+            return table + "@" + nf;
 
         }
 
@@ -229,10 +294,10 @@ namespace ContrutoraApp
             {
                 retorno = GravarTempDetalhesmodal.GravarTempDetalhesDao(Contas);
                 DadosDetalhes.retorno = retorno;
-                if (retorno == "OK")
-                {
-                    //DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
-                }
+                //if (retorno == "OK")
+                //{
+                //    DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
+                //}
             }
             else
             {

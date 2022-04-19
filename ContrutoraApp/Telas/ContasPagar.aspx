@@ -246,7 +246,8 @@
 
     function detalhar(id) {
 
-        limparTabelaTempModal();
+        /*limparTabelaTempModal();*/
+        BuscarDadosInseridosDetalhes(id)
         $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
         /*GravarDetahesTemp('buscar');*/
@@ -289,13 +290,13 @@
         $('#hdnIDContasPagar').val('');
         $('#tbDetalhados').html('');
 
-        limparTabelaTempModal();
+       /* limparTabelaTempModal();*/
         
     }
 
     function GravarDetahesTemp(acao) {
 
-
+        alert();
         var Contas = {};
 
         if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
@@ -346,16 +347,15 @@
                 success: function (data) {
 
                     var dados = JSON.parse(data.d);
-
-                    if (dados.retorno == 'OK') {
+                    alert(dados.retorno);
+                    if (dados.retorno.split(',')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
-                        BuscarDadosInseridosDetalhes();
+                       /* BuscarDadosInseridosTempDetalhes(dados.retorno.split(',')[1]);*/
+                        BuscarDadosInseridosDetalhes(dados.retorno.split(',')[1])
                         $('#txtDescDetalhes').val('');
                         $('#txtQtdeDetalhes').val('');
                         $('#txtvalorDetalhes').val('');
-
-
                     }
 
                     /*BuscaTabelaDetalhesModal(dados);*/
@@ -379,11 +379,46 @@
 
     }
 
-    function BuscarDadosInseridosDetalhes() {
+    function BuscarDadosInseridosDetalhes(id) {
 
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/TabelaDetalhesContas",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+
+            
+                var dados = data.d.split('@')[1];
+                var tabela = data.d.split('@')[0];
+              
+                $('#txtNF').val(dados);
+                $('#lblTabelaInseridosDetalhes').html('');
+                $('#lblTabelaInseridosDetalhes').html(tabela);
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function BuscarDadosInseridosTempDetalhes() {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/TabelaTempDetalhesContas",
             data: '',
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -484,8 +519,7 @@
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
-
-
+        $('#txtNF').val('');
 
         var id_conta = $('#hdnIDContasPagar').val();
 

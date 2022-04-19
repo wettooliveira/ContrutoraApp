@@ -380,8 +380,8 @@ namespace ContrutoraApp
             {
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor, nf)
-                                    values(@id_conta, @desc_conta, @num_parcela, @valor, @nf)";
+                cmd.CommandText = @"INSERT INTO tb_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor, nf)
+                                    Values(@id_conta, @desc_conta, @num_parcela, @valor, @nf)";
 
                 cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
                 cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
@@ -391,7 +391,7 @@ namespace ContrutoraApp
 
                 cmd.ExecuteNonQuery();
                 cn.Close();
-                retorno = "OK";
+                retorno = "OK" + "," + Contas.id.ToString();
             }
             catch (Exception ex)
             {
@@ -429,8 +429,8 @@ namespace ContrutoraApp
 
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"insert into tb_temp_detalhes_contasPagar(id_contaPagar,desc_detalhe,qtde,valor)
-								select id_contaPagar,desc_detalhe,qtde,valor from tb_detalhes_contasPagar Where id_contaPagar = @id_obra";
+                cmd.CommandText = @"INSERT into tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor, nf)
+								    SELECT id_conta, desc_detalhe, qtde, valor, nf from tb_detalhes_contasPagar Where id_conta = @id_obra";
 
                 cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
@@ -438,41 +438,41 @@ namespace ContrutoraApp
                 cmd.Parameters.Clear();
             }
 
-            cmd.CommandText = @"SELECT id_temp_detalhes_contasPagar, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
-                                OUTER APPLY(select sum(valor*qtde) as total from tb_temp_detalhes_contasPagar)total  
-                                WHERE id_contaPagar = @id_obra
-                                ORDER BY 1 DESC";
+            //cmd.CommandText = @"SELECT id_temp_detalhes_contasPagar, desc_detalhe, qtde, valor, total FROM tb_temp_detalhes_contasPagar 
+            //                    OUTER APPLY(select sum(valor*qtde) as total from tb_temp_detalhes_contasPagar)total  
+            //                    WHERE id_contaPagar = @id_obra
+            //                    ORDER BY 1 DESC";
 
-            cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
+            //cmd.Parameters.AddWithValue("@id_obra", contas.id_obra);
 
-            SqlDataReader dr = cmd.ExecuteReader();
+            //SqlDataReader dr = cmd.ExecuteReader();
 
-            if (dr.HasRows)
-            {
-                while (dr.Read())
-                {
-                    Contas dadosTabelaDetalhes = new Contas();
-                    dadosTabelaDetalhes.id = Convert.ToInt32(dr["id_temp_detalhes_contasPagar"]);
-                    dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
-                    dadosTabelaDetalhes.qtde = dr["qtde"].ToString();
-                    dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
-                    dadosTabelaDetalhes.valor_string = Convert.ToDouble(dr["total"]).ToString("N2");
-                    //soma += Convert.ToDouble(dr["valor"]);
-                    //dadosTabelaDetalhes.valor_string = soma.ToString("N2");
+            //if (dr.HasRows)
+            //{
+            //    while (dr.Read())
+            //    {
+            //        Contas dadosTabelaDetalhes = new Contas();
+            //        dadosTabelaDetalhes.id = Convert.ToInt32(dr["id_temp_detalhes_contasPagar"]);
+            //        dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
+            //        dadosTabelaDetalhes.qtde = dr["qtde"].ToString();
+            //        dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
+            //        dadosTabelaDetalhes.valor_string = Convert.ToDouble(dr["total"]).ToString("N2");
+            //        //soma += Convert.ToDouble(dr["valor"]);
+            //        //dadosTabelaDetalhes.valor_string = soma.ToString("N2");
 
-                    listaDados1.Add(dadosTabelaDetalhes);
-                    retorno.listaContas1 = listaDados1;
-                }
-            }
-            else
-            {
-                Contas c = new Contas();
-                c.desc_conta = "vazio";
-                listaDados1.Add(c);
-                retorno.listaContas1 = listaDados1;
-            }
+            //        listaDados1.Add(dadosTabelaDetalhes);
+            //        retorno.listaContas1 = listaDados1;
+            //    }
+            //}
+            //else
+            //{
+            //    Contas c = new Contas();
+            //    c.desc_conta = "vazio";
+            //    listaDados1.Add(c);
+            //    retorno.listaContas1 = listaDados1;
+            //}
 
-            dr.Close();
+            //dr.Close();
             //cmd.Parameters.Clear();
 
 
