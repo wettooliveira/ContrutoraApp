@@ -148,39 +148,7 @@
                 }
             }
         }
-    }
-
-    //function Menu() {
-
-
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "ContasPagar.aspx/Menu",
-    //        data: "{'m':'m'}",
-    //        contentType: "application/json; charset=utf-8",
-    //        dataType: "JSON",
-    //        success: function (data) {
-    //            var source = data.d;
-    //            $('#menu').html(source);
-
-
-
-    //        },
-    //        error: function (request, status, error) {
-    //            alert(request.responseText);
-    //            console.log(request.responseText);
-    //            //swalWithBootstrapButtons.fire({
-    //            //    title: '',
-    //            //    text: 'Erro ao abrir tabela! Tente novamente!',
-    //            //    icon: 'error',
-    //            //    confirmButtonText: 'OK',
-    //            //    allowOutsideClick: false
-    //            //}).then((result) => {
-    //            /*  });*/
-    //        }
-    //    });
-
-    //}
+    }       
 
     function TabelaLancarDados() {
 
@@ -213,14 +181,14 @@
     }
 
     function GravarConta() {
-     
+
         var fornec = $('#hdnFornecedor').val();
         if (fornec == '') {
             fornec = 0;
-        } 
-        var desc_conta = $('#txtConta').val();        
+        }
+        var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
-        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');  
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
         var obra = $('#hdnObra').val();
@@ -230,10 +198,10 @@
         }
 
         var Contas = {
-            desc_conta: desc_conta,           
+            desc_conta: desc_conta,
             num_parcela_string: num_parcela_string,
             valor_string: valor_string,
-            data: data,    
+            data: data,
             id_despesa: cod_despesa,
             id_obra: obra,
             id_fornecedor: fornec
@@ -245,7 +213,7 @@
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/Gravar", 
+            url: "ContasPagar.aspx/Gravar",
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -278,21 +246,15 @@
 
     function detalhar(id) {
 
+        limparTabelaTempModal();
+        $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
-        GravarDetahesTemp('buscar');
+        /*GravarDetahesTemp('buscar');*/
         $('#ModalDetalhes').modal('show');
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
-    function fecharModal() {
-        $("#ModalDetalhes").modal('hide');
-        $('#txtDescDetalhes').val('');
-        $('#txtQtdeDetalhes').val('');
-        $('#txtvalorDetalhes').val('');
-        $('#hdnIDContasPagar').val('');
-        $('#tbDetalhados').html('');
-
-
+    function limparTabelaTempModal() {
 
         $.ajax({
             type: "POST",
@@ -301,8 +263,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
-
-
 
             },
             error: function (request, status, error) {
@@ -321,53 +281,120 @@
         /* $('#btnGravar').prop('disabled', '');*/
     }
 
+    function fecharModal() {
+        $("#ModalDetalhes").modal('hide');
+        $('#txtDescDetalhes').val('');
+        $('#txtQtdeDetalhes').val('');
+        $('#txtvalorDetalhes').val('');
+        $('#hdnIDContasPagar').val('');
+        $('#tbDetalhados').html('');
+
+        limparTabelaTempModal();
+        
+    }
+
     function GravarDetahesTemp(acao) {
 
 
         var Contas = {};
 
+        if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
 
-        if (acao == '') {
+            $('#avisoModal').removeClass('hidden');
+        } else
+        {
 
-            
-            var desc_detalhe = $('#txtDescDetalhes').val();
-            var qtde = $('#txtQtdeDetalhes').val();
-            var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
-            var id_obra = $('#hdnIDContasPagar').val();
-            var nf_ = $('#txtNF').val();
+            $('#avisoModal').addClass('hidden');
 
 
-            Contas = {
-                desc_conta: desc_detalhe,
-                num_parcela: qtde,
-                valor: valor,
-                id_obra: id_obra,
-                nf: nf_
-            };
 
-        } else {
-            Contas = {
-                desc_conta: 'vazio',
-                id_obra: $('#hdnIDContasPagar').val()
-            };
+            if (acao == 'gravar') {
+
+
+                var desc_detalhe = $('#txtDescDetalhes').val();
+                var qtde = $('#txtQtdeDetalhes').val();
+                var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
+                var id_obra = $('#hdnIDContasPagar').val();
+                var nf_ = $('#txtNF').val();
+
+
+                Contas = {
+                    desc_conta: desc_detalhe,
+                    num_parcela: qtde,
+                    valor: valor,
+                    id_obra: id_obra,
+                    nf: nf_
+                };
+
+            } else {
+                Contas = {
+                    desc_conta: acao,
+                    id_obra: $('#hdnIDContasPagar').val()
+                };
+            }
+
+
+            var obj = { 'Contas': Contas };
+
+
+            $.ajax({
+                type: "POST",
+                url: "ContasPagar.aspx/GravarTempDetalhes",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+
+                    var dados = JSON.parse(data.d);
+
+                    if (dados.retorno == 'OK') {
+
+                        /*$('#lblTabelaInseridosDetalhes').html(dados);*/
+                        BuscarDadosInseridosDetalhes();
+                        $('#txtDescDetalhes').val('');
+                        $('#txtQtdeDetalhes').val('');
+                        $('#txtvalorDetalhes').val('');
+
+
+                    }
+
+                    /*BuscaTabelaDetalhesModal(dados);*/
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
         }
 
+    }
 
-
-        var obj = { 'Contas': Contas };
-
+    function BuscarDadosInseridosDetalhes() {
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/GravarTempDetalhes",
-            data: JSON.stringify(obj),
+            url: "ContasPagar.aspx/TabelaDetalhesContas",
+            data: '',
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
 
-                var dados = JSON.parse(data.d);
-                
-                BuscaTabelaDetalhesModal(dados);
+                var dados = data.d;
+
+                $('#lblTabelaInseridosDetalhes').html(dados);
+
+
+                /*BuscaTabelaDetalhesModal(dados);*/
 
             },
             error: function (request, status, error) {
@@ -553,7 +580,7 @@
 
                 $('#hdnFornecedor').val(source.id);
                 $('#txtFornecedor').val(source.RazaoSocial);
-                
+
             },
             error: function (request, status, error) {
                 alert(request.responseText);
@@ -570,14 +597,13 @@
         });
     }
 
-
     function BuscarObra() {
 
         window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
     }
 
     function selObra(id, nome, cnpj) {
-      
+
         $('#hdnObra').val(id);
         $('#txtObras').val(nome);
 
@@ -589,9 +615,9 @@
         //    dataType: "JSON",
         //    success: function (data) {
         //        var source = data.d;
-                               
-       
-                           
+
+
+
 
         //    },
         //    error: function (request, status, error) {
@@ -662,13 +688,13 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('fonecedor');return false;" />
                         </td>
                     </tr>
-                          <tr>
+                    <tr>
                         <td colspan="5">
                             <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
                             </asp:DropDownList>
-                        </td>                                           
+                        </td>
 
-                       
+
 
                     </tr>
                     <tr>
@@ -678,7 +704,7 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarObra();return false;" />
                         </td>
                     </tr>
-              
+
 
                     <tr>
                     </tr>
@@ -718,7 +744,7 @@
 
                     </tr>
 
-                       
+
 
                     <tr>
                         <td colspan="4" style="text-align: center">
@@ -757,11 +783,11 @@
                             <label id="lblLiberacaoEspecial"></label>
                             <table>
                                 <tr>
-                                     <td colspan="4">
-                                         <center>
-                                               <asp:TextBox runat="server" ID="txtNF" CssClass="form-control" Width="150px" placeholder="NF"></asp:TextBox>
-                                         </center>
-                                      
+                                    <td colspan="4">
+                                        <center>
+                                            <asp:TextBox runat="server" ID="txtNF" CssClass="form-control" Width="150px" placeholder="NF"></asp:TextBox>
+                                        </center>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -775,29 +801,19 @@
                                         <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp('')" />
+                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp('gravar')" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <label id="lblAvisoGravadoModal" style="color:green"></label>
-                                        <br />
-                                    </td>
-                                </tr>
-                                <tr>
+
                                     <td colspan="4">
                                         <center>
-                                            <div id="tbDetalhados">
-                                            </div>
-                                        </center>
+                                            <label id="lblTabelaInseridosDetalhes"></label>
+                                        </center>                                      
                                     </td>
-                                </tr>
+                                </tr>                     
                             </table>
-
-
-                            <label id="avisoModal" style="color: red" class="hidden"><b>Selecione uma Filial</b></label>
-                            <br />
-                            <br />
+                            <label id="avisoModal" style="color: red" class="hidden"><b>É necessario preencher os campos</b></label>                  
                         </center>
                     </div>
                     <div class="modal-footer">

@@ -18,6 +18,7 @@ namespace ContrutoraApp
         public String dt_cadastrou { get; set; }
         public String desc_despesa { get; set; }
         public String qtde { get; set; }
+        public String retorno { get; set; }
 
 
         public Int32 id_despesa { get; set; }
