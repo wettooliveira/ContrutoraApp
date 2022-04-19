@@ -123,6 +123,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Telas\consultar_fornecedor.aspx" />
     <Content Include="Telas\consultar_obra.aspx" />
     <Content Include="Telas\consultar_cliente.aspx" />
     <Content Include="Telas\cad_usuario.aspx" />
@@ -206,6 +207,13 @@
     </Compile>
     <Compile Include="Telas\cad_despesa.aspx.designer.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Telas\consultar_fornecedor.aspx.cs">
+      <DependentUpon>consultar_fornecedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\consultar_fornecedor.aspx.designer.cs">
+      <DependentUpon>consultar_fornecedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Telas\consultar_obra.aspx.cs">
       <DependentUpon>consultar_obra.aspx</DependentUpon>

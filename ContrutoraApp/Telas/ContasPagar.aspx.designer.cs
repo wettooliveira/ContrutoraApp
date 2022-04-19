@@ -33,6 +33,24 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnIDContasPagar;
 
         /// <summary>
+        /// Controle hdnFornecedor.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnFornecedor;
+
+        /// <summary>
+        /// Controle hdnObra.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnObra;
+
+        /// <summary>
         /// Controle ddlConta.
         /// </summary>
         /// <remarks>
@@ -60,15 +78,6 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.TextBox txtFornecedor;
 
         /// <summary>
-        /// Controle txtObras.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtObras;
-
-        /// <summary>
         /// Controle ddlDespesa.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace ContrutoraApp
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlDespesa;
+
+        /// <summary>
+        /// Controle txtObras.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtObras;
 
         /// <summary>
         /// Controle txtValor.
@@ -87,6 +105,15 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.TextBox txtValor;
 
         /// <summary>
+        /// Controle txtParcela.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtParcela;
+
+        /// <summary>
         /// Controle hdnIdLiberacao.
         /// </summary>
         /// <remarks>
@@ -94,6 +121,15 @@ namespace ContrutoraApp
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnIdLiberacao;
+
+        /// <summary>
+        /// Controle txtNF.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNF;
 
         /// <summary>
         /// Controle txtDescDetalhes.

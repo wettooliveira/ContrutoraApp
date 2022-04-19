@@ -184,8 +184,6 @@
 
     function TabelaLancarDados() {
 
-
-
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/TabelaContasPagar",
@@ -215,31 +213,30 @@
     }
 
     function GravarConta() {
-
-        var desc_conta = $('#txtConta').val();
-        var tipo = $('#ddlTipo').val();
+     
+        var fornec = $('#hdnFornecedor').val();
+        if (fornec == '') {
+            fornec = 0;
+        } 
+        var desc_conta = $('#txtConta').val();        
         var num_parcela_string = $('#txtParcela').val();
-        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        var tp_despesa = $('#ddlTipodespesa').val();
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');  
+        var cod_despesa = $('#ddlDespesa').val();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
-        var desc_despesa = '';
-        var id_obra = 0;
-        if ($('#ddlDespesa').val() != '') {
-            desc_despesa = $('#ddlDespesa').val();
-        }
-        if ($('#ddlObra').val() != '') {
-            id_obra = $('#ddlObra').val();
-        }
+        var obra = $('#hdnObra').val();
 
+        if (obra == '') {
+            obra = 0;
+        }
 
         var Contas = {
-            desc_conta: desc_conta,
-            tipo: tipo,
+            desc_conta: desc_conta,           
             num_parcela_string: num_parcela_string,
             valor_string: valor_string,
-            data: data,
-            desc_despesa: desc_despesa,
-            id_obra: id_obra
+            data: data,    
+            id_despesa: cod_despesa,
+            id_obra: obra,
+            id_fornecedor: fornec
         };
 
         var obj = { 'Contas': Contas };
@@ -248,7 +245,7 @@
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/Gravar",
+            url: "ContasPagar.aspx/Gravar", 
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -332,18 +329,20 @@
 
         if (acao == '') {
 
-
+            
             var desc_detalhe = $('#txtDescDetalhes').val();
             var qtde = $('#txtQtdeDetalhes').val();
             var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
             var id_obra = $('#hdnIDContasPagar').val();
+            var nf_ = $('#txtNF').val();
 
 
             Contas = {
                 desc_conta: desc_detalhe,
                 num_parcela: qtde,
                 valor: valor,
-                id_obra: id_obra
+                id_obra: id_obra,
+                nf: nf_
             };
 
         } else {
@@ -538,32 +537,23 @@
 
     function BuscarCliente() {
 
-        window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        window.open("consultar_fornecedor.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
     }
 
     function selCliente(id, nome, cnpj) {
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/CarregarCliente",
+            url: "ContasPagar.aspx/ConsultarFornecedor",
             data: "{'id':'" + id + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
-                $('#hdnCliente').val(source.id);
-                $('#txtRazaoSocial').val(source.RazaoSocial);
-                $('#txtCEP').val(source.endereco.cep);
-                $('#txtEndereco').val(source.endereco.logradouro);
-                $('#txtNumero').val(source.endereco.numero);
-                $('#txtComplemento').val(source.endereco.complemento);
-                $('#txtBairro').val(source.endereco.bairro);
-                $('#txtCidade').val(source.endereco.cidade);
-                $('#txtUF').val(source.endereco.uf);
-
-
-
+                $('#hdnFornecedor').val(source.id);
+                $('#txtFornecedor').val(source.RazaoSocial);
+                
             },
             error: function (request, status, error) {
                 alert(request.responseText);
@@ -587,48 +577,36 @@
     }
 
     function selObra(id, nome, cnpj) {
+      
+        $('#hdnObra').val(id);
+        $('#txtObras').val(nome);
 
-        $.ajax({
-            type: "POST",
-            url: "cad_obra.aspx/CarregarObra",
-            data: "{'id':'" + id + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            success: function (data) {
-                var source = data.d;
+        //$.ajax({
+        //    type: "POST",
+        //    url: "cad_obra.aspx/CarregarObra",
+        //    data: "{'id':'" + id + "'}",
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "JSON",
+        //    success: function (data) {
+        //        var source = data.d;
+                               
+       
+                           
 
-
-                $('#hdnCliente').val(source.cliente.id);
-                $('#hdnObra').val(source.id);
-                $('#txtRazaoSocial').val(source.cliente.RazaoSocial);
-                $('#txtNomeObra').val(source.nome);
-                $('#txtCEP').val(source.endereco.cep);
-                $('#txtEndereco').val(source.endereco.logradouro);
-                $('#txtNumero').val(source.endereco.numero);
-                $('#txtComplemento').val(source.endereco.complemento);
-                $('#txtBairro').val(source.endereco.bairro);
-                $('#txtCidade').val(source.endereco.cidade);
-                $('#txtUF').val(source.endereco.uf);
-                $('#txtResponsavel').val(source.responsavel);
-                $('#txtValorObra').val(source.valor_string);
-                $('#txtObra').val(source.id);
-
-                $('#btnGravar').val('Alterar');
-
-            },
-            error: function (request, status, error) {
-                alert(request.responseText);
-                console.log(request.responseText);
-                //swalWithBootstrapButtons.fire({
-                //    title: '',
-                //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //    icon: 'error',
-                //    confirmButtonText: 'OK',
-                //    allowOutsideClick: false
-                //}).then((result) => {
-                /*  });*/
-            }
-        });
+        //    },
+        //    error: function (request, status, error) {
+        //        alert(request.responseText);
+        //        console.log(request.responseText);
+        //        //swalWithBootstrapButtons.fire({
+        //        //    title: '',
+        //        //    text: 'Erro ao abrir tabela! Tente novamente!',
+        //        //    icon: 'error',
+        //        //    confirmButtonText: 'OK',
+        //        //    allowOutsideClick: false
+        //        //}).then((result) => {
+        //        /*  });*/
+        //    }
+        //});
     }
 
 </script>
@@ -649,6 +627,8 @@
 <body>
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
+        <asp:HiddenField ID="hdnFornecedor" runat="server" />
+        <asp:HiddenField ID="hdnObra" runat="server" />
         <div id="menu">
         </div>
         <div>
@@ -667,7 +647,7 @@
                             </asp:DropDownList>
                         </td>
                         <td style="width: 20px"></td>
-                        <td>Data:
+                        <td>Vencimento: &nbsp;
                         </td>
                         <td>
                             <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
@@ -682,6 +662,15 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('fonecedor');return false;" />
                         </td>
                     </tr>
+                          <tr>
+                        <td colspan="5">
+                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
+                            </asp:DropDownList>
+                        </td>                                           
+
+                       
+
+                    </tr>
                     <tr>
                         <td style="display: inline-flex" colspan="4">
                             <asp:TextBox ID="txtObras" runat="server" placeholder="Obra" CssClass="form-control" Width="350px"></asp:TextBox>
@@ -689,13 +678,7 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarObra();return false;" />
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="4">
-                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
-                            </asp:DropDownList>
-                        </td>
-
-                    </tr>
+              
 
                     <tr>
                     </tr>
@@ -724,11 +707,18 @@
                     </tr>  --%>
 
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="100px" CssClass="form-control"></asp:TextBox>
                         </td>
+                        <td></td>
+                        <td colspan="1">
+                            <asp:TextBox ID="txtParcela" runat="server" Width="100px" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
+                        </td>
+
 
                     </tr>
+
+                       
 
                     <tr>
                         <td colspan="4" style="text-align: center">
@@ -766,6 +756,14 @@
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
                             <table>
+                                <tr>
+                                     <td colspan="4">
+                                         <center>
+                                               <asp:TextBox runat="server" ID="txtNF" CssClass="form-control" Width="150px" placeholder="NF"></asp:TextBox>
+                                         </center>
+                                      
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" Width="150px" placeholder="item"></asp:TextBox>

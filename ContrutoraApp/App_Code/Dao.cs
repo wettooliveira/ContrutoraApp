@@ -380,13 +380,14 @@ namespace ContrutoraApp
             {
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor)
-                                    values(@id_conta, @desc_conta, @num_parcela, @valor)";
+                cmd.CommandText = @"INSERT INTO tb_temp_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor, nf)
+                                    values(@id_conta, @desc_conta, @num_parcela, @valor, @nf)";
 
                 cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
                 cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor);
                 cmd.Parameters.AddWithValue("@id_conta", Contas.id_obra);
+                cmd.Parameters.AddWithValue("@nf", Contas.nf);
 
                 cmd.ExecuteNonQuery();
                 cn.Close();
@@ -453,7 +454,7 @@ namespace ContrutoraApp
                     Contas dadosTabelaDetalhes = new Contas();
                     dadosTabelaDetalhes.id = Convert.ToInt32(dr["id_temp_detalhes_contasPagar"]);
                     dadosTabelaDetalhes.desc_conta = dr["desc_detalhe"].ToString();
-                    dadosTabelaDetalhes.tipo = dr["qtde"].ToString();
+                    dadosTabelaDetalhes.qtde = dr["qtde"].ToString();
                     dadosTabelaDetalhes.valor = Convert.ToDouble(dr["valor"]);
                     dadosTabelaDetalhes.valor_string = Convert.ToDouble(dr["total"]).ToString("N2");
                     //soma += Convert.ToDouble(dr["valor"]);

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="consultar_obra.aspx.cs" Inherits="consultar_obra" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="consultar_fornecedor.aspx.cs" Inherits="consultar_fornecedor" %>
 
 <!DOCTYPE html>
 
@@ -24,7 +24,7 @@
         }
 
         function seleciona(id, nome, cnpj) {           
-            window.opener.selObra(id,nome);
+            window.opener.selCliente(id, nome, cnpj);
             window.close();
         }
 
@@ -151,11 +151,11 @@
             <tr>
                 <td>
                     <label for="txtRazaoSocial">
-                        Nome da Obra:
+                        Razão Social/CPF/CNPJ/Fantasia:
                     </label>
                 </td>
                 <td>
-                    <asp:TextBox ID="txtNomeObra" CssClass="form-control" runat="server" Width="280px"></asp:TextBox>
+                    <asp:TextBox ID="txtRazaoSocial" CssClass="form-control" runat="server" Width="280px"></asp:TextBox>
 
                 </td>
                 <td class="hidden">
@@ -192,26 +192,25 @@
             <asp:Label runat="server" ID="lblCliente" Visible="false">Nenhum cliente encontrado!</asp:Label>
         </center>
 
-        <asp:GridView ID="gdvObra" runat="server" CssClass="Grid" AutoGenerateColumns="False" Width="100%" AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" SelectedRowStyle-CssClass="row" OnPageIndexChanging="gdvCliente_PageIndexChanging" >
+        <asp:GridView ID="gdvCliente" runat="server" CssClass="Grid" AutoGenerateColumns="False" Width="100%" AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" SelectedRowStyle-CssClass="row" OnPageIndexChanging="gdvCliente_PageIndexChanging" >
             
          <%--   <HeaderStyle CssClass="titulo" />--%>
             <Columns>
                 <asp:TemplateField>
                     <HeaderTemplate>
-                        Numero Obra
+                        Código
                     </HeaderTemplate>
                     <ItemStyle HorizontalAlign="Center" />
                     <ItemTemplate>
                         <div>
-                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>','<%# DataBinder.Eval(Container.DataItem,"nome") %>')">
+                            <b><span style="cursor: pointer;" onclick="seleciona('<%# DataBinder.Eval(Container.DataItem,"id") %>','<%# DataBinder.Eval(Container.DataItem, "RazaoSocial")%>','<%# DataBinder.Eval(Container.DataItem, "CNPJ")%>')">
                                 <%# DataBinder.Eval(Container.DataItem, "id")%> </span></b>                              
                         </div>
                     </ItemTemplate>
                 </asp:TemplateField>
             
-                <asp:BoundField HeaderText="Nome Obra" DataField="nome" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField HeaderText="Endereco" DataField="endereco.logradouro" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField HeaderText="Cliente" DataField="cliente.RazaoSocial" ItemStyle-HorizontalAlign="Center" /> 
+                <asp:BoundField HeaderText="Nome Fantasia" DataField="RazaoSocial" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField HeaderText="CPF/CNPJ" DataField="CNPJ" ItemStyle-HorizontalAlign="Center" />
                 <%--<asp:TemplateField>
                     <HeaderTemplate>
                         Código Interno

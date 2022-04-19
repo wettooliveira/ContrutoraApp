@@ -19,6 +19,8 @@ namespace ContrutoraApp
             {
                 CarregaDespesa();
                 CarregaContasBancos();
+              
+                txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
             }
             else
             {
@@ -53,7 +55,10 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = "select id, desc_conta, tipo, num_parcela,valor from tb_contasPagar";
+            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.num_parcela, cp.valor from tb_contasPagar cp
+                               inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
+                               inner join obra obra on obra.id_obra = cp.id_obra
+                               inner join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
 
 
             String table = "";
@@ -64,7 +69,7 @@ namespace ContrutoraApp
             String cor_r = "#FFFFFF";
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
-            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Tipo</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Fornecedor</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Detalhar  </th>";
@@ -81,8 +86,8 @@ namespace ContrutoraApp
 
                 if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_conta"].ToString() + " </th>";
-                table += "          <th style='border-bottom: 1px solid;'> " + dr["tipo"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
                 table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
@@ -128,30 +133,19 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(desc_conta,tipo,num_parcela,valor, id_fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@desc_conta,@tipo,@num_parcela,@valor, @fornec_despesa, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
+            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela,valor, id_despesa, fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@num_parcela,@valor, @id_despesa ,@fornec, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
-            cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
-            cmd.Parameters.AddWithValue("@tipo", Contas.tipo);
+                   
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
             cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-            cmd.Parameters.AddWithValue("@fornec_despesa", Contas.desc_despesa.ToUpper());
-
-            if (Contas.id_obra <= 0)
-            {
-                cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
-            }
-            else if (Contas.id > 0)
-            {
-                cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
-            }
-
-
+            cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
+            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);       
+            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);                              
 
             cmd.ExecuteNonQuery();
             cn.Close();
-
 
             return "OK";
 
@@ -208,8 +202,8 @@ namespace ContrutoraApp
 
             cmd.Parameters.Clear();
             //comando de instrução do banco de dados
-            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor)
-                                SELECT desc_detalhe, id_conta, qtde, valor from tb_temp_detalhes_contasPagar where id_conta =" + id_conta;
+            cmd.CommandText = @"insert into tb_detalhes_contasPagar(desc_detalhe, id_conta, qtde, valor, nf)
+                                SELECT desc_detalhe, id_conta, qtde, valor , nf from tb_temp_detalhes_contasPagar where id_conta =" + id_conta;
 
             cmd.ExecuteNonQuery();
 
@@ -248,7 +242,7 @@ namespace ContrutoraApp
             {
                 Despesa desp = new Despesa();
                 desp.id_despesa = Convert.ToInt32(dr["id_despesa"]);
-                desp.desc_despesa = dr["desc_despesa"].ToString();
+                desp.desc_despesa = dr["desc_despesa"].ToString().ToUpper();
                 lista.Add(desp);
             }
 
