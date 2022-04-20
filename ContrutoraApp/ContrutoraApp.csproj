@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\Imagens\lupa.png" />
+    <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Telas\cad_conta_banco.aspx" />
     <Content Include="Telas\cad_obra.aspx" />
     <Content Include="Telas\cad_despesa.aspx" />

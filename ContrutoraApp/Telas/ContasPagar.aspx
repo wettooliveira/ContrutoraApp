@@ -7,7 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" /> 
+    <script src="../Scripts/jquery.maskMoney.js" type="text/javascript"></script>
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
@@ -28,9 +29,11 @@
     $(document).ready(function () {
 
         TabelaLancarDados();
+        $('#txtValor').maskMoney();
         /*  Menu();*/
 
     });
+  
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -39,116 +42,7 @@
         },
         buttonsStyling: false
     });
-
-    function validateDate(id) {
-        if (id.value != '') {
-            var RegExPattern = /^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))$/;
-
-            if (!((id.value.match(RegExPattern)) && (id.value != ''))) {
-                swalWithBootstrapButtons.fire({
-                    title: '',
-                    text: 'Data inválida! Digite novamente no formato DD/MM/AAAA.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                });
-                id.value = "";
-                id.focus();
-            }
-            else {
-                var dataPrazo = $('#hdnDataPrazoCalculado').val();
-                var dt_prazo = dataPrazo;
-                dataPrazo = dataPrazo.split('/')[2] + dataPrazo.split('/')[1] + dataPrazo.split('/')[0];
-
-                var dataDigitada = $('#txtData').val();
-                dataDigitada = dataDigitada.split('/')[2] + dataDigitada.split('/')[1] + dataDigitada.split('/')[0];
-
-                if (parseInt(dataDigitada) < parseInt(dataPrazo)) {
-                    swalWithBootstrapButtons.fire({
-                        title: '',
-                        text: 'Data programada não pode ser menor que a data de prazo ' + dt_prazo + '!',
-                        icon: 'error',
-                        confirmButtonText: 'OK',
-                        allowOutsideClick: false
-                    });
-                    id.value = "";
-                    id.focus();
-                }
-            }
-        }
-    }
-
-    function verBackSpace(v, n) {
-        var tecla = event.keyCode;
-        if (n == data && tecla == 8 && (v.value.length == 7 || v.value.length == 4)) {
-            var texto = v.value.substring(0, v.value.length - 1);
-            v.value = texto;
-        }
-    }
-
-    function mascaraMutuario(o, f) {
-        v_obj = o
-        v_fun = f
-        setTimeout('execmascara()', 1)
-    }
-
-    function execmascara() {
-        v_obj.value = v_fun(v_obj.value)
-    }
-
-    function data(v) {
-
-        //Remove tudo o que não é dígito
-        v = v.replace(/\D/g, "")
-
-        //Coloca uma barra entre o segundo e o terceiro dígitos
-        v = v.replace(/(\d{2})(\d)/, "$1/$2")
-
-        //Coloca uma barra entre o segundo e o terceiro dígitos
-        //de novo (para o segundo bloco de números)
-        v = v.replace(/(\d{2})(\d)/, "$1/$2")
-
-        return v
-
-    }
-
-    function validateDate(id) {
-        if (id.value != '') {
-            var RegExPattern = /^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))$/;
-
-            if (!((id.value.match(RegExPattern)) && (id.value != ''))) {
-                swalWithBootstrapButtons.fire({
-                    title: '',
-                    text: 'Data inválida! Digite novamente no formato DD/MM/AAAA.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                });
-                id.value = "";
-                id.focus();
-            }
-            else {
-                var dataPrazo = $('#hdnDataPrazoCalculado').val();
-                var dt_prazo = dataPrazo;
-                dataPrazo = dataPrazo.split('/')[2] + dataPrazo.split('/')[1] + dataPrazo.split('/')[0];
-
-                var dataDigitada = $('#txtData').val();
-                dataDigitada = dataDigitada.split('/')[2] + dataDigitada.split('/')[1] + dataDigitada.split('/')[0];
-
-                if (parseInt(dataDigitada) < parseInt(dataPrazo)) {
-                    swalWithBootstrapButtons.fire({
-                        title: '',
-                        text: 'Data programada não pode ser menor que a data de prazo ' + dt_prazo + '!',
-                        icon: 'error',
-                        confirmButtonText: 'OK',
-                        allowOutsideClick: false
-                    });
-                    id.value = "";
-                    id.focus();
-                }
-            }
-        }
-    }       
+             
 
     function TabelaLancarDados() {
 
@@ -290,8 +184,8 @@
         $('#hdnIDContasPagar').val('');
         $('#tbDetalhados').html('');
 
-       /* limparTabelaTempModal();*/
-        
+        /* limparTabelaTempModal();*/
+
     }
 
     function GravarDetahesTemp(acao) {
@@ -302,8 +196,7 @@
         if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
 
             $('#avisoModal').removeClass('hidden');
-        } else
-        {
+        } else {
 
             $('#avisoModal').addClass('hidden');
 
@@ -351,7 +244,7 @@
                     if (dados.retorno.split(',')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
-                       /* BuscarDadosInseridosTempDetalhes(dados.retorno.split(',')[1]);*/
+                        /* BuscarDadosInseridosTempDetalhes(dados.retorno.split(',')[1]);*/
                         BuscarDadosInseridosDetalhes(dados.retorno.split(',')[1])
                         $('#txtDescDetalhes').val('');
                         $('#txtQtdeDetalhes').val('');
@@ -389,10 +282,10 @@
             dataType: "JSON",
             success: function (data) {
 
-            
+
                 var dados = data.d.split('@')[1];
                 var tabela = data.d.split('@')[0];
-              
+
                 $('#txtNF').val(dados);
                 $('#lblTabelaInseridosDetalhes').html('');
                 $('#lblTabelaInseridosDetalhes').html(tabela);
@@ -768,11 +661,13 @@
 
                     <tr>
                         <td colspan="3">
-                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="100px" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="100px" CssClass="form-control" ></asp:TextBox>
+                          
                         </td>
                         <td></td>
                         <td colspan="1">
                             <asp:TextBox ID="txtParcela" runat="server" Width="100px" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
+                            
                         </td>
 
 
@@ -843,11 +738,11 @@
                                     <td colspan="4">
                                         <center>
                                             <label id="lblTabelaInseridosDetalhes"></label>
-                                        </center>                                      
+                                        </center>
                                     </td>
-                                </tr>                     
+                                </tr>
                             </table>
-                            <label id="avisoModal" style="color: red" class="hidden"><b>É necessario preencher os campos</b></label>                  
+                            <label id="avisoModal" style="color: red" class="hidden"><b>É necessario preencher os campos</b></label>
                         </center>
                     </div>
                     <div class="modal-footer">
