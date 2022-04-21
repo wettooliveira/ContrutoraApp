@@ -7,8 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" /> 
-    <script src="../Scripts/jquery.maskMoney.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />   
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
@@ -29,11 +28,11 @@
     $(document).ready(function () {
 
         TabelaLancarDados();
-        $('#txtValor').maskMoney();
+       
         /*  Menu();*/
 
     });
-  
+
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -42,14 +41,16 @@
         },
         buttonsStyling: false
     });
-             
+
 
     function TabelaLancarDados() {
+      
+        $('#btnPagas').val("Pagas");
 
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/TabelaContasPagar",
-            data: "{'':''}",
+            data: "{'status':'status'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
@@ -86,6 +87,7 @@
         var cod_despesa = $('#ddlDespesa').val();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
         var obra = $('#hdnObra').val();
+        var tipo_pg = $('#ddlTipoPgto').val();
 
         if (obra == '') {
             obra = 0;
@@ -98,7 +100,8 @@
             data: data,
             id_despesa: cod_despesa,
             id_obra: obra,
-            id_fornecedor: fornec
+            id_fornecedor: fornec,
+            tipo_pgto: tipo_pg
         };
 
         var obj = { 'Contas': Contas };
@@ -116,7 +119,7 @@
 
                 if (source == "OK") {
                     alertCss('Gravar');
-                    lancarDados();
+                    TabelaLancarDados();
 
                 }
 
@@ -562,6 +565,107 @@
         //});
     }
 
+    function excluirConta(id) {
+                
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/ExcluirConta",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                TabelaLancarDados();
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        }); 
+
+    }
+
+    function baixarConta(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/BaixarConta",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                TabelaLancarDados();
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function BuscarContaPagas(status) {
+   
+        if ($('#btnPagas').val()== "Pagas") {
+                 
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/TabelaContasPagar",
+            data: "{'status':'" + status + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#div').html('');
+                $('#div').html(source);
+                $('#btnPagas').val("Não Pagas");
+               
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+        } else {
+
+            TabelaLancarDados('');
+        }
+
+    }
+
 </script>
 
 <style type="text/css">
@@ -660,24 +764,36 @@
                     </tr>  --%>
 
                     <tr>
-                        <td colspan="3">
-                        <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="100px" CssClass="form-control" ></asp:TextBox>
-                          
+                        <td colspan="3" style="display: inline-flex">
+                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="120px" CssClass="form-control"></asp:TextBox>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:DropDownList ID="ddlTipoPgto" Width="150px" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Forma Pgto.." Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Boleto" Value="BOLETO"></asp:ListItem>
+                                <asp:ListItem Text="Dinheiro" Value="DINHEIRO"></asp:ListItem>
+                                <asp:ListItem Text="Débito" Value="DEBITO"></asp:ListItem>
+                                <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
+                                <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
+                            </asp:DropDownList>
                         </td>
                         <td></td>
-                        <td colspan="1">
+                        <td></td>
+                        <td></td>
+                        <td>
                             <asp:TextBox ID="txtParcela" runat="server" Width="100px" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
-                            
+
                         </td>
-
-
                     </tr>
 
-
-
                     <tr>
+
                         <td colspan="4" style="text-align: center">
+                            <br />
                             <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
+                        </td>
+                         <td style="text-align: center">
+                            <br />
+                            <asp:Button id="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="BuscarContaPagas('pagas');return false;" />
                         </td>
                     </tr>
                 </table>
@@ -746,7 +862,7 @@
                         </center>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>
+                       <%-- <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>--%>
                         <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Cancelar</button>
                     </div>
                 </div>

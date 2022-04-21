@@ -12,6 +12,7 @@ namespace ContrutoraApp
         public String nf { get; set; }
         public Int32 num_parcela { get; set; }
         public String num_parcela_string { get; set; }
+        public String tipo_pgto { get; set; }
         public Double valor { get; set; }
         public String valor_string { get; set; }
         public String nm_cadastrou { get; set; }

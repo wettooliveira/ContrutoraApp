@@ -19,12 +19,13 @@ namespace ContrutoraApp
             {
                 CarregaDespesa();
                 CarregaContasBancos();
-              
+
                 txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                txtParcela.Text = "1";
             }
             else
             {
-                
+
             }
         }
 
@@ -38,7 +39,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaContasPagar()
+        public static String TabelaContasPagar(String status)
         {
 
             //// Passa o caminho do banco de dados para um string      
@@ -55,10 +56,20 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
+            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
                                inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
-                               inner join obra obra on obra.id_obra = cp.id_obra
-                               inner join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
+                               left join obra obra on obra.id_obra = cp.id_obra
+                               LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' ";
+
+            if (status == "pagas")
+            {
+                cmd.CommandText += " where cp.status = 'pago' order by 1 desc";
+            }
+            else
+            {
+                cmd.CommandText += " where cp.status is null  order by 1 desc";
+            }
+
 
 
             String table = "";
@@ -66,16 +77,20 @@ namespace ContrutoraApp
 
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
-            String cor_r = "#FFFFFF";
+            String cor_r = "#";
+            if (status == "pagas"){cor_r = "#90EE90";}else {cor_r = "#FFFFFF";}
+
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Fornecedor</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Pgto.</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Data Pagto.</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Detalhar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Editar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Baixar </th>";
             table += "          </tr> ";
 
             cmd.CommandText = cmd.CommandText;
@@ -84,17 +99,26 @@ namespace ContrutoraApp
 
             while (dr.Read())
             {
-
-                if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                if(status == "pagas")
+                {
+                    if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+                }
+                else
+                {
+                    if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                }
+                
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString() + " </th>";
+                table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                 table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
+                table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_pgto"].ToString() + "</th>";
                 table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                 table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                 table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
                 table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["id"].ToString() + "); return false;' />  </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-success' value='Baixar' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                 table += "          </tr> ";
 
 
@@ -204,7 +228,7 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>qtde</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>vlr unit</th>";
-            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>nf</th>";     
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>nf</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
             table += "          </tr> ";
 
@@ -218,7 +242,7 @@ namespace ContrutoraApp
                 if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                 table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_detalhe"].ToString() + " </th>";
-                table += "          <th style='border-bottom: 1px solid;'>" + dr["qtde"].ToString() + "</th>";              
+                table += "          <th style='border-bottom: 1px solid;'>" + dr["qtde"].ToString() + "</th>";
                 table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                 table += "          <th style='border-bottom: 1px solid;'>" + dr["nf"].ToString() + "</th>";
                 //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
@@ -237,7 +261,7 @@ namespace ContrutoraApp
 
         }
 
-        [WebMethod] 
+        [WebMethod]
         public static String DeletarTabelaTempDetalhes()
         {
             Dao dao = new Dao();
@@ -264,16 +288,17 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela,valor, id_despesa, fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_parcela,@valor, @id_despesa ,@fornec, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
+            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
-                   
+
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
+            cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
             cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
             cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
-            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);       
-            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);                              
+            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);
+            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
 
             cmd.ExecuteNonQuery();
             cn.Close();
@@ -281,6 +306,63 @@ namespace ContrutoraApp
             return "OK";
 
         }
+
+        [WebMethod]
+        public static String ExcluirConta(String id)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static String BaixarConta(String id)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"update tb_contasPagar set status = 'pago' where id = " + id;
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
 
         [WebMethod]
         public static String GravarTempDetalhes(Contas Contas)
@@ -306,7 +388,7 @@ namespace ContrutoraApp
 
             }
 
-            return JsonConvert.SerializeObject(DadosDetalhes); 
+            return JsonConvert.SerializeObject(DadosDetalhes);
         }
 
         [WebMethod]
@@ -347,8 +429,8 @@ namespace ContrutoraApp
             return "OK";
 
         }
-               
-        public void  CarregaDespesa()
+
+        public void CarregaDespesa()
         {
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
@@ -360,7 +442,7 @@ namespace ContrutoraApp
             //construtor command para obter dados44
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
-                                  
+
             //abre a conexao
             cn.Open();
 
@@ -386,7 +468,7 @@ namespace ContrutoraApp
             ddlDespesa.DataBind();
             ddlDespesa.Items.Add(new ListItem("Selecione...", "0"));
             ddlDespesa.SelectedValue = "0";
-           
+
 
         }
 
@@ -428,7 +510,7 @@ namespace ContrutoraApp
             ddlConta.DataValueField = "id_despesa";
             ddlConta.DataBind();
             //ddlConta.Items.Add(new ListItem("Selecione...", "0"));
-            
+
 
 
         }
