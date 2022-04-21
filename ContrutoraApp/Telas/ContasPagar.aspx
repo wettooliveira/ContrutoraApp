@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />   
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
@@ -28,7 +28,7 @@
     $(document).ready(function () {
 
         TabelaLancarDados();
-       
+
         /*  Menu();*/
 
     });
@@ -44,19 +44,20 @@
 
 
     function TabelaLancarDados() {
-      
-        $('#btnPagas').val("Pagas");
 
+        $('#btnPagas').val("Pagas");
+        var status = '';
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/TabelaContasPagar",
-            data: "{'status':'status'}",
+            data: "{'status':'" + status + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
                 $('#div').html(source);
+                $('#btnPagas').prop("disabled", false);
 
             },
             error: function (request, status, error) {
@@ -72,6 +73,56 @@
                 /*  });*/
             }
         });
+
+    }
+
+    function TabelaLancarDadosPagas(status) {
+
+        
+        if ($('#btnPagas').val() == "Não Pagas") {
+
+            TabelaLancarDados();
+
+        } else {
+
+            $('#btnPagas').prop("disabled", true);
+            var status = '';
+
+            $.ajax({
+                type: "POST",
+                url: "ContasPagar.aspx/TabelaContasPagas",
+                data: "{'status':'" + status + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    var source = data.d;
+
+                    $('#div').html('');
+                    $('#div').html(source);
+                    $('#btnPagas').val("Não Pagas");
+                    $('#btnPagas').prop("disabled", false);
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    console.log(request.responseText);
+                    //swalWithBootstrapButtons.fire({
+                    //    title: '',
+                    //    text: 'Erro ao abrir tabela! Tente novamente!',
+                    //    icon: 'error',
+                    //    confirmButtonText: 'OK',
+                    //    allowOutsideClick: false
+                    //}).then((result) => {
+                    /*  });*/
+                }
+            });
+
+        }
+        //} else {
+
+        //    $('#btnPagas').prop("disabled", true);
+        //    TabelaLancarDados('');
+        //}
 
     }
 
@@ -566,7 +617,7 @@
     }
 
     function excluirConta(id) {
-                
+
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/ExcluirConta",
@@ -591,7 +642,7 @@
                 //}).then((result) => {
                 /*  });*/
             }
-        }); 
+        });
 
     }
 
@@ -625,46 +676,7 @@
 
     }
 
-    function BuscarContaPagas(status) {
-   
-        if ($('#btnPagas').val()== "Pagas") {
-                 
 
-        $.ajax({
-            type: "POST",
-            url: "ContasPagar.aspx/TabelaContasPagar",
-            data: "{'status':'" + status + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            success: function (data) {
-                var source = data.d;
-
-                $('#div').html('');
-                $('#div').html(source);
-                $('#btnPagas').val("Não Pagas");
-               
-
-            },
-            error: function (request, status, error) {
-                alert(request.responseText);
-                console.log(request.responseText);
-                //swalWithBootstrapButtons.fire({
-                //    title: '',
-                //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //    icon: 'error',
-                //    confirmButtonText: 'OK',
-                //    allowOutsideClick: false
-                //}).then((result) => {
-                /*  });*/
-            }
-        });
-
-        } else {
-
-            TabelaLancarDados('');
-        }
-
-    }
 
 </script>
 
@@ -791,9 +803,9 @@
                             <br />
                             <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
-                         <td style="text-align: center">
+                        <td style="text-align: center">
                             <br />
-                            <asp:Button id="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="BuscarContaPagas('pagas');return false;" />
+                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="TabelaLancarDadosPagas();return false;" />
                         </td>
                     </tr>
                 </table>
@@ -862,7 +874,7 @@
                         </center>
                     </div>
                     <div class="modal-footer">
-                       <%-- <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>--%>
+                        <%-- <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>--%>
                         <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Cancelar</button>
                     </div>
                 </div>
