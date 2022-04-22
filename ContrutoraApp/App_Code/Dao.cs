@@ -357,7 +357,7 @@ namespace ContrutoraApp
         }
 
         //------------------------------------- CONTAS A PAGAR -----------------------------------------------//
-        public String GravarTempDetalhesDao(Contas Contas)
+        public String GravarDetalhesDao(Contas Contas)
         {
             String retorno = "";
 
@@ -386,12 +386,12 @@ namespace ContrutoraApp
                 cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
                 cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor);
-                cmd.Parameters.AddWithValue("@id_conta", Contas.id_obra);
+                cmd.Parameters.AddWithValue("@id_conta", Contas.id);
                 cmd.Parameters.AddWithValue("@nf", Contas.nf);
 
-                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();          
+                retorno = "OK" + "@" + Contas.id.ToString();
                 cn.Close();
-                retorno = "OK" + "," + Contas.id.ToString();
             }
             catch (Exception ex)
             {

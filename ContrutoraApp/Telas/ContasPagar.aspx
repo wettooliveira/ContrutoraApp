@@ -56,6 +56,7 @@
             success: function (data) {
                 var source = data.d;
 
+               
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
 
@@ -78,7 +79,7 @@
 
     function TabelaLancarDadosPagas(status) {
 
-        
+
         if ($('#btnPagas').val() == "Não Pagas") {
 
             TabelaLancarDados();
@@ -136,7 +137,7 @@
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
-        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2] + ' 23:59:59';
+        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
         var tipo_pg = $('#ddlTipoPgto').val();
 
@@ -195,11 +196,13 @@
     function detalhar(id) {
 
         /*limparTabelaTempModal();*/
-        BuscarDadosInseridosDetalhes(id)
+       
+        $('#lblTabelaInseridosDetalhes').html('');
         $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
         /*GravarDetahesTemp('buscar');*/
         $('#ModalDetalhes').modal('show');
+        BuscarDadosInseridosDetalhes(id);
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
@@ -242,44 +245,32 @@
 
     }
 
-    function GravarDetahesTemp(acao) {
+    function GravarDetahesConta() {
 
-        alert();
         var Contas = {};
 
         if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
 
             $('#avisoModal').removeClass('hidden');
+
         } else {
 
             $('#avisoModal').addClass('hidden');
 
+            var id_obra = $('#hdnIDContasPagar').val();
+            var desc_detalhe = $('#txtDescDetalhes').val();
+            var qtde = $('#txtQtdeDetalhes').val();
+            var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
+            var nf_ = $('#txtNF').val();
 
 
-            if (acao == 'gravar') {
-
-
-                var desc_detalhe = $('#txtDescDetalhes').val();
-                var qtde = $('#txtQtdeDetalhes').val();
-                var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
-                var id_obra = $('#hdnIDContasPagar').val();
-                var nf_ = $('#txtNF').val();
-
-
-                Contas = {
-                    desc_conta: desc_detalhe,
-                    num_parcela: qtde,
-                    valor: valor,
-                    id_obra: id_obra,
-                    nf: nf_
-                };
-
-            } else {
-                Contas = {
-                    desc_conta: acao,
-                    id_obra: $('#hdnIDContasPagar').val()
-                };
-            }
+            Contas = {
+                desc_conta: desc_detalhe,
+                num_parcela: qtde,
+                valor: valor,
+                id: id_obra,
+                nf: nf_
+            };
 
 
             var obj = { 'Contas': Contas };
@@ -287,19 +278,19 @@
 
             $.ajax({
                 type: "POST",
-                url: "ContasPagar.aspx/GravarTempDetalhes",
+                url: "ContasPagar.aspx/GravarDetalhes",
                 data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
 
                     var dados = JSON.parse(data.d);
-                    alert(dados.retorno);
-                    if (dados.retorno.split(',')[0] == 'OK') {
+                  
+                    if (dados.retorno.split('@')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
                         /* BuscarDadosInseridosTempDetalhes(dados.retorno.split(',')[1]);*/
-                        BuscarDadosInseridosDetalhes(dados.retorno.split(',')[1])
+                        BuscarDadosInseridosDetalhes(dados.retorno.split('@')[1]);
                         $('#txtDescDetalhes').val('');
                         $('#txtQtdeDetalhes').val('');
                         $('#txtvalorDetalhes').val('');
@@ -335,7 +326,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
-
 
                 var dados = data.d.split('@')[1];
                 var tabela = data.d.split('@')[0];
@@ -816,7 +806,7 @@
         <div style="width: 100%">
             <br />
             <center>
-                <table style="width: 70%">
+                <table style="width: 80%">
                     <tr>
                         <td>
                             <div id="div"></div>
@@ -838,7 +828,7 @@
                         <center>
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
-                            <table>
+                            <table style="width:100%">
                                 <tr>
                                     <td colspan="4">
                                         <center>
@@ -849,7 +839,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" Width="150px" placeholder="item"></asp:TextBox>
+                                        <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" placeholder="item"></asp:TextBox>
                                     </td>
                                     <td>
                                         <asp:TextBox runat="server" ID="txtQtdeDetalhes" CssClass="form-control" Width="60px" placeholder="Qtde"></asp:TextBox>
@@ -858,7 +848,7 @@
                                         <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesTemp('gravar')" />
+                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesConta()" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -875,7 +865,7 @@
                     </div>
                     <div class="modal-footer">
                         <%-- <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>--%>
-                        <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Cancelar</button>
+                        <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Fechar</button>
                     </div>
                 </div>
             </div>

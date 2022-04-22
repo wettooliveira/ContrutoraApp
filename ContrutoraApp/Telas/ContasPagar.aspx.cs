@@ -41,7 +41,7 @@ namespace ContrutoraApp
         [WebMethod]
         public static String TabelaContasPagar(String status)
         {
-
+            String getData = DateTime.Now.ToString("dd-MM-yyyy");
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -56,10 +56,13 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
-                               inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
-                               left join obra obra on obra.id_obra = cp.id_obra
-                               LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' where cp.status is null  order by 1 desc ";
+            cmd.CommandText = @" SELECT cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
+                                 FROM tb_contasPagar cp
+                                 INNER JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
+                                 LEFT JOIN obra obra on obra.id_obra = cp.id_obra
+                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
+            cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "'";
+            cmd.CommandText += " ORDER BY 1 DESC  ";
 
 
 
@@ -83,17 +86,24 @@ namespace ContrutoraApp
             table += "          </tr> ";
 
             cmd.CommandText = cmd.CommandText;
-
+           
             SqlDataReader dr = cmd.ExecuteReader();
             if (dr.HasRows)
             {
 
-
                 while (dr.Read())
                 {
+                    String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
 
-                    if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-
+                    if (dataVencimento != dr["vencimento"].ToString())
+                    {                      
+                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
+                    }
+                    else
+                    {
+                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }                        
+                    }
+                  
                     table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                     table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
@@ -118,6 +128,7 @@ namespace ContrutoraApp
             }
 
             dr.Close();
+            cn.Close();
 
             table += "      </table> ";
 
@@ -198,7 +209,7 @@ namespace ContrutoraApp
             }
 
             dr.Close();
-
+            cn.Close();
             table += "      </table> ";
 
             return table;
@@ -327,7 +338,7 @@ namespace ContrutoraApp
             }
 
             dr.Close();
-
+            cn.Close();
             table += "      </table> ";
 
             return table + "@" + nf;
@@ -400,10 +411,13 @@ namespace ContrutoraApp
 
             //comando de instrução do banco de dados
             cmd.CommandText = @"delete tb_contasPagar where id = " + id;
-
             cmd.ExecuteNonQuery();
-            cn.Close();
 
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
             return "OK";
 
         }
@@ -438,28 +452,21 @@ namespace ContrutoraApp
 
 
         [WebMethod]
-        public static String GravarTempDetalhes(Contas Contas)
+        public static String GravarDetalhes(Contas Contas)
         {
             String retorno = "";
             Contas DadosDetalhes = new Contas();
             Dao GravarTempDetalhesmodal = new Dao();
             Dao buscarTempDetalhesmodal = new Dao();
 
-            if (Contas.desc_conta != "gravar")
-            {
-                retorno = GravarTempDetalhesmodal.GravarTempDetalhesDao(Contas);
-                DadosDetalhes.retorno = retorno;
-                //if (retorno == "OK")
-                //{
-                //    DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
-                //}
-            }
-            else
-            {
+            retorno = GravarTempDetalhesmodal.GravarDetalhesDao(Contas);
+            DadosDetalhes.retorno = retorno;
+            //if (retorno == "OK")
+            //{
+            //    DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
+            //}
 
-                //DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas,"buscar");
-
-            }
+            //DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas,"buscar");
 
             return JsonConvert.SerializeObject(DadosDetalhes);
         }
