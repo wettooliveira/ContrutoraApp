@@ -109,6 +109,7 @@
     <Content Include="Css\Imagens\lupa.png" />
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Telas\cad_conta_banco.aspx" />
+    <Content Include="Telas\TelaoFinanceiro.aspx" />
     <Content Include="Telas\cad_obra.aspx" />
     <Content Include="Telas\cad_despesa.aspx" />
     <Content Include="Css\Imagens\001-sair.png" />
@@ -194,6 +195,13 @@
     </Compile>
     <Compile Include="Telas\cad_conta_banco.aspx.designer.cs">
       <DependentUpon>cad_conta_banco.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Telas\TelaoFinanceiro.aspx.cs">
+      <DependentUpon>TelaoFinanceiro.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Telas\TelaoFinanceiro.aspx.designer.cs">
+      <DependentUpon>TelaoFinanceiro.aspx</DependentUpon>
     </Compile>
     <Compile Include="Telas\cad_obra.aspx.cs">
       <DependentUpon>cad_obra.aspx</DependentUpon>

@@ -20,6 +20,8 @@
         #tbDados tr tr:hover {
             background-color: aquamarine;
         }
+
+        
     </style>
 </head>
 
@@ -608,31 +610,58 @@
 
     function excluirConta(id) {
 
-        $.ajax({
-            type: "POST",
-            url: "ContasPagar.aspx/ExcluirConta",
-            data: "{'id':'" + id + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            success: function (data) {
-                var source = data.d;
+        swalWithBootstrapButtons.fire({
+            title: 'Deseja excluir conta?',
+            text: '',
+            icon: 'warning',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+            showCancelButton: true,
+            reverseButtons: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.value) {
 
-                TabelaLancarDados();
+                $.ajax({
+                    type: "POST",
+                    url: "ContasPagar.aspx/ExcluirConta",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
 
-            },
-            error: function (request, status, error) {
-                alert(request.responseText);
-                console.log(request.responseText);
-                //swalWithBootstrapButtons.fire({
-                //    title: '',
-                //    text: 'Erro ao abrir tabela! Tente novamente!',
-                //    icon: 'error',
-                //    confirmButtonText: 'OK',
-                //    allowOutsideClick: false
-                //}).then((result) => {
-                /*  });*/
+                        TabelaLancarDados();
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                });
+            //swalWithBootstrapButtons.fire(
+            //    'Contrato gerado com sucesso',
+            //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+            //    'success'
+            //)
+
+            } else {
+
             }
-        });
+
+
+         
+        })
+
+       
 
     }
 

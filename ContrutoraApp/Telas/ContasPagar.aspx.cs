@@ -273,7 +273,7 @@ namespace ContrutoraApp
             }
 
             dr.Close();
-
+            cn.Close();
             table += "      </table> ";
 
             return table;
