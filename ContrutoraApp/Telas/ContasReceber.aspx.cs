@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace ContrutoraApp
 {
-    public partial class ContasPagar : System.Web.UI.Page
+    public partial class ContasReceber : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,86 +35,6 @@ namespace ContrutoraApp
             Dao menu = new Dao();
 
             return menu.Menu();
-
-        }
-
-        [WebMethod]
-        public static String TabelaContasPagas(String status)
-        {
-
-            //// Passa o caminho do banco de dados para um string      
-            string connectionString = Conexao.StrConexao;
-
-            //chama o metodo de conexao com o banco
-            SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = connectionString;
-
-            //construtor command para obter dados44
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            //abre a conexao
-            cn.Open();
-
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
-                               inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
-                               left join obra obra on obra.id_obra = cp.id_obra
-                               LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' WHERE cp.status = 'pago' order by 1 desc";
-
-
-            String table = "";
-
-            String cor_r = "#90EE90";
-
-            table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
-
-            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
-            table += "              <th  nowrap scope='col' align='left'   style=''>Descrição</th>";
-            table += "              <th  nowrap scope='col' align='left'   style=''>Fornecedor</th>";
-            table += "              <th  nowrap scope='col' style='width:100px'>Form Pgto.</th>";
-            table += "              <th  nowrap scope='col' style='width:80px; text-align:left'>Parcela</th>";
-            table += "              <th  nowrap scope='col' style='width:100px;text-align:left'>Valor</th>";
-            table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Data Pagto.</th>";
-            table += "              <th  nowrap scope='col' style='text-align:center;width:80px'> Detalhar  </th>";
-            table += "          </tr> ";
-
-            cmd.CommandText = cmd.CommandText;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
-            {
-
-                while (dr.Read())
-                {
-
-                    if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
-
-
-                    table += "          <tr                style='color:Black;background-color:" + cor_r + "'> ";
-                    table += "          <th                style='border-bottom: 1px solid'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
-                    table += "          <th                style='border-bottom: 1px solid'>" + dr["razaoSocial"].ToString() + "</th>";
-                    table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + dr["tipo_pgto"].ToString() + "</th>";
-                    table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
-                    table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
-                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + dr["vencimento"] + " </th>";
-                    table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
-                    table += "          </tr> ";
-
-                }
-
-            }
-            else
-            {
-                table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th colspan='10'style='border-bottom: 1px solid; height:30px'> Nenhuma informação encontrada. </th>";
-                table += "          </tr> ";
-            }
-
-            dr.Close();
-            cn.Close();
-            table += "      </table> ";
-
-            return table;
 
         }
 
@@ -166,7 +86,7 @@ namespace ContrutoraApp
             table += "          </tr> ";
 
             cmd.CommandText = cmd.CommandText;
-
+           
             SqlDataReader dr = cmd.ExecuteReader();
             if (dr.HasRows)
             {
@@ -176,23 +96,23 @@ namespace ContrutoraApp
                     String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
 
                     if (dataVencimento != dr["vencimento"].ToString())
-                    {
+                    {                      
                         if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
                     }
                     else
                     {
-                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }                        
                     }
-
+                  
                     table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                    table += "          <th style='border-bottom: 1px solid'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_pgto"].ToString() + "</th>";
                     table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
-                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' onclick='editar(" + dr["id"].ToString() + "); return false;' /> </th>";
+                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' /> </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-success' value='Baixar' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                     table += "          </tr> ";
@@ -216,85 +136,85 @@ namespace ContrutoraApp
 
         }
 
-        //[WebMethod]
-        //public static String TabelaContasPagas(String status)
-        //{
+        [WebMethod]
+        public static String TabelaContasPagas(String status)
+        {
 
-        //    //// Passa o caminho do banco de dados para um string      
-        //    string connectionString = Conexao.StrConexao;
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
 
-        //    //chama o metodo de conexao com o banco
-        //    SqlConnection cn = new SqlConnection();
-        //    cn.ConnectionString = connectionString;
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
 
-        //    //construtor command para obter dados44
-        //    SqlCommand cmd = new SqlCommand();
-        //    cmd.Connection = cn;
-        //    //abre a conexao
-        //    cn.Open();
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            //abre a conexao
+            cn.Open();
 
-        //    //comando de instrução do banco de dados
-        //    cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
-        //                       inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
-        //                       left join obra obra on obra.id_obra = cp.id_obra
-        //                       LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' WHERE cp.status = 'pago' order by 1 desc";
-
-
-        //    String table = "";
-
-        //    String cor_r = "#90EE90";
-
-        //    table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
-
-        //    table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
-        //    table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
-        //    table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Fornecedor</th>";
-        //    table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Pgto.</th>";
-        //    table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
-        //    table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
-        //    table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Data Pagto.</th>";
-        //    table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Detalhar  </th>";
-        //    table += "          </tr> ";
-
-        //    cmd.CommandText = cmd.CommandText;
-
-        //    SqlDataReader dr = cmd.ExecuteReader();
-        //    if (dr.HasRows)
-        //    {
-
-        //        while (dr.Read())
-        //        {
-
-        //            if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
+                               inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
+                               left join obra obra on obra.id_obra = cp.id_obra
+                               LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' WHERE cp.status = 'pago' order by 1 desc";
 
 
-        //            table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-        //            table += "          <th style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
-        //            table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
-        //            table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_pgto"].ToString() + "</th>";
-        //            table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
-        //            table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
-        //            table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
-        //            table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
-        //            table += "          </tr> ";
+            String table = "";
 
-        //        }
+            String cor_r = "#90EE90";
 
-        //    }
-        //    else
-        //    {
-        //        table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-        //        table += "          <th colspan='10'style='border-bottom: 1px solid; height:30px'> Nenhuma informação encontrada. </th>";
-        //        table += "          </tr> ";
-        //    }
+            table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
-        //    dr.Close();
-        //    cn.Close();
-        //    table += "      </table> ";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
+            table += "              <th  nowrap scope='col' align='left'   style=''>Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left'   style=''>Fornecedor</th>";
+            table += "              <th  nowrap scope='col' align='right'  style='width:80px'>Form Pgto.</th>";
+            table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Parcela</th>";
+            table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Valor</th>";
+            table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Data Pagto.</th>";
+            table += "              <th  nowrap scope='col' style='text-align:center;width:80px'> Detalhar  </th>";
+            table += "          </tr> ";
 
-        //    return table;
+            cmd.CommandText = cmd.CommandText;
 
-        //}
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+
+                while (dr.Read())
+                {
+
+                    if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+
+
+                    table += "          <tr                style='color:Black;background-color:" + cor_r + "'> ";
+                    table += "          <th                style='border-bottom: 1px solid; height:30px'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
+                    table += "          <th                style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
+                    table += "          <th align='right'  style='border-bottom: 1px solid; width:80px'>" + dr["tipo_pgto"].ToString() + "</th>";
+                    table += "          <th style='border-bottom: 1px solid;width:80px;text-align:rigth'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
+                    table += "          <th align='right'  style='border-bottom: 1px solid; width:80px'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
+                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + dr["vencimento"] + " </th>";
+                    table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                    table += "          </tr> ";
+
+                }
+
+            }
+            else
+            {
+                table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                table += "          <th colspan='10'style='border-bottom: 1px solid; height:30px'> Nenhuma informação encontrada. </th>";
+                table += "          </tr> ";
+            }
+
+            dr.Close();
+            cn.Close();
+            table += "      </table> ";
+
+            return table;
+
+        }
 
         [WebMethod]
         public static String TabelaTempDetalhesContas()
@@ -503,37 +423,6 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String EditarConta(String id)
-        {
-            //// Passa o caminho do banco de dados para um string      
-            string connectionString = Conexao.StrConexao;
-
-            //chama o metodo de conexao com o banco
-            SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = connectionString;
-
-            //construtor command para obter dados44
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cmd.CommandText = cmd.CommandText;
-
-            //abre a conexao
-            cn.Open();
-
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"tb_contasPagar where id = " + id;
-            cmd.ExecuteNonQuery();
-
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
-            cmd.ExecuteNonQuery();
-
-            cn.Close();
-            return "OK";
-
-        }
-
-        [WebMethod]
         public static String BaixarConta(String id)
         {
             //// Passa o caminho do banco de dados para um string      
@@ -560,6 +449,7 @@ namespace ContrutoraApp
             return "OK";
 
         }
+
 
         [WebMethod]
         public static String GravarDetalhes(Contas Contas)

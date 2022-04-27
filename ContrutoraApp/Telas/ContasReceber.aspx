@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContasPagar.aspx.cs" Inherits="ContrutoraApp.ContasPagar" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContasReceber.aspx.cs" Inherits="ContrutoraApp.ContasReceber" %>
 
 <!DOCTYPE html>
 
@@ -93,7 +93,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "ContasPagar.aspx/TabelaContasPagas",
+                url: "ContasReceber.aspx/TabelaContasPagas",
                 data: "{'status':'" + status + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
@@ -206,120 +206,6 @@
         $('#ModalDetalhes').modal('show');
         BuscarDadosInseridosDetalhes(id);
         /* $("#ModalDetalhes").modal({ show: true });*/
-    }
-
-    function editarConta(id) {
-
-        swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
-            text: '',
-            icon: 'warning',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showCancelButton: true,
-            reverseButtons: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.value) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "ContasPagar.aspx/ExcluirConta",
-                    data: "{'id':'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
-
-                        TabelaLancarDados();
-
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                });
-                //swalWithBootstrapButtons.fire(
-                //    'Contrato gerado com sucesso',
-                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
-                //    'success'
-                //)
-
-            } else {
-
-            }
-
-
-
-        })
-
-
-
-    }
-
-    function excluirConta(id) {
-
-        swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
-            text: '',
-            icon: 'warning',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showCancelButton: true,
-            reverseButtons: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.value) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "ContasPagar.aspx/ExcluirConta",
-                    data: "{'id':'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
-
-                        TabelaLancarDados();
-
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                });
-                //swalWithBootstrapButtons.fire(
-                //    'Contrato gerado com sucesso',
-                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
-                //    'success'
-                //)
-
-            } else {
-
-            }
-
-
-
-        })
-
-
-
     }
 
     function limparTabelaTempModal() {
@@ -720,7 +606,64 @@
         //        /*  });*/
         //    }
         //});
-    }     
+    }
+
+    function excluirConta(id) {
+
+        swalWithBootstrapButtons.fire({
+            title: 'Deseja excluir conta?',
+            text: '',
+            icon: 'warning',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+            showCancelButton: true,
+            reverseButtons: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "ContasPagar.aspx/ExcluirConta",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
+
+                        TabelaLancarDados();
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                });
+            //swalWithBootstrapButtons.fire(
+            //    'Contrato gerado com sucesso',
+            //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+            //    'success'
+            //)
+
+            } else {
+
+            }
+
+
+         
+        })
+
+       
+
+    }
 
     function baixarConta(id) {
 
@@ -752,6 +695,8 @@
 
     }
 
+
+
 </script>
 
 <style type="text/css">
@@ -780,7 +725,7 @@
                     <tr>
                         <td colspan="4">
                             <center>
-                                <h3>Contas a Pagar</h3>
+                                <h3>Contas a Receber</h3>
                             </center>
                         </td>
                     </tr>
