@@ -502,36 +502,36 @@ namespace ContrutoraApp
 
         }
 
-        [WebMethod]
-        public static String EditarConta(String id)
-        {
-            //// Passa o caminho do banco de dados para um string      
-            string connectionString = Conexao.StrConexao;
+        //[WebMethod]
+        //public static String EditarConta(String id)
+        //{
+        //    //// Passa o caminho do banco de dados para um string      
+        //    string connectionString = Conexao.StrConexao;
 
-            //chama o metodo de conexao com o banco
-            SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = connectionString;
+        //    //chama o metodo de conexao com o banco
+        //    SqlConnection cn = new SqlConnection();
+        //    cn.ConnectionString = connectionString;
 
-            //construtor command para obter dados44
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cmd.CommandText = cmd.CommandText;
+        //    //construtor command para obter dados44
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = cn;
+        //    cmd.CommandText = cmd.CommandText;
 
-            //abre a conexao
-            cn.Open();
+        //    //abre a conexao
+        //    cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"tb_contasPagar where id = " + id;
-            cmd.ExecuteNonQuery();
+        //    //comando de instrução do banco de dados
+        //    cmd.CommandText = @"tb_contasPagar where id = " + id;
+        //    cmd.ExecuteNonQuery();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
-            cmd.ExecuteNonQuery();
+        //    //comando de instrução do banco de dados
+        //    cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
+        //    cmd.ExecuteNonQuery();
 
-            cn.Close();
-            return "OK";
+        //    cn.Close();
+        //    return "OK";
 
-        }
+        //}
 
         [WebMethod]
         public static String BaixarConta(String id)
