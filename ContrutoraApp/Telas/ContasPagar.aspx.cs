@@ -452,8 +452,8 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
+            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
 
 
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
@@ -462,6 +462,7 @@ namespace ContrutoraApp
             cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
             cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
             cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);
+            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
             cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
 
             cmd.ExecuteNonQuery();

@@ -20,8 +20,6 @@
         #tbDados tr tr:hover {
             background-color: aquamarine;
         }
-
-        
     </style>
 </head>
 
@@ -58,7 +56,7 @@
             success: function (data) {
                 var source = data.d;
 
-               
+
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
 
@@ -135,6 +133,7 @@
         if (fornec == '') {
             fornec = 0;
         }
+        var contaBancaria = $('#ddlConta').val();
         var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
@@ -155,7 +154,8 @@
             id_despesa: cod_despesa,
             id_obra: obra,
             id_fornecedor: fornec,
-            tipo_pgto: tipo_pg
+            tipo_pgto: tipo_pg,
+            conta_bancaria: contaBancaria
         };
 
         var obj = { 'Contas': Contas };
@@ -198,7 +198,7 @@
     function detalhar(id) {
 
         /*limparTabelaTempModal();*/
-       
+
         $('#lblTabelaInseridosDetalhes').html('');
         $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
@@ -401,7 +401,7 @@
                 success: function (data) {
 
                     var dados = JSON.parse(data.d);
-                  
+
                     if (dados.retorno.split('@')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
@@ -720,7 +720,7 @@
         //        /*  });*/
         //    }
         //});
-    }     
+    }
 
     function baixarConta(id) {
 
@@ -860,6 +860,8 @@
                                 <asp:ListItem Text="Débito" Value="DEBITO"></asp:ListItem>
                                 <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
                                 <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
+                                <asp:ListItem Text="Depósito" Value="DEPÓSITO"></asp:ListItem>
+                                <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td></td>
@@ -912,7 +914,7 @@
                         <center>
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
-                            <table style="width:100%">
+                            <table style="width: 100%">
                                 <tr>
                                     <td colspan="4">
                                         <center>

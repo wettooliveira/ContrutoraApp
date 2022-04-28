@@ -450,7 +450,6 @@ namespace ContrutoraApp
 
         }
 
-
         [WebMethod]
         public static String GravarDetalhes(Contas Contas)
         {
@@ -638,14 +637,14 @@ namespace ContrutoraApp
 
         }
 
-        [WebMethod]
-        public static Cliente ConsultarFornecedor(String id)
-        {
-            Cliente getCliente = new Cliente();
-            Dao consultarCliente = new Dao();
-            getCliente = consultarCliente.ConsultarFornecedor(id);
-            return getCliente;
-        }
+        //[WebMethod]
+        //public static Cliente ConsultarFornecedor(String id)
+        //{
+        //    Cliente getCliente = new Cliente();
+        //    Dao consultarCliente = new Dao();
+        //    getCliente = consultarCliente.ConsultarFornecedor(id);
+        //    return getCliente;
+        //}
 
 
     }

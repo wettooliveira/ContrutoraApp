@@ -537,14 +537,14 @@
 
     function BuscarCliente() {
 
-        window.open("consultar_fornecedor.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
     }
 
     function selCliente(id, nome, cnpj) {
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/ConsultarFornecedor",
+            url: "cad_cliente.aspx/CarregarCliente",
             data: "{'id':'" + id + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -745,14 +745,14 @@
                     </tr>
                     <tr>
                         <td style="display: inline-flex" colspan="4">
-                            <asp:TextBox ID="txtFornecedor" runat="server" placeholder="Fornecedor" CssClass="form-control" Width="350px"></asp:TextBox>
+                            <asp:TextBox ID="txtFornecedor" runat="server" placeholder="Cliente" CssClass="form-control" Width="350px"></asp:TextBox>
                             &nbsp;&nbsp;
-                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('fonecedor');return false;" />
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('cliente');return false;" />
                         </td>
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
+                            <asp:DropDownList ID="ddlDespesa" runat="server" Visible="false" CssClass="form-control" Width="350px">
                             </asp:DropDownList>
                         </td>
 
@@ -799,12 +799,14 @@
                             <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="120px" CssClass="form-control"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:DropDownList ID="ddlTipoPgto" Width="150px" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Forma Pgto.." Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Forma Receb.." Value="0"></asp:ListItem>
                                 <asp:ListItem Text="Boleto" Value="BOLETO"></asp:ListItem>
                                 <asp:ListItem Text="Dinheiro" Value="DINHEIRO"></asp:ListItem>
                                 <asp:ListItem Text="Débito" Value="DEBITO"></asp:ListItem>
                                 <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
                                 <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
+                                <asp:ListItem Text="Depósito" Value="DEPÓSITO"></asp:ListItem>
+                                 <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td></td>

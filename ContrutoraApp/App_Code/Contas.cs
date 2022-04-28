@@ -22,6 +22,7 @@ namespace ContrutoraApp
         public String retorno { get; set; }
 
 
+        public Int32 conta_bancaria { get; set; }
         public Int32 id_despesa { get; set; }
         public Int32 id_obra { get; set; }
         public string data { get; set; }
