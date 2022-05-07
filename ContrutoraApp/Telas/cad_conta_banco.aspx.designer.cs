@@ -83,4 +83,22 @@ public partial class cad_conta_banco
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlInputButton btnGravar;
+
+    /// <summary>
+    /// Controle btnFiltrar.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button btnFiltrar;
+
+    /// <summary>
+    /// Controle GridUsuario.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.GridView GridUsuario;
 }

@@ -155,5 +155,65 @@ public partial class cad_conta_banco : System.Web.UI.Page
         ddlBanco.SelectedValue = "0";
 
 
+    }     
+
+    protected void GridUsuario_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridUsuario.PageIndex = e.NewPageIndex;
+
+        btnFiltrar_Click(null, null);
+    }
+
+    protected void btnFiltrar_Click(object sender, EventArgs e)
+    {
+        List<Contas> listContas = new List<Contas>();
+        String sql;
+
+
+        //chama o metodo de conexao com o banco
+        SqlConnection cn = new SqlConnection();
+        cn.ConnectionString = Conexao.StrConexao;
+        
+       // construtor command para obter dados
+        SqlCommand cmd = new SqlCommand();
+
+        try
+        {
+
+            //comando de instrução do banco de dados
+            sql = "select c.id_banco, c.ds_agencia +' - '+ c.ds_conta as conta, Convert(varchar(3),cod_banco) +' - '+ ds_banco as bancos from tb_conta c " +
+                "inner join  tb_bancos b on b.id = c.id_banco order by id_banco";
+
+
+            cmd.CommandText = sql;
+            //abre a conexao
+            cn.Open();
+            cmd.Connection = cn;
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+            while (dr.Read())
+            {
+                Contas usu = new Contas();
+                usu.id = Convert.ToInt32(dr["id_banco"]);
+                usu.desc_conta = dr["conta"].ToString();
+                usu.desc_despesa = dr["bancos"].ToString();
+                listContas.Add(usu);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Ocorreu um erro no servdor:" + ex.Message);
+        }
+        finally
+        {
+            cn.Close();
+        }
+
+
+
+        GridUsuario.DataSource = listContas;
+        GridUsuario.DataBind();
     }
 }

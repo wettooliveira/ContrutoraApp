@@ -105,6 +105,7 @@ namespace ContrutoraApp
             }
             else
             {
+                cor_r = "#fffff";
                 table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                 table += "          <th colspan='10'style='border-bottom: 1px solid; height:30px'> Nenhuma informação encontrada. </th>";
                 table += "          </tr> ";

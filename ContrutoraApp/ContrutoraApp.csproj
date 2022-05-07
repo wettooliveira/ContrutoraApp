@@ -189,7 +189,7 @@
     <Compile Include="App_Code\Despesa.cs" />
     <Compile Include="App_Code\Obra.cs" />
     <Compile Include="App_Code\ContaBanco.cs" />
-    <Compile Include="Session.cs" />
+    <Compile Include="App_Code\Session.cs" />
     <Compile Include="Telas\cad_conta_banco.aspx.cs">
       <DependentUpon>cad_conta_banco.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

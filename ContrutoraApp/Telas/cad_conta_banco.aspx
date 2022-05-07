@@ -252,7 +252,52 @@
             margin: 0 0.5rem;
             font-size: medium !important;
         }
-        /*Termina aqui o style do Alert*
+        /*Termina aqui o style do Alert*/
+
+           .Grid td {
+            padding: 2px;
+            border: solid 1px #c1c1c1;
+        }
+
+        .Grid th {
+            padding: 4px 2px;
+            color: #fff;
+            background:#4682B4;
+            border-left: solid 1px #525252;
+            font-size: 0.9em;
+            
+        }
+
+        .Grid .alt {
+            background: #F8F8FF;
+        }
+
+        .Grid .pgr {
+            background: #363670;
+        }
+
+            .Grid .pgr table {
+                margin: 3px 0;
+            }
+
+            .Grid .pgr td {
+                border-width: 0;
+                padding: 0 6px;
+                border-left: solid 1px #666;
+                font-weight: bold;
+                color: #fff;
+                line-height: 12px;
+            }
+
+            .Grid .pgr a {
+                color: Gray;
+                text-decoration: none;
+            }
+
+                .Grid .pgr a:hover {
+                    color: #000;
+                    text-decoration: none;
+                }
     </style>
 </head>
 <body runat="server">
@@ -312,13 +357,42 @@
                                 <input type="button" id="btnGravar" value="Gravar" runat="server" class="btn btn-success" onclick="Gravar()" />
                             </center>
                         </td>
+
+                        <td>
+                            <br />
+                            <center>
+                                 <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
+                            </center>
+                        </td>
                     </tr>
+                        
                     <tr>
                         <td>
                             <br />
-                            <br />
                         </td>
                     </tr>
+                     
+                    <tr>
+                        <td align="" colspan="2">
+                            <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
+                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center"  OnPageIndexChanging="GridUsuario_PageIndexChanging">
+                                <Columns>                                    
+                                    <asp:TemplateField>  
+                                        <HeaderTemplate>                                             
+                                            Conta
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <span style="cursor: pointer;" onclick="nome( '<%# DataBinder.Eval(Container.DataItem, "id")%> ')" />
+                                            <%# DataBinder.Eval(Container.DataItem, "desc_conta")%>
+                                       </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                  <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Bottom" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="desc_despesa" HeaderText="Banco" />
+                                </Columns>
+                            </asp:GridView>
+                        </td>
+                    </tr>
+       
                 </table>
             </center>
         </div>

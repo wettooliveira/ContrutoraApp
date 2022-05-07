@@ -735,7 +735,7 @@
                             </asp:DropDownList>
                         </td>
                         <td style="width: 20px"></td>
-                        <td>Vencimento: &nbsp;
+                        <td>Recebimento: &nbsp;
                         </td>
                         <td>
                             <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
