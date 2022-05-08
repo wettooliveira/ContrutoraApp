@@ -51,7 +51,7 @@
         var status = '';
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/TabelaContasPagar",
+            url: "ContasPagar.aspx/TabelaContasReceber",
             data: "{'status':'" + status + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",

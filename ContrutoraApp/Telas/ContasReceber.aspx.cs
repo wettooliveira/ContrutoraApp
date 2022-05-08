@@ -39,7 +39,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaContasPagar(String status)
+        public static String TabelaContasReceber(String status)
         {
             String getData = DateTime.Now.ToString("dd-MM-yyyy");
             //// Passa o caminho do banco de dados para um string      
@@ -56,11 +56,10 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
-                                 FROM tb_contasPagar cp
-                                 INNER JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
+            cmd.CommandText = @" SELECT cp.id, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as recebimento
+                                 FROM tb_contasReceber cp                                
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
-                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
+                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'cliente'";
             cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "'";
             cmd.CommandText += " ORDER BY 1 DESC  ";
 
@@ -372,8 +371,28 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
+            cmd.CommandText = @"INSERT INTO [dbo].[tb_contasReceber]
+                                                                    (num_parcela]
+                                                                    ,tipo_pgto]
+                                                                    ,valor
+                                                                    ,id_obra
+                                                                    ,cliente
+                                                                    ,dt_pagamento
+                                                                    ,status
+                                                                    ,id_conta
+                                                                    ,nm_cadastrou
+                                                                    ,dt_cadastrou)
+                                                              VALUES
+                                                                    (<num_parcela, int,>
+                                                                    ,<tipo_pgto, varchar(15),>
+                                                                    ,<valor, numeric(18,2),>
+                                                                    ,<id_obra, int,>
+                                                                    ,<cliente, int,>
+                                                                    ,<dt_pagamento, datetime,>
+                                                                    ,<status, varchar(15),>
+                                                                    ,<id_conta, int,>
+                                                                    ,<nm_cadastrou, varchar(60),>
+                                                                    ,<dt_cadastrou, datetime,>)";
 
 
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
