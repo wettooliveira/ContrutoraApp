@@ -22,6 +22,7 @@ namespace ContrutoraApp
 
                 txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtParcela.Text = "1";
+                txtValor.Text = "0";
             }
             else
             {
@@ -139,7 +140,7 @@ namespace ContrutoraApp
             //comando de instrução do banco de dados
             cmd.CommandText = @" SELECT cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
                                  FROM tb_contasPagar cp
-                                 INNER JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
+                                 LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
                                  LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
             cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "'";
@@ -474,6 +475,55 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
+        public static String Alterar(Contas Contas)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"UPDATE [dbo].[tb_contasPagar]
+                                                             SET num_parcela = @num_parcela,
+                                                                 tipo_pgto = @tipo_pgto,
+                                                                 valor = @valor,
+                                                                 id_despesa = @id_despesa,
+                                                                 id_obra = @id_obra,
+                                                                 fornec = @fornec, 
+                                                                 id_conta_bancaria = @id_conta_bancaria,   
+                                                                 dt_alterou = @dt_alterou
+                                                                 WHERE [id] = @id ";
+
+
+            cmd.Parameters.AddWithValue("@id", Contas.id);
+            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
+            cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
+            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+            cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
+            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);
+            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
+            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
+            cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
         public static String ExcluirConta(String id)
         {
             //// Passa o caminho do banco de dados para um string      
@@ -638,7 +688,7 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            cmd.CommandText = @"SELECT * FROM tb_despesa ORDER BY 2 DESC";
+            cmd.CommandText = @"SELECT * FROM tb_despesa ORDER BY 2 ";
 
             SqlDataReader dr = cmd.ExecuteReader();
 
@@ -757,6 +807,60 @@ namespace ContrutoraApp
             Dao consultarCliente = new Dao();
             getCliente = consultarCliente.ConsultarFornecedor(id);
             return getCliente;
+        }
+
+        [WebMethod]
+        public static Contas EditarContaPagar(String id)
+        {
+            String getData = DateTime.Now.ToString("dd-MM-yyyy");
+            Contas c = new Contas();
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @" SELECT cp.id, desp.id_despesa, fornec.razaoSocial, fornec.id as id_fornec, obra.desc_obra, obra.id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
+                                 FROM tb_contasPagar cp
+                                 LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
+                                 LEFT JOIN obra obra on obra.id_obra = cp.id_obra
+                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'
+                                 INNER JOIN tb_conta conta on conta.id = cp.id_conta_bancaria 
+                                 INNER JOIN tb_bancos banco on banco.id = conta.id_banco";
+            cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "' and cp.id = " + id;
+          
+
+            SqlDataReader dr = cmd.ExecuteReader();
+           
+            while (dr.Read())
+            {
+                c.id = Convert.ToInt32(dr["id"]);
+                c.conta_bancaria = Convert.ToInt32(dr["id_conta_bancaria"]);
+                c.ds_banco = dr["banco"].ToString();
+                c.id_despesa = Convert.ToInt32(dr["id_despesa"]);
+                c.id_fornecedor = Convert.ToInt32(dr["id_fornec"]);
+                c.desc_fornecedor = dr["razaoSocial"].ToString();
+                c.id_obra = Convert.ToInt32(dr["id_obra"]);
+                c.desc_obra = dr["desc_obra"].ToString();
+                c.tipo_pgto = dr["tipo_pgto"].ToString();
+                c.num_parcela = Convert.ToInt32(dr["num_parcela"]);
+                c.data = dr["vencimento"].ToString();
+                c.valor_string = Convert.ToDecimal(dr["valor"]).ToString("N2");            
+            }
+
+            dr.Close();
+            cn.Close();
+                       
+            return c;
         }
 
 

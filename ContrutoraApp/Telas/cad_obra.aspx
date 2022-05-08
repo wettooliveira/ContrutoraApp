@@ -52,7 +52,12 @@
 
         function Gravar() {
 
-            var id_obra = $('#hdnObra').val();
+            var id_obra = '';
+            if ($('#hdnObra').val() != '') {
+                id_obra = $('#hdnObra').val();
+            } else {
+                id_obra = '0';
+            }      
             var id_cliente = $('#hdnCliente').val();
             var nm_obra = $('#txtNomeObra').val();
             var resp = $('#txtResponsavel').val();

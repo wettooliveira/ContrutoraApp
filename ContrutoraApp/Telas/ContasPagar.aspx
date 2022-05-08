@@ -141,6 +141,7 @@
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
         var tipo_pg = $('#ddlTipoPgto').val();
+        var id_conta = $('#hdnIDContasPagar').val();
 
         if (obra == '') {
             obra = 0;
@@ -155,26 +156,37 @@
             id_obra: obra,
             id_fornecedor: fornec,
             tipo_pgto: tipo_pg,
-            conta_bancaria: contaBancaria
+            conta_bancaria: contaBancaria,
+            id: id_conta
         };
 
+        
         var obj = { 'Contas': Contas };
-
         console.log(obj);
+        var url = '', tipo = '';
+        if ($('#btnGravar').val() == 'Alterar') {
+            tipo = 'Alterar';
+            url = 'ContasPagar.aspx/Alterar';
+        } else {
+            tipo = 'Gravar';
+            url = 'ContasPagar.aspx/Gravar';
+        }
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/Gravar",
+            url: url,
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
-                if (source == "OK") {
+                if (source == "OK" & tipo == 'Gravar') {
                     alertCss('Gravar');
                     TabelaLancarDados();
-
+                } else if (source == "OK" & tipo == 'Alterar'){
+                    alertCss('Alterar');
+                    TabelaLancarDados();
                 }
 
 
@@ -208,30 +220,33 @@
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
-    function editarConta(id) {
-
-        swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
-            text: '',
-            icon: 'warning',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showCancelButton: true,
-            reverseButtons: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.value) {
-
+    function editar(id) {
+     
                 $.ajax({
                     type: "POST",
-                    url: "ContasPagar.aspx/ExcluirConta",
+                    url: "ContasPagar.aspx/EditarContaPagar",
                     data: "{'id':'" + id + "'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "JSON",
                     success: function (data) {
                         var source = data.d;
+                                             
+                         
+                        $('#hdnObra').val(source.id_obra);
+                        $('#hdnFornecedor').val(source.id_fornecedor);
+                        $('#hdnIDContasPagar').val(source.id);
+                        $('#ddlconta').val(source.conta_bancaria);
+                        $('#ddlTipoPgto').val(source.tipo_pgto);
+                        $('#txtFornecedor').val(source.desc_fornecedor);
+                        $('#txtObras').val(source.desc_obra);
+                        $('#txtConta').val(source.desc_conta);
+                        $('#txtParcela').val(source.num_parcela);
+                        $('#txtValor').val(source.valor_string);
+                        $('#ddlDespesa').val(source.id_despesa);
+                        $('#txtData').val(source.data);                      
+                        $('#ddlTipoPgto').val(source.tipo_pgto);
 
-                        TabelaLancarDados();
+                        $('#btnGravar').val('Alterar');
 
                     },
                     error: function (request, status, error) {
@@ -252,16 +267,7 @@
                 //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
                 //    'success'
                 //)
-
-            } else {
-
-            }
-
-
-
-        })
-
-
+                 
 
     }
 
@@ -877,7 +883,7 @@
 
                         <td colspan="4" style="text-align: center">
                             <br />
-                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
+                            <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                         <td style="text-align: center">
                             <br />

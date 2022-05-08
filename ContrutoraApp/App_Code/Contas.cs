@@ -24,9 +24,14 @@ namespace ContrutoraApp
 
         public Int32 conta_bancaria { get; set; }
         public Int32 id_despesa { get; set; }
+
+        public String ds_banco { get; set; }
         public Int32 id_obra { get; set; }
+        public String desc_obra { get; set; }
+
         public string data { get; set; }
         public int id_fornecedor { get; set; }
+        public String desc_fornecedor { get; set; }
 
         public List<Contas> listaContas1 { get; set; }
         public List<Contas> listaContas2 { get; set; }
