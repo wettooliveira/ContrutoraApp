@@ -23,13 +23,20 @@
             buttonsStyling: false
         });
 
+        $(document).ready(function () {
+
+            $("#btnExcluir").attr("style", "visibility: hidden");
+
+        });
+
         function nome(id_usuario, desc_conta, desc_despesa) {
-            alert(); hdnBanco
-            $('#hdnBanco').val('id_usuario');
-            $('#hdnId_usuario').val('');
-            $('#hdnId_usuario').val(id_usuario);
-            $('#hdnAcao').val('usuario');
-            //$('#form1').submit();
+
+            $('#hdnBanco').val(id_usuario);
+            $('#txtAgencia').val(desc_conta.split('-')[0].trim());
+            $('#txtConta').val(desc_conta.split('-')[1].trim());
+            $('#ddlBanco option[value=' + id_usuario + ']').attr('selected', 'selected');
+            $('#btnGravar').val('Alterar');
+            $("#btnExcluir").attr("style", "visibility: ");
 
         }
 
@@ -45,8 +52,8 @@
                 var texto = ('Alterado com Sucesso');
                 var icon = ('success');
             }
-            else if (mensagem == ('Cancelar')) {
-                var texto = ('Cancelado com Sucesso');
+            else if (mensagem == ('Excluir')) {
+                var texto = ('Excluido com Sucesso');
                 var icon = ('success');
                 /*var icon = ('error');*/
             }
@@ -66,14 +73,14 @@
             var agencia = $('#txtAgencia').val();
             var conta = $('#txtConta').val();
             var tipo = $('#btnGravar').val();
-                 
+
 
             var contaBanco = {
                 cod_banco: cod_banco,
                 ds_agencia: agencia,
                 ds_conta: conta,
                 tipo: tipo
-               
+
             };
 
             var obj = { 'conta': contaBanco };
@@ -157,7 +164,7 @@
         }
 
         function BuscarObra() {
-            
+
             window.open("consultar_obra.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
         }
 
@@ -172,7 +179,7 @@
                 success: function (data) {
                     var source = data.d;
 
-                    
+
                     $('#hdnCliente').val(source.cliente.id);
                     $('#hdnObra').val(source.id);
                     $('#txtRazaoSocial').val(source.cliente.RazaoSocial);
@@ -250,6 +257,75 @@
             });
         }
 
+        function excluir() {
+
+
+
+            swalWithBootstrapButtons.fire({
+                title: 'Deseja excluir conta?',
+                text: '',
+                icon: 'warning',
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Não',
+                showCancelButton: true,
+                reverseButtons: false,
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.value) {
+
+                    var id = $('#hdnBanco').val();
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "cad_conta_banco.aspx/ExcluirConta",
+                        data: "{'id':'" + id + "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "JSON",
+                        success: function (data) {
+                            var source = data.d;
+
+                            alertCss('Excluir');
+
+                            $('#hdnBanco').val('');
+                            $('#txtAgencia').val('');
+                            $('#txtConta').val('');
+                            $('#ddlBanco option[value=' + 0 + ']').attr('selected', 'selected');
+                            $('#btnGravar').val('Gravar');
+                            $("#btnExcluir").attr("style", "visibility: hidden ");
+
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                            console.log(request.responseText);
+                            //swalWithBootstrapButtons.fire({
+                            //    title: '',
+                            //    text: 'Erro ao abrir tabela! Tente novamente!',
+                            //    icon: 'error',
+                            //    confirmButtonText: 'OK',
+                            //    allowOutsideClick: false
+                            //}).then((result) => {
+                            /*  });*/
+                        }
+                    });
+
+                } else {                   
+                    //swalWithBootstrapButtons.fire(
+                    //    'Contrato gerado com sucesso',
+                    //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                    //    'success'
+                    //)
+
+                } 
+
+           
+
+            })
+        }
+
+           
+        
+
     </script>
 
     <style type="text/css">
@@ -264,7 +340,7 @@
         }
         /*Termina aqui o style do Alert*/
 
-           .Grid td {
+        .Grid td {
             padding: 2px;
             border: solid 1px #c1c1c1;
         }
@@ -272,10 +348,9 @@
         .Grid th {
             padding: 4px 2px;
             color: #fff;
-            background:#4682B4;
+            background: #4682B4;
             border-left: solid 1px #525252;
             font-size: 0.9em;
-            
         }
 
         .Grid .alt {
@@ -325,7 +400,7 @@
                             </center>
                         </td>
                     </tr>
-              <%--      <tr class="trBody">
+                    <%--      <tr class="trBody">
                         <td style="display: inline-flex">
                             <asp:TextBox ID="txtObra" runat="server" placeholder="Obra" CssClass="form-control" Width="500px"></asp:TextBox>
                             &nbsp;&nbsp;
@@ -337,14 +412,14 @@
                             <br />
                         </td>
                     </tr>--%>
-               <%--     <tr class="trBody">
+                    <%--     <tr class="trBody">
                         <td style="display: inline-flex">
                             <asp:TextBox ID="txtRazaoSocial" runat="server" placeholder="Cliente" CssClass="form-control" Width="500px"></asp:TextBox>
                             &nbsp;&nbsp;
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente();return false;" />
                         </td>
                     </tr>--%>
-                     <tr>
+                    <tr>
                         <td>
                             <asp:DropDownList ID="ddlBanco" placeholder="Nome Obra" Width="400px" CssClass="form-control" runat="server"></asp:DropDownList>
                         </td>
@@ -358,8 +433,8 @@
                         <td>
                             <asp:TextBox ID="txtConta" runat="server" placeholder="Conta" CssClass="form-control" Width="200px"></asp:TextBox>
                         </td>
-                    </tr>                             
-                                      
+                    </tr>
+
                     <tr>
                         <td>
                             <br />
@@ -371,24 +446,31 @@
                         <td>
                             <br />
                             <center>
-                                 <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
+                                <input type="button" id="btnExcluir" value="Excluir" visible="true" runat="server" class="btn btn-danger" onclick="excluir()" />
+                            </center>
+                        </td>
+
+                        <td>
+                            <br />
+                            <center>
+                                <asp:Button ID="btnFiltrar" Text="Buscar" CssClass="btn btn-primary" runat="server" OnClick="btnFiltrar_Click" />
                             </center>
                         </td>
                     </tr>
-                        
+
                     <tr>
                         <td>
                             <br />
                         </td>
                     </tr>
-                     
+
                     <tr>
                         <td align="" colspan="2">
                             <asp:GridView ID="GridUsuario" CssClass="Grid" runat="server" AutoGenerateColumns="false" Width="600px"
-                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center"  OnPageIndexChanging="GridUsuario_PageIndexChanging">
-                                <Columns>                                    
-                                    <asp:TemplateField>  
-                                        <HeaderTemplate>                                             
+                                AllowPaging="true" PageSize="10" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" HeaderStyle-HorizontalAlign="Center" OnPageIndexChanging="GridUsuario_PageIndexChanging">
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <HeaderTemplate>
                                             Conta
                                         </HeaderTemplate>
                                         <ItemTemplate>
@@ -397,12 +479,12 @@
                                        </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                  <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Bottom" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="desc_despesa" HeaderText="Banco" />
+                                    <asp:BoundField HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Bottom" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="" DataField="desc_despesa" HeaderText="Banco" />
                                 </Columns>
                             </asp:GridView>
                         </td>
                     </tr>
-       
+
                 </table>
             </center>
         </div>

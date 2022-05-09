@@ -181,7 +181,7 @@ public partial class cad_conta_banco : System.Web.UI.Page
         {
 
             //comando de instrução do banco de dados
-            sql = "select c.id_banco, c.ds_agencia +' - '+ c.ds_conta as conta, Convert(varchar(3),cod_banco) +' - '+ ds_banco as bancos from tb_conta c " +
+            sql = "select c.id, c.id_banco, c.ds_agencia +' - '+ c.ds_conta as conta, Convert(varchar(3),cod_banco) +' - '+ ds_banco as bancos from tb_conta c " +
                 "inner join  tb_bancos b on b.id = c.id_banco order by id_banco";
 
 
@@ -195,7 +195,7 @@ public partial class cad_conta_banco : System.Web.UI.Page
             while (dr.Read())
             {
                 Contas usu = new Contas();
-                usu.id = Convert.ToInt32(dr["id_banco"]);
+                usu.id = Convert.ToInt32(dr["id"]);
                 usu.desc_conta = dr["conta"].ToString();
                 usu.desc_despesa = dr["bancos"].ToString();
                 listContas.Add(usu);
@@ -216,4 +216,33 @@ public partial class cad_conta_banco : System.Web.UI.Page
         GridUsuario.DataSource = listContas;
         GridUsuario.DataBind();
     }
+
+    [WebMethod]
+    public static String ExcluirConta(String id)
+    {
+        //// Passa o caminho do banco de dados para um string      
+        string connectionString = Conexao.StrConexao;
+
+        //chama o metodo de conexao com o banco
+        SqlConnection cn = new SqlConnection();
+        cn.ConnectionString = connectionString;
+
+        //construtor command para obter dados44
+        SqlCommand cmd = new SqlCommand();
+        cmd.Connection = cn;
+        cmd.CommandText = cmd.CommandText;
+
+        //abre a conexao
+        cn.Open();
+
+        //comando de instrução do banco de dados
+        cmd.CommandText = @"delete tb_conta where id = " + id;
+        cmd.ExecuteNonQuery();  
+
+        cn.Close();
+        return "OK";
+
+    }
+
+
 }
