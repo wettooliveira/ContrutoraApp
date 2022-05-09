@@ -23,6 +23,16 @@
             buttonsStyling: false
         });
 
+        function nome(id_usuario, desc_conta, desc_despesa) {
+            alert(); hdnBanco
+            $('#hdnBanco').val('id_usuario');
+            $('#hdnId_usuario').val('');
+            $('#hdnId_usuario').val(id_usuario);
+            $('#hdnAcao').val('usuario');
+            //$('#form1').submit();
+
+        }
+
         function alertCss(mensagem) {
 
             texto == '';
@@ -382,7 +392,7 @@
                                             Conta
                                         </HeaderTemplate>
                                         <ItemTemplate>
-                                            <span style="cursor: pointer;" onclick="nome( '<%# DataBinder.Eval(Container.DataItem, "id")%> ')" />
+                                            <span style="cursor: pointer;" onclick="nome( '<%# DataBinder.Eval(Container.DataItem, "id")%> ','<%# DataBinder.Eval(Container.DataItem, "desc_conta")%> ','<%# DataBinder.Eval(Container.DataItem, "desc_despesa")%> ')" />
                                             <%# DataBinder.Eval(Container.DataItem, "desc_conta")%>
                                        </span>
                                         </ItemTemplate>

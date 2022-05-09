@@ -137,7 +137,10 @@
         }
         var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
-        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        var valor_string = 0;
+        if ($('#txtValor').val() > 0) {
+            valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        }      
         var cod_despesa = $('#ddlDespesa').val();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();

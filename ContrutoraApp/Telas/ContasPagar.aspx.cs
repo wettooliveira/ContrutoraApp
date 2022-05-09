@@ -22,7 +22,7 @@ namespace ContrutoraApp
 
                 txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtParcela.Text = "1";
-                txtValor.Text = "0";
+               
             }
             else
             {
