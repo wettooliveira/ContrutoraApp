@@ -33,13 +33,13 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnIDContasPagar;
 
         /// <summary>
-        /// Controle hdnFornecedor.
+        /// Controle hdnCliente.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnFornecedor;
+        protected global::System.Web.UI.WebControls.HiddenField hdnCliente;
 
         /// <summary>
         /// Controle hdnObra.

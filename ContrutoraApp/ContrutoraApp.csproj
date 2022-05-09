@@ -107,12 +107,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\Imagens\lupa.png" />
+    <Content Include="index.aspx" />
     <Content Include="Scripts\jquery.maskMoney.js" />
-    <Content Include="Telas\cad_conta_banco.aspx" />
-    <Content Include="Telas\ContasReceber.aspx" />
-    <Content Include="Telas\TelaoFinanceiro.aspx" />
-    <Content Include="Telas\cad_obra.aspx" />
-    <Content Include="Telas\cad_despesa.aspx" />
+    <Content Include="cad_conta_banco.aspx" />
+    <Content Include="ContasReceber.aspx" />
+    <Content Include="TelaoFinanceiro.aspx" />
+    <Content Include="cad_obra.aspx" />
+    <Content Include="cad_despesa.aspx" />
     <Content Include="Css\Imagens\001-sair.png" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\SweetAlert2\sweetalert2.all.min.js" />
@@ -126,16 +127,15 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Telas\consultar_fornecedor.aspx" />
-    <Content Include="Telas\consultar_obra.aspx" />
-    <Content Include="Telas\consultar_cliente.aspx" />
-    <Content Include="Telas\cad_usuario.aspx" />
+    <Content Include="consultar_fornecedor.aspx" />
+    <Content Include="consultar_obra.aspx" />
+    <Content Include="consultar_cliente.aspx" />
+    <Content Include="cad_usuario.aspx" />
     <Content Include="Css\Imagens\list.png" />
     <Content Include="Css\Imagens\proibido.png" />
     <Content Include="Css\Imagens\retangulos-de-menu.png" />
-    <Content Include="menunovo.aspx" />
-    <Content Include="Telas\cad_cliente.aspx" />
-    <Content Include="Telas\ContasPagar.aspx" />
+    <Content Include="cad_cliente.aspx" />
+    <Content Include="ContasPagar.aspx" />
     <Content Include="Css\Imagens\bgbg.png" />
     <Content Include="Css\Imagens\imagem-artigo3.jpg" />
     <Content Include="Css\Imagens\futuro-projeto-de-engenharia-de-construcao-civil_31965-6491.jpg" />
@@ -143,18 +143,18 @@
     <Content Include="Css\Menu.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\Imagens\icons8-cardápio-24.png" />
-    <Content Include="Telas\Home.aspx" />
-    <Content Include="Telas\About.aspx" />
-    <Content Include="Telas\Contact.aspx" />
+    <Content Include="Home.aspx" />
+    <Content Include="About.aspx" />
+    <Content Include="Contact.aspx" />
     <Content Include="Css\Content\bootstrap-theme.css" />
     <Content Include="Css\Content\bootstrap-theme.min.css" />
     <Content Include="Css\Content\bootstrap.css" />
     <Content Include="Css\Content\bootstrap.min.css" />
     <Content Include="Css\Content\Site.css" />
-    <Content Include="Telas\Default.aspx" />
+    <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Telas\Global.asax" />
+    <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -164,7 +164,7 @@
     <Content Include="Css\Content\bootstrap-theme.min.css.map" />
     <Content Include="Css\Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Telas\Login.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -190,127 +190,127 @@
     <Compile Include="App_Code\Obra.cs" />
     <Compile Include="App_Code\ContaBanco.cs" />
     <Compile Include="App_Code\Session.cs" />
-    <Compile Include="Telas\cad_conta_banco.aspx.cs">
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cad_conta_banco.aspx.cs">
       <DependentUpon>cad_conta_banco.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\cad_conta_banco.aspx.designer.cs">
+    <Compile Include="cad_conta_banco.aspx.designer.cs">
       <DependentUpon>cad_conta_banco.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\ContasReceber.aspx.cs">
+    <Compile Include="ContasReceber.aspx.cs">
       <DependentUpon>ContasReceber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\ContasReceber.aspx.designer.cs">
+    <Compile Include="ContasReceber.aspx.designer.cs">
       <DependentUpon>ContasReceber.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\TelaoFinanceiro.aspx.cs">
+    <Compile Include="TelaoFinanceiro.aspx.cs">
       <DependentUpon>TelaoFinanceiro.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\TelaoFinanceiro.aspx.designer.cs">
+    <Compile Include="TelaoFinanceiro.aspx.designer.cs">
       <DependentUpon>TelaoFinanceiro.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\cad_obra.aspx.cs">
+    <Compile Include="cad_obra.aspx.cs">
       <DependentUpon>cad_obra.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\cad_obra.aspx.designer.cs">
+    <Compile Include="cad_obra.aspx.designer.cs">
       <DependentUpon>cad_obra.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\cad_despesa.aspx.cs">
+    <Compile Include="cad_despesa.aspx.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\cad_despesa.aspx.designer.cs">
+    <Compile Include="cad_despesa.aspx.designer.cs">
       <DependentUpon>cad_despesa.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\consultar_fornecedor.aspx.cs">
+    <Compile Include="consultar_fornecedor.aspx.cs">
       <DependentUpon>consultar_fornecedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\consultar_fornecedor.aspx.designer.cs">
+    <Compile Include="consultar_fornecedor.aspx.designer.cs">
       <DependentUpon>consultar_fornecedor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\consultar_obra.aspx.cs">
+    <Compile Include="consultar_obra.aspx.cs">
       <DependentUpon>consultar_obra.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\consultar_obra.aspx.designer.cs">
+    <Compile Include="consultar_obra.aspx.designer.cs">
       <DependentUpon>consultar_obra.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\consultar_cliente.aspx.cs">
+    <Compile Include="consultar_cliente.aspx.cs">
       <DependentUpon>consultar_cliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\consultar_cliente.aspx.designer.cs">
+    <Compile Include="consultar_cliente.aspx.designer.cs">
       <DependentUpon>consultar_cliente.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\cad_usuario.aspx.cs">
+    <Compile Include="cad_usuario.aspx.cs">
       <DependentUpon>cad_usuario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\cad_usuario.aspx.designer.cs">
+    <Compile Include="cad_usuario.aspx.designer.cs">
       <DependentUpon>cad_usuario.aspx</DependentUpon>
     </Compile>
-    <Compile Include="menunovo.aspx.cs">
-      <DependentUpon>menunovo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="menunovo.aspx.designer.cs">
-      <DependentUpon>menunovo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Telas\cad_cliente.aspx.cs">
+    <Compile Include="cad_cliente.aspx.cs">
       <DependentUpon>cad_cliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\cad_cliente.aspx.designer.cs">
+    <Compile Include="cad_cliente.aspx.designer.cs">
       <DependentUpon>cad_cliente.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\ContasPagar.aspx.cs">
+    <Compile Include="ContasPagar.aspx.cs">
       <DependentUpon>ContasPagar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\ContasPagar.aspx.designer.cs">
+    <Compile Include="ContasPagar.aspx.designer.cs">
       <DependentUpon>ContasPagar.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\Home.aspx.cs">
+    <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\Home.aspx.designer.cs">
+    <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\About.aspx.cs">
+    <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\About.aspx.designer.cs">
+    <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Telas\Contact.aspx.cs">
+    <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\Contact.aspx.designer.cs">
+    <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\Default.aspx.cs">
+    <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\Default.aspx.designer.cs">
+    <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Telas\Global.asax.cs">
+    <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Telas\Login.aspx.cs">
+    <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Telas\Login.aspx.designer.cs">
+    <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -339,6 +339,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Telas\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

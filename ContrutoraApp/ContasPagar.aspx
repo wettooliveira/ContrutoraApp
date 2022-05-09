@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContasReceber.aspx.cs" Inherits="ContrutoraApp.ContasReceber" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContasPagar.aspx.cs" Inherits="ContrutoraApp.ContasPagar" %>
 
 <!DOCTYPE html>
 
@@ -20,8 +20,6 @@
         #tbDados tr tr:hover {
             background-color: aquamarine;
         }
-
-        
     </style>
 </head>
 
@@ -29,7 +27,7 @@
 
     $(document).ready(function () {
 
-        TabelaLancarDados();
+        //TabelaLancarDados();
 
         /*  Menu();*/
 
@@ -51,14 +49,14 @@
         var status = '';
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/TabelaContasReceber",
+            url: "ContasPagar.aspx/TabelaContasPagar",
             data: "{'status':'" + status + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
-               
+
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
 
@@ -93,7 +91,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "ContasReceber.aspx/TabelaContasPagas",
+                url: "ContasPagar.aspx/TabelaContasPagas",
                 data: "{'status':'" + status + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
@@ -135,16 +133,15 @@
         if (fornec == '') {
             fornec = 0;
         }
+        var contaBancaria = $('#ddlConta').val();
         var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
-        var valor_string = 0;
-        if ($('#txtValor').val() > 0) {
-            valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        }      
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
         var tipo_pg = $('#ddlTipoPgto').val();
+        var id_conta = $('#hdnIDContasPagar').val();
 
         if (obra == '') {
             obra = 0;
@@ -158,26 +155,38 @@
             id_despesa: cod_despesa,
             id_obra: obra,
             id_fornecedor: fornec,
-            tipo_pgto: tipo_pg
+            tipo_pgto: tipo_pg,
+            conta_bancaria: contaBancaria,
+            id: id_conta
         };
 
+        
         var obj = { 'Contas': Contas };
-
         console.log(obj);
+        var url = '', tipo = '';
+        if ($('#btnGravar').val() == 'Alterar') {
+            tipo = 'Alterar';
+            url = 'ContasPagar.aspx/Alterar';
+        } else {
+            tipo = 'Gravar';
+            url = 'ContasPagar.aspx/Gravar';
+        }
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/Gravar",
+            url: url,
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
-                if (source == "OK") {
+                if (source == "OK" & tipo == 'Gravar') {
                     alertCss('Gravar');
                     TabelaLancarDados();
-
+                } else if (source == "OK" & tipo == 'Alterar'){
+                    alertCss('Alterar');
+                    TabelaLancarDados();
                 }
 
 
@@ -201,7 +210,7 @@
     function detalhar(id) {
 
         /*limparTabelaTempModal();*/
-       
+
         $('#lblTabelaInseridosDetalhes').html('');
         $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
@@ -209,6 +218,114 @@
         $('#ModalDetalhes').modal('show');
         BuscarDadosInseridosDetalhes(id);
         /* $("#ModalDetalhes").modal({ show: true });*/
+    }
+
+    function editar(id) {
+     
+                $.ajax({
+                    type: "POST",
+                    url: "ContasPagar.aspx/EditarContaPagar",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
+                                             
+                         
+                        $('#hdnObra').val(source.id_obra);
+                        $('#hdnFornecedor').val(source.id_fornecedor);
+                        $('#hdnIDContasPagar').val(source.id);
+                        $('#ddlconta').val(source.conta_bancaria);
+                        $('#ddlTipoPgto').val(source.tipo_pgto);
+                        $('#txtFornecedor').val(source.desc_fornecedor);
+                        $('#txtObras').val(source.desc_obra);
+                        $('#txtConta').val(source.desc_conta);
+                        $('#txtParcela').val(source.num_parcela);
+                        $('#txtValor').val(source.valor_string);
+                        $('#ddlDespesa').val(source.id_despesa);
+                        $('#txtData').val(source.data);                      
+                        $('#ddlTipoPgto').val(source.tipo_pgto);
+
+                        $('#btnGravar').val('Alterar');
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                });
+                //swalWithBootstrapButtons.fire(
+                //    'Contrato gerado com sucesso',
+                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                //    'success'
+                //)
+                 
+
+    }
+
+    function excluirConta(id) {
+
+        swalWithBootstrapButtons.fire({
+            title: 'Deseja excluir conta?',
+            text: '',
+            icon: 'warning',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+            showCancelButton: true,
+            reverseButtons: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "ContasPagar.aspx/ExcluirConta",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
+
+                        TabelaLancarDados();
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                });
+                //swalWithBootstrapButtons.fire(
+                //    'Contrato gerado com sucesso',
+                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                //    'success'
+                //)
+
+            } else {
+
+            }
+
+
+
+        })
+
+
+
     }
 
     function limparTabelaTempModal() {
@@ -290,7 +407,7 @@
                 success: function (data) {
 
                     var dados = JSON.parse(data.d);
-                  
+
                     if (dados.retorno.split('@')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
@@ -540,14 +657,14 @@
 
     function BuscarCliente() {
 
-        window.open("consultar_cliente.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+        window.open("consultar_fornecedor.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
     }
 
     function selCliente(id, nome, cnpj) {
 
         $.ajax({
             type: "POST",
-            url: "cad_cliente.aspx/CarregarCliente",
+            url: "ContasPagar.aspx/ConsultarFornecedor",
             data: "{'id':'" + id + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -611,63 +728,6 @@
         //});
     }
 
-    function excluirConta(id) {
-
-        swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
-            text: '',
-            icon: 'warning',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showCancelButton: true,
-            reverseButtons: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.value) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "ContasPagar.aspx/ExcluirConta",
-                    data: "{'id':'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
-
-                        TabelaLancarDados();
-
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                });
-            //swalWithBootstrapButtons.fire(
-            //    'Contrato gerado com sucesso',
-            //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
-            //    'success'
-            //)
-
-            } else {
-
-            }
-
-
-         
-        })
-
-       
-
-    }
-
     function baixarConta(id) {
 
         $.ajax({
@@ -698,8 +758,6 @@
 
     }
 
-
-
 </script>
 
 <style type="text/css">
@@ -728,7 +786,7 @@
                     <tr>
                         <td colspan="4">
                             <center>
-                                <h3>Contas a Receber</h3>
+                                <h3>Contas a Pagar</h3>
                             </center>
                         </td>
                     </tr>
@@ -738,7 +796,7 @@
                             </asp:DropDownList>
                         </td>
                         <td style="width: 20px"></td>
-                        <td>Recebimento: &nbsp;
+                        <td>Vencimento: &nbsp;
                         </td>
                         <td>
                             <asp:TextBox runat="server" ID="txtData" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
@@ -748,14 +806,14 @@
                     </tr>
                     <tr>
                         <td style="display: inline-flex" colspan="4">
-                            <asp:TextBox ID="txtFornecedor" runat="server" placeholder="Cliente" CssClass="form-control" Width="350px"></asp:TextBox>
+                            <asp:TextBox ID="txtFornecedor" runat="server" placeholder="Fornecedor" CssClass="form-control" Width="350px"></asp:TextBox>
                             &nbsp;&nbsp;
-                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('cliente');return false;" />
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarCliente('fonecedor');return false;" />
                         </td>
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <asp:DropDownList ID="ddlDespesa" runat="server" Visible="false" CssClass="form-control" Width="350px">
+                            <asp:DropDownList ID="ddlDespesa" runat="server" CssClass="form-control" Width="350px">
                             </asp:DropDownList>
                         </td>
 
@@ -802,14 +860,14 @@
                             <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="120px" CssClass="form-control"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:DropDownList ID="ddlTipoPgto" Width="150px" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="Forma Receb.." Value="0"></asp:ListItem>
+                                <asp:ListItem Text="Forma Pgto.." Value="0"></asp:ListItem>
                                 <asp:ListItem Text="Boleto" Value="BOLETO"></asp:ListItem>
                                 <asp:ListItem Text="Dinheiro" Value="DINHEIRO"></asp:ListItem>
                                 <asp:ListItem Text="Débito" Value="DEBITO"></asp:ListItem>
                                 <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
                                 <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
                                 <asp:ListItem Text="Depósito" Value="DEPÓSITO"></asp:ListItem>
-                                 <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
+                                <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td></td>
@@ -825,7 +883,7 @@
 
                         <td colspan="4" style="text-align: center">
                             <br />
-                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
+                            <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                         <td style="text-align: center">
                             <br />
@@ -862,7 +920,7 @@
                         <center>
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
-                            <table style="width:100%">
+                            <table style="width: 100%">
                                 <tr>
                                     <td colspan="4">
                                         <center>

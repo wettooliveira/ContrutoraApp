@@ -7,5 +7,9 @@ namespace ContrutoraApp
 {
     public class Session
     {
+        public String usuario;
+        
+
+
     }
 }

@@ -371,43 +371,45 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO [dbo].[tb_contasReceber]
-                                                                    (num_parcela]
-                                                                    ,tipo_pgto]
+            cmd.CommandText = @"INSERT INTO tb_contasReceber
+                                                                    (num_parcela
+                                                                    ,tipo_pgto
                                                                     ,valor
                                                                     ,id_obra
                                                                     ,cliente
                                                                     ,dt_pagamento
                                                                     ,status
-                                                                    ,id_conta
+                                                                    ,id_conta_bancaria
                                                                     ,nm_cadastrou
                                                                     ,dt_cadastrou)
                                                               VALUES
-                                                                    (<num_parcela, int,>
-                                                                    ,<tipo_pgto, varchar(15),>
-                                                                    ,<valor, numeric(18,2),>
-                                                                    ,<id_obra, int,>
-                                                                    ,<cliente, int,>
-                                                                    ,<dt_pagamento, datetime,>
-                                                                    ,<status, varchar(15),>
-                                                                    ,<id_conta, int,>
-                                                                    ,<nm_cadastrou, varchar(60),>
-                                                                    ,<dt_cadastrou, datetime,>)";
+                                                                    (@num_parcela
+                                                                    ,@tipo_pgto
+                                                                    ,@valor
+                                                                    ,@id_obra
+                                                                    ,@cliente
+                                                                    ,@dt_pagamento
+                                                                    ,@status
+                                                                    ,@id_conta_bancaria
+                                                                    ,@nm_cadastrou
+                                                                    ,getdate())";
 
 
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
             cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
-            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
-            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-            cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
-            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);
+            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);         
+            cmd.Parameters.AddWithValue("@cliente", Contas.id_fornecedor);        
             cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
+            cmd.Parameters.AddWithValue("@status", Contas.nf);
+            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
+            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+            cmd.Parameters.AddWithValue("@nm_cadastrou", "sistema"); 
+           
 
             cmd.ExecuteNonQuery();
             cn.Close();
 
             return "OK";
-
         }
 
         [WebMethod]
