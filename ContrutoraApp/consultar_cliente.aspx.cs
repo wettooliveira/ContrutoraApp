@@ -66,7 +66,7 @@ public partial class consultar_cliente : System.Web.UI.Page
         {
 
             //comando de instrução do banco de dados
-            sql = "select id, razaoSocial, CNPJ from tb_cliente where fl_ativo = 'A'";
+            sql = "select id, razaoSocial, CNPJ from tb_cliente where fl_ativo = 'A' and tp_cli_fornc = 'cliente'";
 
 
             cmd.CommandText = sql;
@@ -108,8 +108,5 @@ public partial class consultar_cliente : System.Web.UI.Page
 
         btnFiltrar_Click(null, null);
     }
-
-
-
 
 }

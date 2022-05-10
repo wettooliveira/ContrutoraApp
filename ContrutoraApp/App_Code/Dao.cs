@@ -280,7 +280,7 @@ namespace ContrutoraApp
                                        uf,
                                        obs,
                                        tp_cli_fornc,                                      
-                                       fl_ativo from tb_cliente WHERE id = @id ";
+                                       fl_ativo from tb_cliente WHERE id = @id and tp_cli_fornc = 'fornecedor' and fl_ativo = 'A' ";
 
 
             cmd.Parameters.AddWithValue("@id", id);
@@ -316,7 +316,6 @@ namespace ContrutoraApp
 
             return cliente;
         }
-
 
         public String Menu()
         {
