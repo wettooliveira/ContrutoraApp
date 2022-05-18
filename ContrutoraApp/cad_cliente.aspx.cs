@@ -49,7 +49,8 @@ public partial class cad_cliente : System.Web.UI.Page
     public static String AlterarCliente(Cliente cliente)
     {
         String retorno = "";  
-        Dao consultarCliente = new Dao();
+        Dao alterar = new Dao();
+        retorno = alterar.AlterarClientes(cliente);
         return retorno;
       
     }

@@ -183,39 +183,23 @@ namespace ContrutoraApp
             {
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"update table tb_cliente(id,
-                                                       razaoSocial,
-                                                       CNPJ, 
-                                                       IE,
-                                                       tel,
-                                                       cep,
-                                                       logradouro,
-                                                       numero,
-                                                       complemento,
-                                                       bairro,
-                                                       cidade,
-                                                       uf,
-                                                       obs,
-                                                       tp_cli_fornc,
-                                                       nm_cadastrou,
-                                                       dt_cadastrou)
-                                                values(next value for dbo.CLIENTE,
-                                                       @razaoSocial,
-                                                       @CNPJ, 
-                                                       @IE,
-                                                       @tel,
-                                                       @cep,
-                                                       @logradouro,
-                                                       @numero,
-                                                       @complemento,
-                                                       @bairro,
-                                                       @cidade,
-                                                       @uf,
-                                                       @obs,
-                                                       @tp_cli_fornc,
-                                                       @nm_cadastrou,
-                                                       @dt_cadastrou)";
+                cmd.CommandText = @"update  tb_cliente set
+                                                       razaoSocial  =@razaoSocial,
+                                                       CNPJ         =@CNPJ, 
+                                                       IE           =@IE,
+                                                       tel          =@tel,
+                                                       cep          =@cep,
+                                                       logradouro   =@logradouro,
+                                                       numero       =@numero,
+                                                       complemento  =@complemento,
+                                                       bairro       =@bairro,
+                                                       cidade       =@cidade,
+                                                       uf           =@uf,
+                                                       obs          =@obs,
+                                                       tp_cli_fornc  =@tp_cli_fornc   where id = @id";
 
+
+                cmd.Parameters.AddWithValue("@id", cliente.id);
                 cmd.Parameters.AddWithValue("@razaoSocial", cliente.RazaoSocial);
                 cmd.Parameters.AddWithValue("@CNPJ", cliente.CNPJ);
                 cmd.Parameters.AddWithValue("@IE", cliente.IE);
@@ -229,13 +213,12 @@ namespace ContrutoraApp
                 cmd.Parameters.AddWithValue("@uf", cliente.endereco.uf);
                 cmd.Parameters.AddWithValue("@obs", cliente.obs);
                 cmd.Parameters.AddWithValue("@tp_cli_fornc", cliente.tp_cli_fornc);
-                cmd.Parameters.AddWithValue("@nm_cadastrou", cliente.nm_cadastrou);
-                cmd.Parameters.AddWithValue("@dt_cadastrou", DateTime.Now);
+
 
                 cmd.ExecuteNonQuery();
 
 
-                retorno = "OK,gravar";
+                retorno = "OK,alterar";
             }
             catch (Exception ex)
             {

@@ -16,7 +16,7 @@
     <%--    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>--%>
     <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
-    <title>Usuarios</title>
+    <title>Fornecedor</title>
 
     <script language="javascript" type="text/javascript">
         {

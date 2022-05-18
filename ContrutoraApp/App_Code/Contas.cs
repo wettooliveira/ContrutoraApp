@@ -33,6 +33,8 @@ namespace ContrutoraApp
         public int id_fornecedor { get; set; }
         public String desc_fornecedor { get; set; }
 
+        public String nm_usuario { get; set; }
+
         public List<Contas> listaContas1 { get; set; }
         public List<Contas> listaContas2 { get; set; }
 

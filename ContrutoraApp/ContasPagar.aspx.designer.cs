@@ -51,6 +51,15 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnObra;
 
         /// <summary>
+        /// Controle hdnUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
+
+        /// <summary>
         /// Controle ddlConta.
         /// </summary>
         /// <remarks>

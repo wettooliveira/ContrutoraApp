@@ -19,6 +19,7 @@ namespace ContrutoraApp
             {
                 CarregaDespesa();
                 CarregaContasBancos();
+                hdnUsuario.Value = Session["nm_login"].ToString();
 
                 txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtParcela.Text = "1";
@@ -455,17 +456,18 @@ namespace ContrutoraApp
 
             //comando de instrução do banco de dados
             cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,'SISTEMA',getdate())";
+                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
 
 
-            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
+            cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
             cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+            cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
             cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-            cmd.Parameters.AddWithValue("@fornec", Contas.id_fornecedor);
-            cmd.Parameters.AddWithValue("@id_despesa", Contas.id_despesa);
-            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
-            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
+            cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));            
+            cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
+            cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+            cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
 
             cmd.ExecuteNonQuery();
             cn.Close();
