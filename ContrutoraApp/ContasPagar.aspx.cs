@@ -125,6 +125,8 @@ namespace ContrutoraApp
         public static String TabelaContasPagar(String status)
         {
             String getData = DateTime.Now.ToString("dd-MM-yyyy");
+            String getDataCadastradasInicial = DateTime.Now.ToString("dd-MM-yyyy") + " 00:00:00";
+            String getDataCadastradasFinal = DateTime.Now.ToString("dd-MM-yyyy") + " 23:59:00";
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -139,12 +141,12 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
+            cmd.CommandText = @" SELECT cp.id, cp.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
                                  FROM tb_contasPagar cp
                                  LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
-                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'";
-            cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "'";
+                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'";
+            cmd.CommandText += " WHERE cp.status is null  and cp.dt_cadastrou >= '"+ getDataCadastradasInicial + "' and cp.dt_cadastrou <= '"+ getDataCadastradasFinal + "' ";
             cmd.CommandText += " ORDER BY 1 DESC  ";
 
 
@@ -156,6 +158,7 @@ namespace ContrutoraApp
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Fornecedor</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Pgto.</th>";
@@ -188,10 +191,11 @@ namespace ContrutoraApp
                     }
 
                     table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
+                    table += "          <th style='border-bottom: 1px solid; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_pgto"].ToString() + "</th>";
-                    table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid'> " + dr["num_parcela"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
@@ -439,12 +443,12 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar(Contas Contas)
         {
-
+            string data = DateTime.Now.AddMonths(8).ToString("dd/MM/yyyy");
             int numero_conta = 0;
-            //// Passa o caminho do banco de dados para um string      
+            // Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
-            //chama o metodo de conexao com o banco
+           // chama o metodo de conexao com o banco
             SqlConnection cn = new SqlConnection();
             cn.ConnectionString = connectionString;
 
@@ -453,17 +457,17 @@ namespace ContrutoraApp
             cmd.Connection = cn;
             cmd.CommandText = cmd.CommandText;
 
-            //abre a conexao
+           // abre a conexao
             cn.Open();
 
-            cmd.CommandText = " Select num_conta form tb_contasPagar order by 1 desc";
-                        
+            cmd.CommandText = " Select top 1 num_conta + 1 as num_conta from tb_contasPagar order by 1 desc";
+
             SqlDataReader dr = cmd.ExecuteReader();
             if (dr.HasRows)
             {
                 while (dr.Read())
-                {                   
-                    numero_conta = Convert.ToInt32(dr["num_conta"]) + 1;
+                {
+                    numero_conta = Convert.ToInt32(dr["num_conta"]);
                 }
             }
             else
@@ -472,28 +476,54 @@ namespace ContrutoraApp
             }
             dr.Close();
 
-            int num_parcela = Convert.ToInt32(Contas.num_parcela_string);
-            
-            for(int i = 1; i >= num_parcela; i++ )
+            int parcelas = Convert.ToInt32(Contas.num_parcela_string);
+            Decimal valor_parcelas = 0;
+            //valor das parcelas
+           
+            if (parcelas > 1)
             {
+                String valor1 = Convert.ToDecimal(Contas.valor_string.Replace('.', ',')).ToString("N2");
+                valor_parcelas = Convert.ToDecimal(valor1) / parcelas;
+            }
+            else
+            {
+                String valor1 = Contas.valor_string.Replace('.', ',').ToString();
+                valor_parcelas = Convert.ToDecimal(valor1);
+            }
+
+            int contadorData = 0;
+            for (int i = 1; i <= parcelas; i++)
+            {
+
                 //comando de instrução do banco de dados
                 cmd.Parameters.Clear();
-                cmd.CommandText = @"INSERT INTO tb_contasPagar(@num_conta, parcela,num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_conta, @parcela,@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
+                cmd.CommandText = @"INSERT INTO tb_contasPagar(num_conta,valor_parcela ,parcela,num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@num_conta, @valor_parcela,@parcela,@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
+
 
                 cmd.Parameters.AddWithValue("@num_conta", numero_conta);
-                cmd.Parameters.AddWithValue("@parcela", i.ToString() + "/" + Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@valor_parcela", valor_parcelas);
+                cmd.Parameters.AddWithValue("@parcela", (i.ToString() + "/" + Contas.num_parcela_string).ToString());
                 cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
                 cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
                 cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
-                cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+                if (contadorData == 0)
+                {
+                    cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data).AddMonths(contadorData));
+                }
+                
                 cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));
                 cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
                 cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
                 cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
 
                 cmd.ExecuteNonQuery();
+                contadorData++;
             }
 
             cn.Close();
@@ -525,6 +555,7 @@ namespace ContrutoraApp
                                                              SET num_parcela = @num_parcela,
                                                                  tipo_pgto = @tipo_pgto,
                                                                  valor = @valor,
+                                                                 dt_pagamento = @dt_pagamento,
                                                                  id_despesa = @id_despesa,
                                                                  id_obra = @id_obra,
                                                                  fornec = @fornec, 
@@ -533,7 +564,7 @@ namespace ContrutoraApp
                                                                  WHERE [id] = @id ";
 
 
-            cmd.Parameters.AddWithValue("@id", Contas.id);
+            cmd.Parameters.AddWithValue("@id", Contas.id);           
             cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
             cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
             cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
@@ -857,7 +888,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, desp.id_despesa, fornec.razaoSocial, isnull(fornec.id,0) as id_fornec, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
+            cmd.CommandText = @" SELECT cp.id, cp.num_conta,desp.id_despesa, fornec.razaoSocial, isnull(fornec.id,0) as id_fornec, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
                                  FROM tb_contasPagar cp
                                  LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
@@ -872,6 +903,7 @@ namespace ContrutoraApp
             while (dr.Read())
             {
                 c.id = Convert.ToInt32(dr["id"]);
+                c.num_conta = Convert.ToInt32(dr["num_conta"]);
                 c.conta_bancaria = Convert.ToInt32(dr["id_conta_bancaria"]);
                 c.ds_banco = dr["banco"].ToString();
                 c.id_despesa = Convert.ToInt32(dr["id_despesa"]);

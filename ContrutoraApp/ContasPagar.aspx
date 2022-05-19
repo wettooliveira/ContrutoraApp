@@ -93,7 +93,6 @@
             success: function (data) {
                 var source = data.d;
 
-
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
 
@@ -171,6 +170,7 @@
             fornec = 0;
         }
 
+       
         var contaBancaria = $('#ddlConta').val();
         var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
@@ -224,7 +224,7 @@
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
-
+                             
                 if (source == "OK" & tipo == 'Gravar') {
                     alertCss('Gravar');
                     TabelaLancarDados();
@@ -277,6 +277,8 @@
                                              
                          
                         $('#hdnObra').val(source.id_obra);
+                        $('#txtNumConta').val(source.num_conta);
+                        $('#txtNumConta').attr('readonly', true);
                         $('#hdnFornecedor').val(source.id_fornecedor);
                         $('#hdnIDContasPagar').val(source.id);
                         $('#ddlconta').val(source.conta_bancaria);
@@ -817,7 +819,7 @@
     /*Termina aqui o style do Alert*/
 </style>
 
-<body>
+<body style="overflow:auto">
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <asp:HiddenField ID="hdnFornecedor" runat="server" />
@@ -833,6 +835,11 @@
                             <center>
                                 <h3>Contas a Pagar</h3>
                             </center>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td colspan="4">
+                               <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>

@@ -75,7 +75,7 @@
     </script>
 </head>
 
-<body id="body" class="imagem_body">
+<body id="body" class="imagem_body" style="flex-direction:row; display: flex; ">
 
     <div class="divMenuPrincipal" style="width: 100%; position: fixed">
         <div class="divMenuLogo">
@@ -148,7 +148,7 @@
         </div>--%>
     </div>
 
-    <iframe id="iframe" style="width: 100%; height: 100%; padding-top: 50px" <%--style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;--%>></iframe>
+    <iframe id="iframe" style="width: 100%; height: 100%; padding-top: 50px; flex-direction:row; display: flex; " <%--style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;--%>></iframe>
 
     <footer class="footer navbar-fixed-bottom" style="height: 25px">
         <hgroup>

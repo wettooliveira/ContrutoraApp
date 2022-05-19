@@ -8,6 +8,8 @@ namespace ContrutoraApp
     public class Contas
     {
         public Int32 id { get; set; }
+
+        public Int32 num_conta { get; set; }
         public String desc_conta { get; set; }
         public String nf { get; set; }
         public Int32 num_parcela { get; set; }
