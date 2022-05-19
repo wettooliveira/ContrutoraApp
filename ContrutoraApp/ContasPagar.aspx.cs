@@ -831,7 +831,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, desp.id_despesa, fornec.razaoSocial, fornec.id as id_fornec, obra.desc_obra, obra.id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
+            cmd.CommandText = @" SELECT cp.id, desp.id_despesa, fornec.razaoSocial, isnull(fornec.id,0) as id_fornec, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
                                  FROM tb_contasPagar cp
                                  LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
@@ -851,6 +851,7 @@ namespace ContrutoraApp
                 c.id_despesa = Convert.ToInt32(dr["id_despesa"]);
                 c.id_fornecedor = Convert.ToInt32(dr["id_fornec"]);
                 c.desc_fornecedor = dr["razaoSocial"].ToString();
+                
                 c.id_obra = Convert.ToInt32(dr["id_obra"]);
                 c.desc_obra = dr["desc_obra"].ToString();
                 c.tipo_pgto = dr["tipo_pgto"].ToString();

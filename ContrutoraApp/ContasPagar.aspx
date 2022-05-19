@@ -165,7 +165,7 @@
     }
 
     function GravarConta() {
-        alert();
+       
         var fornec = $('#hdnFornecedor').val();
         if (fornec == '') {
             fornec = 0;
@@ -206,7 +206,7 @@
 
         
         var obj = { 'Contas': Contas };
-        console.log(obj);
+        
         var url = '', tipo = '';
         if ($('#btnGravar').val() == 'Alterar') {
             tipo = 'Alterar';
@@ -215,7 +215,7 @@
             tipo = 'Gravar';
             url = 'ContasPagar.aspx/Gravar';
         }
-        console.log(obj);
+       
         $.ajax({
             type: "POST",
             url: url,
