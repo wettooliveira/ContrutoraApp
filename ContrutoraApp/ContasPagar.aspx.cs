@@ -439,6 +439,8 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar(Contas Contas)
         {
+
+            int numero_conta = 0;
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -454,22 +456,46 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasPagar(num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
-                                values(@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
+            cmd.CommandText = " Select num_conta form tb_contasPagar order by 1 desc";
+                        
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {                   
+                    numero_conta = Convert.ToInt32(dr["num_conta"]) + 1;
+                }
+            }
+            else
+            {
+                numero_conta = 1;
+            }
+            dr.Close();
 
+            int num_parcela = Convert.ToInt32(Contas.num_parcela_string);
+            
+            for(int i = 1; i >= num_parcela; i++ )
+            {
+                //comando de instrução do banco de dados
+                cmd.Parameters.Clear();
+                cmd.CommandText = @"INSERT INTO tb_contasPagar(@num_conta, parcela,num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
+                                values(@num_conta, @parcela,@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
 
-            cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
-            cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
-            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
-            cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
-            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-            cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));            
-            cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
-            cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
-            cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
+                cmd.Parameters.AddWithValue("@num_conta", numero_conta);
+                cmd.Parameters.AddWithValue("@parcela", i.ToString() + "/" + Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
+                cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
+                cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+                cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
+                cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
+                cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));
+                cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
+                cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+                cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+            }
+
             cn.Close();
 
             return "OK";
