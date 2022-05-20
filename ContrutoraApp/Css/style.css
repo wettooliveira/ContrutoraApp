@@ -1,12 +1,27 @@
 ﻿html, body {
     width: 100vw;
-    height: 100vw;
+    height:100%;
     margin: 0;
     top: 0;
     left: 0;
     padding: 0;
-    position: fixed;
+   
+   
 }
+
+iframe {
+    background-repeat: no-repeat;
+    border: none;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding-top: 60px;
+    padding-bottom: 20px;
+    overflow-y: scroll;
+    position: center;
+    /* border: thin solid #c5c1c0;*/
+}
+
 
 .body2 {
     background-repeat: no-repeat;
@@ -15,16 +30,15 @@
     color: black;
     left: 0;
     overflow: auto;
-    position: fixed;
     right: 0;
     text-align: center;
     top: 0;
     display: flex;
-    border: thin solid #c5c1c0;
+    /*border: thin solid #c5c1c0;*/
     border-radius: 4px;
     margin-left: 0px;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 }
 
 
@@ -52,7 +66,7 @@
     border-radius: 4px;
     margin-left: 0px;
     width: 100vw;
-    height: 100vh;  
+    height: 100%;  
 }
 
 

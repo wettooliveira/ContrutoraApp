@@ -41,6 +41,13 @@
 
             $('#body').removeClass('imagem_body');
             $('#body').addClass('body2');
+            $('iframe').removeClass('hidden');
+           /* $('iframe').css('position', 'absolute');*/
+            //$('body').css('position', 'page');
+            //$('html').css('position', 'page');
+
+
+
 
         }
 
@@ -73,9 +80,12 @@
         }
 
     </script>
+
+
+ 
 </head>
 
-<body id="body" class="imagem_body" style="flex-direction:row; display: flex; ">
+<body id="body" class="imagem_body">
 
     <div class="divMenuPrincipal" style="width: 100%; position: fixed">
         <div class="divMenuLogo">
@@ -90,7 +100,7 @@
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_cliente.aspx');return false;">Cliente/Fornecedor </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_despesa.aspx');return false;">Despesa </a></li>
                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_obra.aspx');return false;">Obras </a></li>
-                         <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_conta_banco.aspx');return false;">Contas </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('cad_conta_banco.aspx');return false;">Contas </a></li>
                         <%--<li><a href="#">Financeiro »</a>
                             <ul>
                                 <li><a href="javascript:void(0)" onclick="carregarForm(valeu);return false;">Contas a Pagar</a></li>
@@ -119,7 +129,7 @@
         <div id="divUsuario" class="divMenuUsuario" runat="server">
             <asp:Label ID="lblusuario" runat="server"></asp:Label>
         </div>
-        <div style="background-color: #343434">
+        <div style="background-color: #343434" >
             <%--      <img runat="server" src="~/Css/Imagens/list.png" style="width: 40px; position: center; padding-top: 8px" />--%>
             <ul id="nav1">
                 <li>
@@ -148,8 +158,12 @@
         </div>--%>
     </div>
 
-    <iframe id="iframe" style="width: 100%; height: 100%; padding-top: 50px; flex-direction:row; display: flex; " <%--style="width: 100%; height: 100vw; margin: 0; top: 0; left: 0; padding: 0;--%>></iframe>
+ 
+        <iframe id="iframe" class="hidden"></iframe>
 
+
+    <br />
+       <br />
     <footer class="footer navbar-fixed-bottom" style="height: 25px">
         <hgroup>
             <h5 style="background-color: #343434; color: white">Todos os direitos reservados LcRodrigues</h5>

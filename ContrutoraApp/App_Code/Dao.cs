@@ -362,17 +362,17 @@ namespace ContrutoraApp
             {
 
                 //comando de instrução do banco de dados
-                cmd.CommandText = @"INSERT INTO tb_detalhes_contasPagar(id_conta, desc_detalhe, qtde, valor, nf)
+                cmd.CommandText = @"INSERT INTO tb_detalhes_contasPagar(num_conta, desc_detalhe, qtde, valor, nf)
                                     Values(@id_conta, @desc_conta, @num_parcela, @valor, @nf)";
 
                 cmd.Parameters.AddWithValue("@desc_conta", Contas.desc_conta.ToUpper());
                 cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor);
-                cmd.Parameters.AddWithValue("@id_conta", Contas.id);
+                cmd.Parameters.AddWithValue("@id_conta", Contas.num_conta);
                 cmd.Parameters.AddWithValue("@nf", Contas.nf);
 
                 cmd.ExecuteNonQuery();          
-                retorno = "OK" + "@" + Contas.id.ToString();
+                retorno = "OK" + "@" + Contas.num_conta.ToString();
                 cn.Close();
             }
             catch (Exception ex)

@@ -113,6 +113,11 @@ namespace ContrutoraApp
                 table += "          </tr> ";
             }
 
+
+            table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
+            table += "              <th colspan='11' style='height:10px; color:#5D7B9D'> </th>";
+            table += "          </tr> ";
+
             dr.Close();
             cn.Close();
             table += "      </table> ";
@@ -198,9 +203,9 @@ namespace ContrutoraApp
                     table += "          <th style='border-bottom: 1px solid'> " + dr["num_parcela"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
-                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' onclick='editar(" + dr["id"].ToString() + "); return false;' /> </th>";
-                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["id"].ToString() + "); return false;' />  </th>";
+                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-success' value='Baixar' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                     table += "          </tr> ";
 
@@ -213,6 +218,11 @@ namespace ContrutoraApp
                 table += "          <th colspan='10'style='border-bottom: 1px solid; height:30px'> Nenhuma informação encontrada. </th>";
                 table += "          </tr> ";
             }
+
+            table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
+            table += "              <th colspan='11' style='height:10px; color:#5D7B9D'> </th>";           
+            table += "          </tr> ";
+
 
             dr.Close();
             cn.Close();
@@ -368,7 +378,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaDetalhesContas(String id)
+        public static String BuscarTabelaDetalhesContas(String id)
         {
 
             //// Passa o caminho do banco de dados para um string      
@@ -385,7 +395,7 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"select  id, desc_detalhe, qtde, valor, nf from tb_detalhes_contasPagar where id_conta =" + id;
+            cmd.CommandText = @"select  id, desc_detalhe, qtde, valor, nf from tb_detalhes_contasPagar where num_conta =" + id;
 
 
             String table = "";
@@ -418,7 +428,7 @@ namespace ContrutoraApp
                 table += "          <th style='border-bottom: 1px solid;'>" + dr["nf"].ToString() + "</th>";
                 //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
                 //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' /> </th>";
-                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' /> </th>";
+                table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='ExcluirItemDetalhadoConta(" + dr["id"].ToString() + "); return false;' /> </th>";
                 table += "          </tr> ";
 
                 nf = dr["nf"].ToString();
@@ -601,11 +611,11 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+            cmd.CommandText = @"delete tb_contasPagar where num_conta = " + id;
             cmd.ExecuteNonQuery();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
+            cmd.CommandText = @"delete tb_detalhes_contasPagar where num_conta = " + id;
             cmd.ExecuteNonQuery();
 
             cn.Close();
@@ -922,6 +932,34 @@ namespace ContrutoraApp
             cn.Close();
                        
             return c;
+        }
+
+
+        [WebMethod]
+        public static String ExcluirItemDetalhadoConta(String id)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"delete tb_detalhes_contasPagar where id = " + id;
+            cmd.ExecuteNonQuery(); 
+
+            cn.Close();
+            return "OK";
+
         }
 
 

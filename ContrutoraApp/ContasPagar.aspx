@@ -251,18 +251,7 @@
 
     }
 
-    function detalhar(id) {
-
-        /*limparTabelaTempModal();*/
-
-        $('#lblTabelaInseridosDetalhes').html('');
-        $('#avisoModal').addClass('hidden');
-        $('#hdnIDContasPagar').val(id);
-        /*GravarDetahesTemp('buscar');*/
-        $('#ModalDetalhes').modal('show');
-        BuscarDadosInseridosDetalhes(id);
-        /* $("#ModalDetalhes").modal({ show: true });*/
-    }
+   
 
     function editar(id) {
      
@@ -413,6 +402,19 @@
 
     }
 
+    function detalhar(id) {
+
+        /*limparTabelaTempModal();*/
+
+        $('#lblTabelaInseridosDetalhes').html('');
+        $('#avisoModal').addClass('hidden');
+        $('#hdnNumConta').val(id);
+        /*GravarDetahesTemp('buscar');*/
+        $('#ModalDetalhes').modal('show');
+        BuscarDadosInseridosDetalhes(id);
+        /* $("#ModalDetalhes").modal({ show: true });*/
+    }
+
     function GravarDetahesConta() {
 
         var Contas = {};
@@ -425,7 +427,7 @@
 
             $('#avisoModal').addClass('hidden');
 
-            var id_obra = $('#hdnIDContasPagar').val();
+            var id_obra = $('#hdnNumConta').val();
             var desc_detalhe = $('#txtDescDetalhes').val();
             var qtde = $('#txtQtdeDetalhes').val();
             var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
@@ -436,7 +438,7 @@
                 desc_conta: desc_detalhe,
                 num_parcela: qtde,
                 valor: valor,
-                id: id_obra,
+                num_conta: id_obra,
                 nf: nf_
             };
 
@@ -489,7 +491,7 @@
 
         $.ajax({
             type: "POST",
-            url: "ContasPagar.aspx/TabelaDetalhesContas",
+            url: "ContasPagar.aspx/BuscarTabelaDetalhesContas",
             data: "{'id':'" + id + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -804,6 +806,34 @@
 
     }
 
+    function ExcluirItemDetalhadoConta(id) {
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/ExcluirItemDetalhadoConta",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                BuscarDadosInseridosDetalhes($('#hdnNumConta').val());
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+    }
+
 </script>
 
 <style type="text/css">
@@ -819,9 +849,10 @@
     /*Termina aqui o style do Alert*/
 </style>
 
-<body style="overflow:auto">
+<body >
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
+            <asp:HiddenField ID="hdnNumConta" runat="server" />
         <asp:HiddenField ID="hdnFornecedor" runat="server" />
         <asp:HiddenField ID="hdnObra" runat="server" />
          <asp:HiddenField ID="hdnUsuario" runat="server" />
@@ -950,7 +981,7 @@
         <div style="width: 100%">
             <br />
             <center>
-                <table style="width: 80%">
+                <table style="width: 90%">
                     <tr>
                         <td>
                             <div id="div"></div>
