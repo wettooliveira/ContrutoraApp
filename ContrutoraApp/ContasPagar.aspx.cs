@@ -43,7 +43,8 @@ namespace ContrutoraApp
         [WebMethod]
         public static String TabelaContasPagas(String status)
         {
-
+            String getDataCadastradasInicial = DateTime.Now.ToString("dd-MM-yyyy") + " 00:00:00";
+            String getDataCadastradasFinal = DateTime.Now.ToString("dd-MM-yyyy") + " 23:59:00";
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -58,10 +59,13 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"select cp.id, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento from tb_contasPagar cp
-                               inner join tb_despesa desp on desp.id_despesa = cp.id_despesa
-                               left join obra obra on obra.id_obra = cp.id_obra
-                               LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor' WHERE cp.status = 'pago' order by 1 desc";
+            cmd.CommandText = @"select cp.id, cp.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
+                                from tb_contasPagas cp
+                                left join tb_despesa desp on desp.id_despesa = cp.id_despesa
+                                left join obra obra on obra.id_obra = cp.id_obra
+                                LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'";
+           cmd.CommandText += " where dt_pagou >= '" + getDataCadastradasInicial + "' and dt_pagou <= '" + getDataCadastradasFinal + "' order by 1 desc";
+            
 
 
             String table = "";
@@ -71,6 +75,7 @@ namespace ContrutoraApp
             table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
 
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
             table += "              <th  nowrap scope='col' align='left'   style=''>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left'   style=''>Fornecedor</th>";
             table += "              <th  nowrap scope='col' style='width:100px'>Form Pgto.</th>";
@@ -91,15 +96,16 @@ namespace ContrutoraApp
 
                     if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
 
-
+             
                     table += "          <tr                style='color:Black;background-color:" + cor_r + "'> ";
+                    table += "          <th style='border-bottom: 1px solid; text-align:left'> " + dr["num_conta"].ToString() + " </th>";
                     table += "          <th                style='border-bottom: 1px solid'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                     table += "          <th                style='border-bottom: 1px solid'>" + dr["razaoSocial"].ToString() + "</th>";
                     table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + dr["tipo_pgto"].ToString() + "</th>";
-                    table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + Convert.ToDouble(dr["num_parcela"]).ToString() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + dr["num_parcela"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + dr["vencimento"] + " </th>";
-                    table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["id"].ToString() + "); return false;' />  </th>";
+                    table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                     table += "          </tr> ";
 
                 }
@@ -709,7 +715,7 @@ namespace ContrutoraApp
                                                         	nm_cadastrou,
                                                         	dt_cadastrou,
                                                         	dt_alterou,
-                                                        	nm_pagou
+                                                        	nm_pagou, dt_pagou
                                                         )
                                                         SELECT
                                                               [num_conta]
@@ -726,10 +732,11 @@ namespace ContrutoraApp
                                                               ,[nm_cadastrou]
                                                               ,[dt_cadastrou]
                                                               ,[dt_alterou]
-                                                        	  ,@nm_pagou
+                                                        	  ,@nm_pagou, @dt_pagou
                                                           FROM tb_contasPagar where id =  @id";
 
                 cmd.Parameters.AddWithValue("@nm_pagou", usuario);
+                cmd.Parameters.AddWithValue("@dt_pagou", DateTime.Now);
                 cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.ExecuteNonQuery();
