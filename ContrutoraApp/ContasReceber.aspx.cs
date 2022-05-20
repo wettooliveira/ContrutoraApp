@@ -19,7 +19,7 @@ namespace ContrutoraApp
             {
                 CarregaDespesa();
                 CarregaContasBancos();
-
+                hdnUsuario.Value = Session["nm_login"].ToString();
                 txtData.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtParcela.Text = "1";
             }
@@ -440,13 +440,13 @@ namespace ContrutoraApp
                                                                      getdate())";
 
 
-                cmd.Parameters.AddWithValue("@num_conta", Contas.num_parcela_string);
-                cmd.Parameters.AddWithValue("@parcela", Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@num_conta", numero_conta);
+                cmd.Parameters.AddWithValue("@parcela", (i.ToString() + "/" + Contas.num_parcela_string).ToString());
                 cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
                 cmd.Parameters.AddWithValue("@tipo_recebimento", Contas.tipo_pgto);
                 cmd.Parameters.AddWithValue("@valor_parcela", valor_parcelas);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
-                cmd.Parameters.AddWithValue("@desc_receb", Contas.valor_string);                
+                cmd.Parameters.AddWithValue("@desc_receb", Contas.desc_conta);                
                 if (Contas.id_obra == 0)
                 {
                     cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);

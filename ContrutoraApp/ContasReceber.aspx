@@ -20,8 +20,6 @@
         #tbDados tr tr:hover {
             background-color: aquamarine;
         }
-
-        
     </style>
 </head>
 
@@ -94,7 +92,7 @@
             success: function (data) {
                 var source = data.d;
 
-               
+
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
 
@@ -173,31 +171,45 @@
         }
         var desc_conta = $('#txtDescRecebimento').val();
         var num_parcela_string = $('#txtParcela').val();
-        var valor_string = 0;
-        if ($('#txtValor').val() > 0) {
-            valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        }  
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        if (valor_string == '') {
+            valor_string = 0;
+        }
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
         if (obra == '') {
             obra = 0;
         }
         var tipo_pg = $('#ddlTipoPgto').val();
-             
+        var id_conta = $('#hdnIDContasPagar').val();
+        if (id_conta == '') {
+            id_conta = 0;
+        }
+        var usuario = $('#hdnUsuario').val();
+        var contaBancaria = $('#ddlConta').val();
 
+   
         var Contas = {
             desc_conta: desc_conta,
             num_parcela_string: num_parcela_string,
             valor_string: valor_string,
-            data: data,           
+            data: data,
             id_obra: obra,
             id_fornecedor: cliente,
-            tipo_pgto: tipo_pg
+            tipo_pgto: tipo_pg,
+            conta_bancaria: contaBancaria,
+            id: id_conta,
+            nm_usuario: usuario
+
+
         };
+
+        
 
         var obj = { 'Contas': Contas };
 
         console.log(obj);
+    
 
         $.ajax({
             type: "POST",
@@ -210,7 +222,7 @@
 
                 if (source == "OK") {
                     alertCss('Gravar');
-                   /* TabelaLancarDados();*/
+                    /* TabelaLancarDados();*/
 
                 }
 
@@ -235,7 +247,7 @@
     function detalhar(id) {
 
         /*limparTabelaTempModal();*/
-       
+
         $('#lblTabelaInseridosDetalhes').html('');
         $('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
@@ -324,7 +336,7 @@
                 success: function (data) {
 
                     var dados = JSON.parse(data.d);
-                  
+
                     if (dados.retorno.split('@')[0] == 'OK') {
 
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
@@ -684,21 +696,21 @@
                         /*  });*/
                     }
                 });
-            //swalWithBootstrapButtons.fire(
-            //    'Contrato gerado com sucesso',
-            //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
-            //    'success'
-            //)
+                //swalWithBootstrapButtons.fire(
+                //    'Contrato gerado com sucesso',
+                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                //    'success'
+                //)
 
             } else {
 
             }
 
 
-         
+
         })
 
-       
+
 
     }
 
@@ -754,6 +766,7 @@
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <asp:HiddenField ID="hdnCliente" runat="server" />
         <asp:HiddenField ID="hdnObra" runat="server" />
+         <asp:HiddenField ID="hdnUsuario" runat="server" />
         <div id="menu">
         </div>
         <div>
@@ -847,7 +860,7 @@
                                 <asp:ListItem Text="Crédito" Value="CREDITO"></asp:ListItem>
                                 <asp:ListItem Text="Cheque" Value="CHEQUE"></asp:ListItem>
                                 <asp:ListItem Text="Depósito" Value="DEPÓSITO"></asp:ListItem>
-                                 <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
+                                <asp:ListItem Text="Pix" Value="PIX"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td></td>
@@ -900,7 +913,7 @@
                         <center>
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
-                            <table style="width:100%">
+                            <table style="width: 100%">
                                 <tr>
                                     <td colspan="4">
                                         <center>
