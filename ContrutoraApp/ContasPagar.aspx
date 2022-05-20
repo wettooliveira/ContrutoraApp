@@ -251,8 +251,6 @@
 
     }
 
-   
-
     function editar(id) {
      
                 $.ajax({
@@ -781,13 +779,25 @@
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/BaixarConta",
-            data: "{'id':'" + id + "'}",
+            data: "{'id':'" + id + "','usuario':'" + $('#hdnUsuario').val() + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
 
-                TabelaLancarDados();
+                if (source == 'OK') {
+                    TabelaLancarDados();
+                } else {
+                    swalWithBootstrapButtons.fire({
+                    title: '',
+                    text: 'Ops algo deu errado Tente novamente! ou cotate o suporte',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then((result) => {
+                      });
+                }
+                
 
             },
             error: function (request, status, error) {

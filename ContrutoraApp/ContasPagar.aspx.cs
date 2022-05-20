@@ -517,7 +517,15 @@ namespace ContrutoraApp
                 cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
                 cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
                 cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
-                cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
+                if (Contas.id_despesa == 0)
+                {
+                    cmd.Parameters.AddWithValue("@id_despesa", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
+                }
+               
                 if (contadorData == 0)
                 {
                     cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
@@ -529,7 +537,15 @@ namespace ContrutoraApp
                 
                 cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));
                 cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
-                cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+                if(Contas.id_obra == 0)
+                {
+                    cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+                }
+              
                 cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
 
                 cmd.ExecuteNonQuery();
@@ -655,8 +671,10 @@ namespace ContrutoraApp
         //}
 
         [WebMethod]
-        public static String BaixarConta(String id)
+        public static String BaixarConta(String id, String usuario)
         {
+            String retorno = "";
+
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -672,13 +690,69 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"update tb_contasPagar set status = 'pago' where id = " + id;
 
-            cmd.ExecuteNonQuery();
-            cn.Close();
+            try
+            {
+                cmd.CommandText = @"insert into tb_contasPagas(	
 
-            return "OK";
+                                                            num_conta,
+                                                        	parcela,
+                                                        	num_parcela,
+                                                        	tipo_pgto,
+                                                        	valor_parcela,
+                                                        	valor,
+                                                        	id_despesa,
+                                                        	id_obra,
+                                                        	fornec,
+                                                        	dt_pagamento,	
+                                                        	id_conta_bancaria,
+                                                        	nm_cadastrou,
+                                                        	dt_cadastrou,
+                                                        	dt_alterou,
+                                                        	nm_pagou
+                                                        )
+                                                        SELECT
+                                                              [num_conta]
+                                                              ,[parcela]
+                                                              ,[num_parcela]
+                                                              ,[tipo_pgto]
+                                                              ,[valor_parcela]
+                                                              ,[valor]
+                                                              ,[id_despesa]
+                                                              ,[id_obra]
+                                                              ,[fornec]
+                                                              ,[dt_pagamento]
+                                                              ,[id_conta_bancaria]
+                                                              ,[nm_cadastrou]
+                                                              ,[dt_cadastrou]
+                                                              ,[dt_alterou]
+                                                        	  ,@nm_pagou
+                                                          FROM tb_contasPagar where id =  @id";
+
+                cmd.Parameters.AddWithValue("@nm_pagou", usuario);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+
+                //comando de instrução do banco de dados
+                cmd.Parameters.Clear();
+                cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+
+                retorno = "OK";
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                retorno = "ERRO";
+                cn.Close();
+            }
+
+          
+
+            return retorno;
 
         }
 
@@ -898,14 +972,14 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, cp.num_conta,desp.id_despesa, fornec.razaoSocial, isnull(fornec.id,0) as id_fornec, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
+            cmd.CommandText = @" SELECT cp.id, cp.num_conta,isnull(desp.id_despesa,0) as id_despesa , fornec.razaoSocial, isnull(fornec.id,0) as id_fornec, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_pgto ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento, cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
                                  FROM tb_contasPagar cp
                                  LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT JOIN obra obra on obra.id_obra = cp.id_obra
                                  LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc = 'fornecedor'
                                  INNER JOIN tb_conta conta on conta.id = cp.id_conta_bancaria 
                                  INNER JOIN tb_bancos banco on banco.id = conta.id_banco";
-            cmd.CommandText += " WHERE cp.status is null and cp.dt_pagamento <= '" + getData + "' and cp.id = " + id;
+            cmd.CommandText += " WHERE cp.status is null and cp.id = " + id;
           
 
             SqlDataReader dr = cmd.ExecuteReader();
