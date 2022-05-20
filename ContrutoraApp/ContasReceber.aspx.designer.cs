@@ -96,6 +96,15 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.TextBox txtObras;
 
         /// <summary>
+        /// Controle txtDescRecebimento.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDescRecebimento;
+
+        /// <summary>
         /// Controle txtValor.
         /// </summary>
         /// <remarks>

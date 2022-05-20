@@ -355,10 +355,12 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar(Contas Contas)
         {
-            //// Passa o caminho do banco de dados para um string      
+            string data = DateTime.Now.AddMonths(8).ToString("dd/MM/yyyy");
+            int numero_conta = 0;
+            // Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
-            //chama o metodo de conexao com o banco
+            // chama o metodo de conexao com o banco
             SqlConnection cn = new SqlConnection();
             cn.ConnectionString = connectionString;
 
@@ -367,50 +369,124 @@ namespace ContrutoraApp
             cmd.Connection = cn;
             cmd.CommandText = cmd.CommandText;
 
-            //abre a conexao
+            // abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"INSERT INTO tb_contasReceber
-                                                                    (num_parcela
-                                                                    ,tipo_pgto
-                                                                    ,valor
-                                                                    ,id_obra
-                                                                    ,cliente
-                                                                    ,dt_pagamento
-                                                                    ,status
-                                                                    ,id_conta_bancaria
-                                                                    ,nm_cadastrou
-                                                                    ,dt_cadastrou)
+            cmd.CommandText = " Select top 1 num_conta + 1 as num_conta from tb_contasReceber order by 1 desc";
+
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    numero_conta = Convert.ToInt32(dr["num_conta"]);
+                }
+            }
+            else
+            {
+                numero_conta = 1;
+            }
+            dr.Close();
+
+            int parcelas = Convert.ToInt32(Contas.num_parcela_string);
+            Decimal valor_parcelas = 0;
+            //valor das parcelas
+
+            if (parcelas > 1)
+            {
+                String valor1 = Convert.ToDecimal(Contas.valor_string.Replace('.', ',')).ToString("N2");
+                valor_parcelas = Convert.ToDecimal(valor1) / parcelas;
+            }
+            else
+            {
+                String valor1 = Contas.valor_string.Replace('.', ',').ToString();
+                valor_parcelas = Convert.ToDecimal(valor1);
+            }
+
+            int contadorData = 0;
+            for (int i = 1; i <= parcelas; i++)
+            {
+
+                //comando de instrução do banco de dados
+                cmd.Parameters.Clear();
+                cmd.CommandText = @"INSERT INTO tb_contasReceber
+                                                                    ([num_conta],
+	                                                                 [parcela],
+	                                                                 [num_parcela],
+	                                                                 [tipo_recebimento],
+	                                                                 [valor_parcela],
+	                                                                 [valor],
+	                                                                 [desc_receb],
+	                                                                 [id_obra],
+	                                                                 [cliente],
+	                                                                 [dt_recebimento],	                                                                
+	                                                                 [id_conta_bancaria],
+	                                                                 [nm_cadastrou],
+	                                                                 [dt_cadastrou]
+	                                                                 )
                                                               VALUES
-                                                                    (@num_parcela
-                                                                    ,@tipo_pgto
-                                                                    ,@valor
-                                                                    ,@id_obra
-                                                                    ,@cliente
-                                                                    ,@dt_pagamento
-                                                                    ,@status
-                                                                    ,@id_conta_bancaria
-                                                                    ,@nm_cadastrou
-                                                                    ,getdate())";
+                                                                    (@num_conta,
+                                                                     @parcela,
+                                                                     @num_parcela,
+                                                                     @tipo_recebimento,
+                                                                     @valor_parcela,
+                                                                     @valor,
+                                                                     @desc_receb,
+                                                                     @id_obra,
+                                                                     @cliente,
+                                                                     @dt_recebimento,                                                                     
+                                                                     @id_conta_bancaria,
+                                                                     @nm_cadastrou,                                                                     
+                                                                     getdate())";
 
 
-            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
-            cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
-            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);         
-            cmd.Parameters.AddWithValue("@cliente", Contas.id_fornecedor);        
-            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
-            cmd.Parameters.AddWithValue("@status", Contas.nf);
-            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
-            cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-            cmd.Parameters.AddWithValue("@nm_cadastrou", "sistema"); 
-           
+                cmd.Parameters.AddWithValue("@num_conta", Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@parcela", Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
+                cmd.Parameters.AddWithValue("@tipo_recebimento", Contas.tipo_pgto);
+                cmd.Parameters.AddWithValue("@valor_parcela", valor_parcelas);
+                cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+                cmd.Parameters.AddWithValue("@desc_receb", Contas.valor_string);                
+                if (Contas.id_obra == 0)
+                {
+                    cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+                }
+                if(Contas.id_fornecedor == 0)
+                {
+                    cmd.Parameters.AddWithValue("@cliente", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@cliente", Contas.id_fornecedor);
+                }                
+                cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
+              
+                if (contadorData == 0)
+                {
+                    cmd.Parameters.AddWithValue("@dt_recebimento", Convert.ToDateTime(Contas.data));
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@dt_recebimento", Convert.ToDateTime(Contas.data).AddMonths(contadorData));
+                }               
+                  
+                cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
+               
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                contadorData++;
+            }
+
             cn.Close();
 
             return "OK";
+
         }
+              
 
         [WebMethod]
         public static String ExcluirConta(String id)

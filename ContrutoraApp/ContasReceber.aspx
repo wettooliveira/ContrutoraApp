@@ -44,6 +44,42 @@
         buttonsStyling: false
     });
 
+    function moeda(a, e, r, t) {
+        let n = ""
+            , h = j = 0
+            , u = tamanho2 = 0
+            , l = ajd2 = ""
+            , o = window.Event ? t.which : t.keyCode;
+        if (13 == o || 8 == o)
+            return !0;
+        if (n = String.fromCharCode(o),
+            -1 == "0123456789".indexOf(n))
+            return !1;
+        for (u = a.value.length,
+            h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+            ;
+        for (l = ""; h < u; h++)
+            -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+        if (l += n,
+            0 == (u = l.length) && (a.value = ""),
+            1 == u && (a.value = "0" + r + "0" + l),
+            2 == u && (a.value = "0" + r + l),
+            u > 2) {
+            for (ajd2 = "",
+                j = 0,
+                h = u - 3; h >= 0; h--)
+                3 == j && (ajd2 += e,
+                    j = 0),
+                    ajd2 += l.charAt(h),
+                    j++;
+            for (a.value = "",
+                tamanho2 = ajd2.length,
+                h = tamanho2 - 1; h >= 0; h--)
+                a.value += ajd2.charAt(h);
+            a.value += r + l.substr(u - 2, u)
+        }
+        return !1
+    }
 
     function TabelaLancarDados() {
 
@@ -132,23 +168,22 @@
     function GravarConta() {
 
         var cliente = $('#hdnCliente').val();
-        if (fornec == '') {
-            fornec = 0;
+        if (cliente == '') {
+            cliente = 0;
         }
-        var desc_conta = $('#txtConta').val();
+        var desc_conta = $('#txtDescRecebimento').val();
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = 0;
         if ($('#txtValor').val() > 0) {
             valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        }      
-        
+        }  
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
-        var tipo_pg = $('#ddlTipoPgto').val();
-
         if (obra == '') {
             obra = 0;
         }
+        var tipo_pg = $('#ddlTipoPgto').val();
+             
 
         var Contas = {
             desc_conta: desc_conta,
@@ -768,7 +803,11 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Cliente" onclick="BuscarObra();return false;" />
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="txtDescRecebimento" runat="server" placeholder="Descrição" CssClass="form-control" Width="350px"></asp:TextBox>
+                        </td>
+                    </tr>
 
                     <tr>
                     </tr>
@@ -798,7 +837,7 @@
 
                     <tr>
                         <td colspan="3" style="display: inline-flex">
-                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="120px" CssClass="form-control"></asp:TextBox>
+                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" Width="120px" CssClass="form-control" onKeyPress="return(moeda(this,'.',',',event))"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:DropDownList ID="ddlTipoPgto" Width="150px" runat="server" CssClass="form-control">
                                 <asp:ListItem Text="Forma Receb.." Value="0"></asp:ListItem>
