@@ -27,7 +27,7 @@
 
     $(document).ready(function () {
 
-        //TabelaLancarDados();
+        TabelaLancarDados();
 
         /*  Menu();*/
 
@@ -222,7 +222,7 @@
 
                 if (source == "OK") {
                     alertCss('Gravar');
-                    /* TabelaLancarDados();*/
+                     TabelaLancarDados();
 
                 }
 
@@ -244,16 +244,19 @@
 
     }
 
-    function detalhar(id) {
-
+    function baixarConta(id,valor) {
+        alert(valor);
         /*limparTabelaTempModal();*/
 
-        $('#lblTabelaInseridosDetalhes').html('');
-        $('#avisoModal').addClass('hidden');
+        //$('#lblTabelaInseridosDetalhes').html('');
+        //$('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
+        $('#txtvalorRecebe').val(valor);
+        
         /*GravarDetahesTemp('buscar');*/
         $('#ModalDetalhes').modal('show');
-        BuscarDadosInseridosDetalhes(id);
+        
+/*        BuscarDadosInseridosDetalhes(id);*/
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
@@ -714,7 +717,7 @@
 
     }
 
-    function baixarConta(id) {
+    function baixarConta_old(id) {
 
         $.ajax({
             type: "POST",
@@ -767,6 +770,7 @@
         <asp:HiddenField ID="hdnCliente" runat="server" />
         <asp:HiddenField ID="hdnObra" runat="server" />
          <asp:HiddenField ID="hdnUsuario" runat="server" />
+        <asp:HiddenField ID="hdnValorParcela" runat="server" />
         <div id="menu">
         </div>
         <div>
@@ -914,31 +918,23 @@
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
                             <table style="width: 100%">
-                                <tr>
-                                    <td colspan="4">
-                                        <center>
-                                            <asp:TextBox runat="server" ID="txtNF" CssClass="form-control" Width="150px" placeholder="NF"></asp:TextBox>
-                                        </center>
-
-                                    </td>
-                                </tr>
+                               
                                 <tr>
                                     <td>
-                                        <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" placeholder="item"></asp:TextBox>
+                                          <asp:TextBox runat="server" ID="txtvalorRecebe" CssClass="form-control" Width="150px" placeholder="R$" onKeyPress="return(moeda(this,'.',',',event))"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox runat="server" ID="txtQtdeDetalhes" CssClass="form-control" Width="60px" placeholder="Qtde"></asp:TextBox>
+                                         <asp:TextBox runat="server" ID="txtDataRecebe" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
+                                      
                                     </td>
                                     <td>
-                                        <asp:TextBox runat="server" ID="txtvalorDetalhes" CssClass="form-control" Width="150px" placeholder="R$"></asp:TextBox>
+                                      
                                     </td>
-                                    <td>
-                                        <input type="button" class="btn btn-info" value="Inserir" onclick="GravarDetahesConta()" />
-                                    </td>
+                              
                                 </tr>
                                 <tr>
 
-                                    <td colspan="4">
+                                    <td colspan="3">
                                         <center>
                                             <label id="lblTabelaInseridosDetalhes"></label>
                                         </center>
@@ -949,7 +945,7 @@
                         </center>
                     </div>
                     <div class="modal-footer">
-                        <%-- <button type="button" id="btnAutorizar" style="width: 150px" class="swal2-cancel btn btn-success" onclick="GravarDetalhes();">Gravar Detalhados</button>--%>
+                        <button type="button" id="btnreceberModal" class="swal2-cancel btn btn-success" onclick="GravarDetahesConta()">Receber</button>
                         <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Fechar</button>
                     </div>
                 </div>

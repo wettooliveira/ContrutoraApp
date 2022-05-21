@@ -60,6 +60,15 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
 
         /// <summary>
+        /// Controle hdnValorParcela.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnValorParcela;
+
+        /// <summary>
         /// Controle ddlConta.
         /// </summary>
         /// <remarks>
@@ -159,39 +168,21 @@ namespace ContrutoraApp
         protected global::System.Web.UI.WebControls.HiddenField hdnIdLiberacao;
 
         /// <summary>
-        /// Controle txtNF.
+        /// Controle txtvalorRecebe.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNF;
+        protected global::System.Web.UI.WebControls.TextBox txtvalorRecebe;
 
         /// <summary>
-        /// Controle txtDescDetalhes.
+        /// Controle txtDataRecebe.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescDetalhes;
-
-        /// <summary>
-        /// Controle txtQtdeDetalhes.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtQtdeDetalhes;
-
-        /// <summary>
-        /// Controle txtvalorDetalhes.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtvalorDetalhes;
+        protected global::System.Web.UI.WebControls.TextBox txtDataRecebe;
     }
 }

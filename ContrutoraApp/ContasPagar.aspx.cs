@@ -152,13 +152,12 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" SELECT cp.id, cp.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, cp.tipo_pgto ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
-                                 FROM tb_contasPagar cp
-                                 LEFT JOIN tb_despesa desp on desp.id_despesa = cp.id_despesa
-                                 LEFT JOIN obra obra on obra.id_obra = cp.id_obra
-                                 LEFT JOIN tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'";
+            cmd.CommandText = @" select cp.id, cp.num_conta, desc_receb, cliente.razaoSocial, obra.desc_obra, cp.tipo_recebimento ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_recebimento,103) as vencimento
+                                 from tb_contasReceber cp                             
+                                 left join obra obra on obra.id_obra = cp.id_obra
+                                 LEFT join tb_cliente cliente on cliente.id = cp.cliente and cliente.tp_cli_fornc <> 'fornecedor'";
             cmd.CommandText += " WHERE cp.status is null  and cp.dt_cadastrou >= '"+ getDataCadastradasInicial + "' and cp.dt_cadastrou <= '"+ getDataCadastradasFinal + "' ";
-            cmd.CommandText += " ORDER BY 1 DESC  ";
+            cmd.CommandText += " ORDER BY 1 desc   ";
 
 
 
@@ -171,11 +170,11 @@ namespace ContrutoraApp
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
-            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Fornecedor</th>";
-            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Pgto.</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Cliente</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Receb.</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
-            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Data Pagto.</th>";
+            table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Data Receb.</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Detalhar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Editar  </th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;text-align:center'> Excluir </th>";
@@ -192,22 +191,22 @@ namespace ContrutoraApp
                 {
                     String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
 
-                    if (dataVencimento != dr["vencimento"].ToString())
-                    {
-                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
-                    }
-                    else
-                    {
+                    //if (dataVencimento != dr["vencimento"].ToString())
+                    //{
+                    //    if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
+                    //}
+                    //else
+                    //{
                         if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-                    }
+                    //}
 
                     table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
-                    table += "          <th style='border-bottom: 1px solid; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
-                    table += "          <th style='border-bottom: 1px solid'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
-                    table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
-                    table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_pgto"].ToString() + "</th>";
-                    table += "          <th style='border-bottom: 1px solid'> " + dr["num_parcela"].ToString() + " </th>";
-                    table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
+                    table += "          <th style='border-bottom: 1px solid #eee; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid #eee'> " + dr["desc_receb"].ToString().ToUpper() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid #eee;'>" + dr["razaoSocial"].ToString() + "</th>";
+                    table += "          <th style='border-bottom: 1px solid #eee;'>" + dr["tipo_recebimento"].ToString() + "</th>";
+                    table += "          <th style='border-bottom: 1px solid #eee'> " + dr["num_parcela"].ToString() + " </th>";
+                    table += "          <th style='border-bottom: 1px solid #eee'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["vencimento"] + " </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' onclick='editar(" + dr["id"].ToString() + "); return false;' /> </th>";
