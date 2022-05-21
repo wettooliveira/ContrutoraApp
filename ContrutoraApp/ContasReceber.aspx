@@ -81,7 +81,7 @@
 
     function TabelaLancarDados() {
 
-        $('#btnPagas').val("Pagas");
+        $('#btnPagas').val("Recebidas");
         var status = '';
         $.ajax({
             type: "POST",
@@ -116,7 +116,7 @@
     function TabelaLancarDadosPagas(status) {
 
 
-        if ($('#btnPagas').val() == "Não Pagas") {
+        if ($('#btnPagas').val() == "Não Recebidas") {
 
             TabelaLancarDados();
 
@@ -136,7 +136,7 @@
 
                     $('#div').html('');
                     $('#div').html(source);
-                    $('#btnPagas').val("Não Pagas");
+                    $('#btnPagas').val("Não Recebidas");
                     $('#btnPagas').prop("disabled", false);
 
                 },
@@ -202,15 +202,21 @@
             nm_usuario: usuario
 
 
-        };
-
-        
+        };                      
 
         var obj = { 'Contas': Contas };
 
+        var url = '', tipo = '';
+        if ($('#btnGravar').val() == 'Alterar') {
+            tipo = 'Alterar';
+            url = 'ContasPagar.aspx/Alterar';
+        } else {
+            tipo = 'Gravar';
+            url = 'ContasPagar.aspx/Gravar';
+        }
+
         console.log(obj);
     
-
         $.ajax({
             type: "POST",
             url: "ContasReceber.aspx/Gravar",
@@ -219,12 +225,15 @@
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
-
-                if (source == "OK") {
+                             
+                if (source == "OK" & tipo == 'Gravar') {
                     alertCss('Gravar');
-                     TabelaLancarDados();
-
+                    TabelaLancarDados();
+                } else if (source == "OK" & tipo == 'Alterar') {
+                    alertCss('Alterar');
+                    TabelaLancarDados();
                 }
+
 
 
             },
@@ -244,14 +253,123 @@
 
     }
 
+    function editar(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasReceber.aspx/EditarContaReceber",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#hdnObra').val(source.id_obra);
+                $('#txtNumConta').val(source.num_conta);
+                $('#txtNumConta').attr('readonly', true);
+                $('#hdnFornecedor').val(source.id_fornecedor);
+                $('#hdnIDContasPagar').val(source.id);
+                $('#ddlconta').val(source.conta_bancaria);
+                $('#ddlTipoPgto').val(source.tipo_pgto);
+                $('#txtFornecedor').val(source.desc_fornecedor);
+                $('#txtObras').val(source.desc_obra);
+                $('#txtDescRecebimento').val(source.desc_conta);                
+                $('#txtParcela').val(source.num_parcela);
+                $('#txtValor').val(source.valor_string);                
+                $('#txtData').val(source.data);
+                $('#ddlTipoPgto').val(source.tipo_pgto);
+                
+
+                $('#btnGravar').val('Alterar');
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+        //swalWithBootstrapButtons.fire(
+        //    'Contrato gerado com sucesso',
+        //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+        //    'success'
+        //)
+
+
+    }
+
+    function excluirConta(id) {
+
+        swalWithBootstrapButtons.fire({
+            title: 'Deseja excluir conta?',
+            text: '',
+            icon: 'warning',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+            showCancelButton: true,
+            reverseButtons: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.value) {
+               
+                $.ajax({
+                    type: "POST",
+                    url: "ContasReceber.aspx/ExcluirConta",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        var source = data.d;
+                        alert();
+                        TabelaLancarDados();
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        console.log(request.responseText);
+                        //swalWithBootstrapButtons.fire({
+                        //    title: '',
+                        //    text: 'Erro ao abrir tabela! Tente novamente!',
+                        //    icon: 'error',
+                        //    confirmButtonText: 'OK',
+                        //    allowOutsideClick: false
+                        //}).then((result) => {
+                        /*  });*/
+                    }
+                });
+                //swalWithBootstrapButtons.fire(
+                //    'Contrato gerado com sucesso',
+                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                //    'success'
+                //)
+
+            } else {
+
+            }
+
+
+
+        })
+
+
+
+    }
+
     function baixarConta(id,valor) {
-        alert(valor);
+      
         /*limparTabelaTempModal();*/
 
         //$('#lblTabelaInseridosDetalhes').html('');
         //$('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
-        $('#txtvalorRecebe').val(valor);
+        $('#txtvalorRecebe').val(valor.toLocaleString('pt-br', { minimumFractionDigits: 2 }));
         
         /*GravarDetahesTemp('buscar');*/
         $('#ModalDetalhes').modal('show');
@@ -299,11 +417,11 @@
 
     }
 
-    function GravarDetahesConta() {
+    function GravarRecebimento() {
 
         var Contas = {};
 
-        if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
+        if ($('#txtDataRecebe').val() == '' || $('#txtvalorRecebe').val() == '') {
 
             $('#avisoModal').removeClass('hidden');
 
@@ -311,28 +429,22 @@
 
             $('#avisoModal').addClass('hidden');
 
-            var id_obra = $('#hdnIDContasPagar').val();
-            var desc_detalhe = $('#txtDescDetalhes').val();
-            var qtde = $('#txtQtdeDetalhes').val();
-            var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
-            var nf_ = $('#txtNF').val();
-
-
+            var id_obra = $('#hdnIDContasPagar').val();         
+            var dt = $('#txtDataRecebe').val();
+            var valor = $('#txtvalorRecebe').val().trim().replace('.', '').replace(',', '.');
+           
             Contas = {
-                desc_conta: desc_detalhe,
-                num_parcela: qtde,
+                
                 valor: valor,
-                id: id_obra,
-                nf: nf_
+                id: id_obra,                
+                data: dt
             };
-
 
             var obj = { 'Contas': Contas };
 
-
             $.ajax({
                 type: "POST",
-                url: "ContasPagar.aspx/GravarDetalhes",
+                url: "ContasPagar.aspx/GravarRecebimentos",
                 data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
@@ -345,9 +457,9 @@
                         /*$('#lblTabelaInseridosDetalhes').html(dados);*/
                         /* BuscarDadosInseridosTempDetalhes(dados.retorno.split(',')[1]);*/
                         BuscarDadosInseridosDetalhes(dados.retorno.split('@')[1]);
-                        $('#txtDescDetalhes').val('');
-                        $('#txtQtdeDetalhes').val('');
-                        $('#txtvalorDetalhes').val('');
+                        $('#txtDataRecebe').val('');
+                        $('#txtvalorRecebe').val('');
+                       
                     }
 
                     /*BuscaTabelaDetalhesModal(dados);*/
@@ -660,62 +772,7 @@
         //});
     }
 
-    function excluirConta(id) {
-
-        swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
-            text: '',
-            icon: 'warning',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showCancelButton: true,
-            reverseButtons: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.value) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "ContasPagar.aspx/ExcluirConta",
-                    data: "{'id':'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var source = data.d;
-
-                        TabelaLancarDados();
-
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                        console.log(request.responseText);
-                        //swalWithBootstrapButtons.fire({
-                        //    title: '',
-                        //    text: 'Erro ao abrir tabela! Tente novamente!',
-                        //    icon: 'error',
-                        //    confirmButtonText: 'OK',
-                        //    allowOutsideClick: false
-                        //}).then((result) => {
-                        /*  });*/
-                    }
-                });
-                //swalWithBootstrapButtons.fire(
-                //    'Contrato gerado com sucesso',
-                //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
-                //    'success'
-                //)
-
-            } else {
-
-            }
-
-
-
-        })
-
-
-
-    }
+    
 
     function baixarConta_old(id) {
 
@@ -880,11 +937,11 @@
 
                         <td colspan="4" style="text-align: center">
                             <br />
-                            <asp:Button runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
+                            <asp:Button ID="btnGravar"  runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                         <td style="text-align: center">
                             <br />
-                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Recebidas" OnClientClick="TabelaLancarDadosPagas();return false;" />
                         </td>
                     </tr>
                 </table>
@@ -895,7 +952,7 @@
         <div style="width: 100%">
             <br />
             <center>
-                <table style="width: 80%">
+                <table style="width: 90%">
                     <tr>
                         <td>
                             <div id="div"></div>
@@ -945,7 +1002,7 @@
                         </center>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnreceberModal" class="swal2-cancel btn btn-success" onclick="GravarDetahesConta()">Receber</button>
+                        <button type="button" id="btnreceberModal" class="swal2-cancel btn btn-success" onclick="GravarRecebimento()">Receber</button>
                         <button type="button" id="btnFechar" class="swal2-cancel btn btn-danger" onclick="fecharModal();">Fechar</button>
                     </div>
                 </div>

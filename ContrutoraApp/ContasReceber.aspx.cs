@@ -79,6 +79,7 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Descrição</th>";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Cliente</th>";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Obra</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Form Receb.</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Parcela</th>";
             table += "              <th  nowrap scope='col' align='right' style='padding-right: 20px;'>Valor</th>";
@@ -112,6 +113,7 @@ namespace ContrutoraApp
                     table += "          <th style='border-bottom: 1px solid; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["desc_receb"].ToString().ToUpper() + " </th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["razaoSocial"].ToString() + "</th>";
+                    table += "          <th style='border-bottom: 1px solid'> " + dr["desc_obra"].ToString().ToUpper() + " </th>";
                     table += "          <th style='border-bottom: 1px solid;'>" + dr["tipo_recebimento"].ToString() + "</th>";
                     table += "          <th style='border-bottom: 1px solid'> " + dr["num_parcela"].ToString() + " </th>";
                     table += "          <th style='border-bottom: 1px solid'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
@@ -119,7 +121,7 @@ namespace ContrutoraApp
                     //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' onclick='editar(" + dr["id"].ToString() + "); return false;' /> </th>";
                     table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
-                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnReceber'  type='button' class='btn btn-success' value='Receber' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + ","+ Convert.ToDouble(dr["valor"]).ToString("N2") + "); return false;' />  </th>";
+                    table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnReceber'  type='button' class='btn btn-success' value='Receber' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "," + dr["valor"] + "); return false;' />  </th>";
                     table += "          </tr> ";
 
                 }
@@ -496,7 +498,112 @@ namespace ContrutoraApp
             return "OK";
 
         }
-              
+
+        [WebMethod]
+        public static String Alterar(Contas Contas)
+        {
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @"UPDATE [dbo].[tb_contasReceber]
+                                                             SET num_parcela = @num_parcela,
+                                                                 tipo_recebimeno = @tipo_recebimento,
+                                                                 valor = @valor,
+                                                                 dt_recebimento = @dt_recebimento,
+                                                                 desc_receb = @desc_receb,
+                                                                 id_obra = @id_obra,
+                                                                 cliente = @cliente, 
+                                                                 id_conta_bancaria = @id_conta_bancaria,   
+                                                                 dt_alterou = @dt_alterou
+                                                                 WHERE id = @id ";
+
+
+            cmd.Parameters.AddWithValue("@id", Contas.id);
+            cmd.Parameters.AddWithValue("@num_parcela", Contas.num_parcela_string);
+            cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
+            cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
+            cmd.Parameters.AddWithValue("@dt_recebimento", Convert.ToDateTime(Contas.data));
+            cmd.Parameters.AddWithValue("@cliente", Contas.id_fornecedor);
+            cmd.Parameters.AddWithValue("@desc_receb", Contas.desc_conta);
+            cmd.Parameters.AddWithValue("@id_conta_bancaria", Contas.conta_bancaria);
+            cmd.Parameters.AddWithValue("@id_obra", Contas.id_obra);
+            cmd.Parameters.AddWithValue("@dt_alterou", DateTime.Now);
+
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            return "OK";
+
+        }
+
+        [WebMethod]
+        public static Contas EditarContaReceber(String id)
+        {
+            String getData = DateTime.Now.ToString("dd-MM-yyyy");
+            Contas c = new Contas();
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //abre a conexao
+            cn.Open();
+
+            //comando de instrução do banco de dados
+            cmd.CommandText = @" SELECT cp.id, cp.num_conta, desc_receb, cliente.razaoSocial, isnull(cliente.id,0) as id_cliente, obra.desc_obra, isnull(obra.id_obra,0) id_obra, cp.tipo_recebimento ,cp.num_parcela, cp.valor, convert(varchar(30),cp.dt_recebimento,103) as vencimento, 
+                                        cp.id_conta_bancaria, conta.ds_agencia +' - '+ ds_conta +' '+ ds_banco as banco
+                                 FROM tb_contasReceber cp
+                                 LEFT JOIN obra obra on obra.id_obra = cp.id_obra
+                                 LEFT JOIN tb_cliente cliente on cliente.id = cp.cliente and cliente.tp_cli_fornc <> 'fornecedor'
+                                 INNER JOIN tb_conta conta on conta.id = cp.id_conta_bancaria 
+                                 INNER JOIN tb_bancos banco on banco.id = conta.id_banco
+                                 WHERE cp.id = @id ";
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                c.id = Convert.ToInt32(dr["id"]);
+                c.num_conta = Convert.ToInt32(dr["num_conta"]);
+                c.conta_bancaria = Convert.ToInt32(dr["id_conta_bancaria"]);
+                c.ds_banco = dr["banco"].ToString();
+                c.desc_conta = dr["desc_receb"].ToString();
+                c.id_fornecedor = Convert.ToInt32(dr["id_cliente"]);
+                c.desc_fornecedor = dr["razaoSocial"].ToString();
+                c.id_obra = Convert.ToInt32(dr["id_obra"]);
+                c.desc_obra = dr["desc_obra"].ToString();
+                c.tipo_pgto = dr["tipo_recebimento"].ToString();
+                c.num_parcela = Convert.ToInt32(dr["num_parcela"]);
+                c.data = dr["vencimento"].ToString();
+                c.valor_string = Convert.ToDecimal(dr["valor"]).ToString("N2");
+            }
+
+            dr.Close();
+            cn.Close();
+
+            return c;
+        }
 
         [WebMethod]
         public static String ExcluirConta(String id)
@@ -517,12 +624,12 @@ namespace ContrutoraApp
             cn.Open();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+            cmd.CommandText = @"delete tb_contasReceber where num_conta = " + id;
             cmd.ExecuteNonQuery();
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
-            cmd.ExecuteNonQuery();
+            //cmd.CommandText = @"delete tb_detalhes_contasPagar where id_conta = " + id;
+            //cmd.ExecuteNonQuery();
 
             cn.Close();
             return "OK";
@@ -558,23 +665,69 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String GravarDetalhes(Contas Contas)
+        public static String GravarRecebimentos(Contas Contas) 
         {
-            String retorno = "";
-            Contas DadosDetalhes = new Contas();
-            Dao GravarTempDetalhesmodal = new Dao();
-            Dao buscarTempDetalhesmodal = new Dao();
+            string data = DateTime.Now.AddMonths(8).ToString("dd/MM/yyyy");
+            int numero_conta = 0;
+            // Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
 
-            retorno = GravarTempDetalhesmodal.GravarDetalhesDao(Contas);
-            DadosDetalhes.retorno = retorno;
-            //if (retorno == "OK")
-            //{
-            //    DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas, "gravar");
-            //}
+            // chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
 
-            //DadosDetalhes = buscarTempDetalhesmodal.BuscarDadosDetalhesModal(Contas,"buscar");
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
 
-            return JsonConvert.SerializeObject(DadosDetalhes);
+            // abre a conexao
+            cn.Open();
+
+            cmd.CommandText = @"insert into tb_contasRecebidas(	
+
+                                                            num_conta,
+                                                        	parcela,
+                                                        	num_parcela,
+                                                        	tipo_pgto,
+                                                        	valor_parcela,
+                                                        	valor,
+                                                        	id_despesa,
+                                                        	id_obra,
+                                                        	fornec,
+                                                        	dt_pagamento,	
+                                                        	id_conta_bancaria,
+                                                        	nm_cadastrou,
+                                                        	dt_cadastrou,
+                                                        	dt_alterou,
+                                                        	nm_pagou, dt_pagou
+                                                        )
+                                                        SELECT
+                                                              [num_conta]
+                                                              ,[parcela]
+                                                              ,[num_parcela]
+                                                              ,[tipo_pgto]
+                                                              ,[valor_parcela]
+                                                              ,[valor]
+                                                              ,[id_despesa]
+                                                              ,[id_obra]
+                                                              ,[fornec]
+                                                              ,[dt_pagamento]
+                                                              ,[id_conta_bancaria]
+                                                              ,[nm_cadastrou]
+                                                              ,[dt_cadastrou]
+                                                              ,[dt_alterou]
+                                                        	  ,@nm_pagou, @dt_pagou
+                                                          FROM tb_contasReceber where id =  @id";
+
+            cmd.Parameters.AddWithValue("@nm_pagou", "");
+            cmd.Parameters.AddWithValue("@dt_pagou", DateTime.Now);
+            cmd.Parameters.AddWithValue("@id", Contas.id);
+
+
+            cmd.ExecuteNonQuery();
+
+            return JsonConvert.SerializeObject("");
         }
 
         [WebMethod]
