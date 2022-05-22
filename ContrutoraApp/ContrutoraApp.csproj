@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="consultar_ContasPagar.aspx" />
     <Content Include="Css\Imagens\lupa.png" />
     <Content Include="index.aspx" />
     <Content Include="Scripts\jquery.maskMoney.js" />
@@ -190,6 +191,13 @@
     <Compile Include="App_Code\Obra.cs" />
     <Compile Include="App_Code\ContaBanco.cs" />
     <Compile Include="App_Code\Session.cs" />
+    <Compile Include="consultar_ContasPagar.aspx.cs">
+      <DependentUpon>consultar_ContasPagar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="consultar_ContasPagar.aspx.designer.cs">
+      <DependentUpon>consultar_ContasPagar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

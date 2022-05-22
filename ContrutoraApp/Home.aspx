@@ -111,9 +111,11 @@
                 </li>
                 <li><a href="#">Financeiro</a>
                     <ul>
-                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('TelaoFinanceiro.aspx');return false;">Financeiro</a></li>
-                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasPagar.aspx');return false;">Contas Pagar </a></li>
-                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasReceber.aspx');return false;">Contas Receber </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('TelaoFinanceiro.aspx');return false;">Visão Geral</a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasPagar.aspx');return false;">Cad.Contas Pagar </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasReceber.aspx');return false;">Cad.Contas Receber </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasPagar.aspx');return false;">Ger.Contas Pagar </a></li>
+                        <li><a href="javascript:void(0)" onclick="CarregaPaginaFrame('ContasReceber.aspx');return false;">Ger.Contas Receber </a></li>
                         <li><a href="#">Sub Item</a></li>
                         <li><a href="#">Sub Sub List »</a>
                             <ul>

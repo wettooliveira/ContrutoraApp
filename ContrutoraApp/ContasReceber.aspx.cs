@@ -135,7 +135,7 @@ namespace ContrutoraApp
             }
 
             table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
-            table += "              <th colspan='10' style='height:10px; color:#5D7B9D'> </th>";
+            table += "              <th colspan='11' style='height:10px; color:#5D7B9D'> </th>";
             table += "          </tr> ";
 
             dr.Close();

@@ -28,6 +28,7 @@
     $(document).ready(function () {
 
         TabelaLancarDados();
+        consultarContasPagar();
 
         /*  Menu();*/
 
@@ -79,11 +80,16 @@
         return !1
     }
 
+    function consultarContasPagar() {
 
-    function TabelaLancarDados() {
+        TabelaLancarDados('consultar');
+    
+    }
+
+    function TabelaLancarDados(status) {
 
         $('#btnPagas').val("Pagas");
-        var status = '';
+        
         $.ajax({
             type: "POST",
             url: "ContasPagar.aspx/TabelaContasPagar",
@@ -844,6 +850,45 @@
         });
     }
 
+    function BuscarContaPagar() {
+
+        window.open("consultar_ContasPagar.aspx", "popup", "toolbar=no,scrollbars=no,resizable=no,lr,left=250,width=400,height=400,top=100");
+    }
+
+    function selObra(num_conta) {
+
+        $('#hdnObra').val(id);
+        $('#txtObras').val(nome);
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: "cad_obra.aspx/CarregarObra",
+        //    data: "{'id':'" + id + "'}",
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "JSON",
+        //    success: function (data) {
+        //        var source = data.d;
+
+
+
+
+        //    },
+        //    error: function (request, status, error) {
+        //        alert(request.responseText);
+        //        console.log(request.responseText);
+        //        //swalWithBootstrapButtons.fire({
+        //        //    title: '',
+        //        //    text: 'Erro ao abrir tabela! Tente novamente!',
+        //        //    icon: 'error',
+        //        //    confirmButtonText: 'OK',
+        //        //    allowOutsideClick: false
+        //        //}).then((result) => {
+        //        /*  });*/
+        //    }
+        //});
+    }
+
+
 </script>
 
 <style type="text/css">
@@ -879,8 +924,10 @@
                         </td>
                     </tr>  
                     <tr>
-                        <td colspan="4">
+                          <td style="display: inline-flex" colspan="4">
                                <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
+                               &nbsp;&nbsp;
+                            <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
                         </td>
                     </tr>
                     <tr>
