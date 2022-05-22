@@ -25,7 +25,7 @@
         }
         $(document).ready(function () {
 
-            TabelaLancarDados();
+            //TabelaLancarDados();
 
             /*  Menu();*/
 
@@ -33,18 +33,19 @@
 
         function TabelaLancarDados() {
 
-            $('#btnPagas').val("Pagas");
+            var NumeroConta = $('#txtNumConta').val();
             var status = "";
             $.ajax({
                 type: "POST",
                 url: "consultar_ContasPagar.aspx/TabelaContasPagar",
-                data: "{'status':'" + status + "'}",
+                data: "{'NumeroConta':'" + NumeroConta + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
 
-                    $('#div').html(source);
+                    $('#div').html(source.split('@')[0]);
+                    $('#hdnNumConta').val(source.split('@')[1]);
                     $('#btnPagas').prop("disabled", false);
 
                 },
@@ -63,19 +64,25 @@
             });
 
         }
+
+        function seleciona() {          
+            window.opener.selConta($('#hdnNumConta').val());
+            window.close();
+        }
     </script>
 
 
     <form id="form1" runat="server">
+        <asp:HiddenField runat="server" ID="hdnNumConta" />
 
         <div>
             <table>
                 <tr>
                     <td>
-                         <asp:TextBox runat="server" Width="100px" placeHolder="Numero Conta" CssClass="form-control"></asp:TextBox>
+                         <asp:TextBox id="txtNumConta" runat="server" Width="100px" placeHolder="Numero Conta" CssClass="form-control"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-info" Text="Buscar" OnClientClick="TabelaLancarDados();return false;" />
+                        <asp:Button runat="server" ID="btnBuscar" CssClass="btn btn-info" Text="Buscar" OnClientClick="TabelaLancarDados();return false;" />
                     </td>
                 </tr>
             </table>           
@@ -89,6 +96,12 @@
                             <div id="div"></div>
                         </td>
                     </tr>
+                    <tr>
+                         <td>
+                        <asp:Button runat="server" ID="btngravar" CssClass="btn btn-info" Text="Selecionar" OnClientClick="seleciona();return false;" />
+                    </td>
+                    </tr>
+                   
                 </table>
             </center>
         </div>

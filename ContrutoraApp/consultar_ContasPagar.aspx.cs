@@ -17,7 +17,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String TabelaContasPagar(String status)
+        public static String TabelaContasPagar(String NumeroConta)
         {
             String getData = DateTime.Now.ToString("dd-MM-yyyy");
             String getDataCadastradasInicial = DateTime.Now.ToString("dd-MM-yyyy") + " 00:00:00";
@@ -35,17 +35,25 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
+            String numero_conta = "";
             String table = "";
 
 
             //comando de instrução do banco de dados
-            cmd.CommandText = @" select cp.id, cp.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, obra.id_obra, cp.tipo_pgto ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento
+            cmd.CommandText = @" select cp.id, cp.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, obra.id_obra, cp.tipo_pgto ,cp.parcela as num_parcela, cp.valor_parcela as valor, convert(varchar(30),cp.dt_pagamento,103) as vencimento,  'Não Pagas' as status
                                  from tb_contasPagar cp                             
                                  left join obra obra on obra.id_obra = cp.id_obra
 								 left join tb_despesa desp on desp.id_despesa = cp.id_despesa
-                                 LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'";
-            cmd.CommandText += "  WHERE cp.num_conta = 1 ";
-            cmd.CommandText += " ORDER BY 1 desc   ";
+                                 LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'	";
+            cmd.CommandText += " WHERE cp.num_conta = " + NumeroConta;
+            cmd.CommandText += " union";
+            cmd.CommandText += " select p.id, p.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, obra.id_obra, p.tipo_pgto ,p.parcela as num_parcela, p.valor_parcela as valor, convert(varchar(30),p.dt_pagamento,103) as vencimento, 'Pagas' as status";
+            cmd.CommandText += " from tb_contasPagas p";
+            cmd.CommandText += " left join obra obra on obra.id_obra = p.id_obra";
+            cmd.CommandText += " left join tb_despesa desp on desp.id_despesa = p.id_despesa";
+            cmd.CommandText += " LEFT join tb_cliente fornec on fornec.id = p.fornec and fornec.tp_cli_fornc <> 'cliente'";
+            cmd.CommandText += " WHERE p.num_conta =" + NumeroConta;
+
 
             String cor_r = "#FFFFFF";
 
@@ -73,16 +81,16 @@ namespace ContrutoraApp
 
                 while (dr.Read())
                 {
-                    String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
+                    //String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
 
-                    //if (dataVencimento != dr["vencimento"].ToString())
-                    //{
-                    //    if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
-                    //}
-                    //else
-                    //{
-                    if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-                    //}
+                    if ("Pagas" == dr["status"].ToString())
+                    {
+                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+                    }
+                    else
+                    {
+                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                    }
 
                     table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                     table += "          <th style='border-bottom: 1px solid #eee; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
@@ -98,6 +106,7 @@ namespace ContrutoraApp
                     //table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnExcluir'  type='button' class='btn btn-success' value='Baixar' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                     table += "          </tr> ";
 
+                    numero_conta = dr["num_conta"].ToString();
                 }
 
             }
@@ -121,7 +130,7 @@ namespace ContrutoraApp
 
             table += "      </table> ";
 
-            return table;
+            return table + "@" + numero_conta;
 
         }
     }
