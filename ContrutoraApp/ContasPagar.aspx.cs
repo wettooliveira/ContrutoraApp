@@ -222,7 +222,7 @@ namespace ContrutoraApp
                         table += "          <th style='border-bottom: 1px solid #eee'> " + dr["vencimento"] + " </th>";
                         table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
                         table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnEditar'   type='button' class='btn btn-info' value='Editar' style='width:80px; height:23px; cursor: pointer; text-align:center; padding-top:initial ' onclick='editar(" + dr["id"].ToString() + "); return false;' /> </th>";
-                        table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
+                        table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnExcluir'  type='button' class='btn btn-danger' value='Excluir' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='excluirConta(" + dr["num_conta"].ToString() + "," + dr["id"].ToString() + "); return false;' />  </th>";
                         table += "          <th  nowrap scope='col' align='right' style='padding-right: 20px; width:80px; text-align:center; border-bottom: 1px solid #eee'> <input id='btnExcluir'  type='button' class='btn btn-success' value='Baixar' style='width:80px; height:23px; cursor: pointer;text-align:center; padding-top:initial ' onclick='baixarConta(" + dr["id"].ToString() + "); return false;' />  </th>";
                         table += "          </tr> ";
 
@@ -712,6 +712,8 @@ namespace ContrutoraApp
         [WebMethod]
         public static String ExcluirConta(String id, String acao)
         {
+
+            String retorno = ""; 
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -731,26 +733,70 @@ namespace ContrutoraApp
             {
                 //regra se tiver conta paga tem que estornar
 
-                //comando de instrução do banco de dados
-                cmd.CommandText = @"delete tb_contasPagar where num_conta = " + id;
-                cmd.ExecuteNonQuery();
+                cmd.CommandText = @"select * from tb_contasPagas where num_conta =" + id;
 
-                //comando de instrução do banco de dados
-                cmd.CommandText = @"delete tb_detalhes_contasPagar where num_conta = " + id;
-                cmd.ExecuteNonQuery();
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                bool tem_parcela_paga = false;
+                if (dr.HasRows)
+                {
+                    tem_parcela_paga = true;
+                }
+
+                dr.Close();
+
+                if (!tem_parcela_paga)
+                {
+                    //comando de instrução do banco de dados
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"delete tb_contasPagar where num_conta = " + id;
+                    cmd.ExecuteNonQuery();
+
+                    //comando de instrução do banco de dados
+                    cmd.CommandText = @"delete tb_detalhes_contasPagar where num_conta = " + id;
+                    cmd.ExecuteNonQuery();
+
+                    retorno = "OK";
+                }
+                else
+                {
+                    retorno = "existe parcela";
+                }
+     
             }
             else
             {
-                // regras se for 1 conta só excluir dos detalhes
+                // regras se for 1 conta só excluir dos detalhes                
+                cmd.CommandText = @"SELECT * FROM tb_contasPagar pagar
+                                    INNER JOIN tb_contasPagas pagas on pagas.num_conta = pagar.num_conta
+                                    WHERE pagar.id =" + id;
 
-                //comando de instrução do banco de dados
-                cmd.CommandText = @"delete tb_contasPagar where id = " + id;
-                cmd.ExecuteNonQuery();
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                Boolean tem_parcela_paga = false;
+                if (dr.HasRows)
+                {
+                    tem_parcela_paga = true;
+                }
+
+                dr.Close();
+                if (!tem_parcela_paga)
+                {
+                    //comando de instrução do banco de dados
+                    cmd.CommandText = @"delete tb_contasPagar WHERE id = " + id;
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+
+                }         
+
+                retorno = "OK";
             }
        
 
             cn.Close();
-            return "OK";
+            return retorno;
 
         }
 
