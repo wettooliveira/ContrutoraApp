@@ -311,11 +311,13 @@
 
     function excluirConta(id) {
 
+       
+
         swalWithBootstrapButtons.fire({
-            title: 'Deseja excluir conta?',
+            title: 'Deseja excluir todas as conta?',
             text: '',
             icon: 'warning',
-            confirmButtonText: 'Sim',
+            confirmButtonText: 'Sim',           
             cancelButtonText: 'Não',
             showCancelButton: true,
             reverseButtons: false,
@@ -326,7 +328,7 @@
                 $.ajax({
                     type: "POST",
                     url: "ContasPagar.aspx/ExcluirConta",
-                    data: "{'id':'" + id + "'}",
+                    data: "{'id':'" + id + "','acao':'Todas'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "JSON",
                     success: function (data) {
@@ -356,11 +358,59 @@
 
             } else {
 
+                swalWithBootstrapButtons.fire({
+                    title: 'Deseja excluir única?',
+                    text: '',
+                    icon: 'warning',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não',
+                    showCancelButton: true,
+                    reverseButtons: false,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.value) {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "ContasPagar.aspx/ExcluirConta",
+                            data: "{'id':'" + id + "','acao':'Unica'}",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            success: function (data) {
+                                var source = data.d;
+
+                                TabelaLancarDados();
+
+                            },
+                            error: function (request, status, error) {
+                                alert(request.responseText);
+                                console.log(request.responseText);
+                                //swalWithBootstrapButtons.fire({
+                                //    title: '',
+                                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                                //    icon: 'error',
+                                //    confirmButtonText: 'OK',
+                                //    allowOutsideClick: false
+                                //}).then((result) => {
+                                /*  });*/
+                            }
+                        });
+                        //swalWithBootstrapButtons.fire(
+                        //    'Contrato gerado com sucesso',
+                        //    'Numero do contrato: ' + $('#hdnNumero_Contrato').val(),
+                        //    'success'
+                        //)
+
+                    } else {
+
+                    }
+
+                });
+
+
+
             }
-
-
-
-        })
+        });
 
 
 
@@ -803,6 +853,49 @@
                       });
                 }
                 
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+
+    }
+
+    function estornar(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "ContasPagar.aspx/EstornaConta",
+            data: "{'id':'" + id + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                if (source == 'OK') {
+                    $('#btnPagas').val('Pagas');
+                    TabelaLancarDadosPagas('');
+                } else {
+                    swalWithBootstrapButtons.fire({
+                        title: '',
+                        text: 'Ops algo deu errado Tente novamente! ou cotate o suporte',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                    });
+                }
+
 
             },
             error: function (request, status, error) {

@@ -83,6 +83,7 @@ namespace ContrutoraApp
             table += "              <th  nowrap scope='col' style='width:100px;text-align:left'>Valor</th>";
             table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Data Pagto.</th>";
             table += "              <th  nowrap scope='col' style='text-align:center;width:80px'> Detalhar  </th>";
+            table += "              <th  nowrap scope='col' style='text-align:center;width:80px'> Estornar  </th>";
             table += "          </tr> ";
 
             cmd.CommandText = cmd.CommandText;
@@ -106,6 +107,7 @@ namespace ContrutoraApp
                     table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                     table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + dr["vencimento"] + " </th>";
                     table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-info' value='Detalhar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='detalhar(" + dr["num_conta"].ToString() + "); return false;' />  </th>";
+                    table += "          <th  nowrap scope='col' align='center' style='width:80px; text-align:center; border-bottom: 1px solid'> <input id='btnDetalhar' type='button' class='btn btn-danger' value='Estornar' style='width:80px; height:23px; cursor:pointer; text-align:center; padding-top:initial ' onclick='estornar(" + dr["id"].ToString() + "); return false;' />  </th>";
                     table += "          </tr> ";
 
                 }
@@ -121,7 +123,7 @@ namespace ContrutoraApp
 
 
             table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
-            table += "              <th colspan='11' style='height:10px; color:#5D7B9D'> </th>";
+            table += "              <th colspan='10' style='height:10px; color:#5D7B9D'> </th>";
             table += "          </tr> ";
 
             dr.Close();
@@ -708,7 +710,7 @@ namespace ContrutoraApp
         }
 
         [WebMethod]
-        public static String ExcluirConta(String id)
+        public static String ExcluirConta(String id, String acao)
         {
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
@@ -725,13 +727,27 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_contasPagar where num_conta = " + id;
-            cmd.ExecuteNonQuery();
+            if(acao == "Todas")
+            {
+                //regra se tiver conta paga tem que estornar
 
-            //comando de instrução do banco de dados
-            cmd.CommandText = @"delete tb_detalhes_contasPagar where num_conta = " + id;
-            cmd.ExecuteNonQuery();
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"delete tb_contasPagar where num_conta = " + id;
+                cmd.ExecuteNonQuery();
+
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"delete tb_detalhes_contasPagar where num_conta = " + id;
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                // regras se for 1 conta só excluir dos detalhes
+
+                //comando de instrução do banco de dados
+                cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+                cmd.ExecuteNonQuery();
+            }
+       
 
             cn.Close();
             return "OK";
@@ -837,6 +853,74 @@ namespace ContrutoraApp
                 //comando de instrução do banco de dados
                 cmd.Parameters.Clear();
                 cmd.CommandText = @"delete tb_contasPagar where id = " + id;
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+
+                retorno = "OK";
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                retorno = "ERRO";
+                cn.Close();
+            }
+
+
+
+            return retorno;
+
+        }
+
+        [WebMethod]
+        public static String EstornaConta(String id)
+        {
+            String retorno = "";
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = cmd.CommandText;
+
+            //abre a conexao
+            cn.Open();
+
+
+            try
+            {
+                cmd.CommandText = @"insert into tb_contasPagar(	num_conta,valor_parcela, parcela,num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, 
+                                                                dt_pagamento, nm_cadastrou,dt_cadastrou )
+                                                        SELECT
+                                                            num_conta,
+                                                            valor_parcela,
+                                                        	parcela,
+                                                        	num_parcela,
+                                                        	tipo_pgto,                                                        	
+                                                        	valor,
+                                                        	id_despesa,
+                                                            fornec,
+                                                            id_conta_bancaria,
+                                                        	id_obra,                                                        	
+                                                        	dt_pagamento,                                                        	
+                                                        	nm_cadastrou,
+                                                        	dt_cadastrou                                                        	    
+                                                         FROM tb_contasPagas WHERE id =  @id";
+
+        
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+
+                //comando de instrução do banco de dados
+                cmd.Parameters.Clear();
+                cmd.CommandText = @"delete tb_contasPagas where id = " + id;
                 cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.ExecuteNonQuery();
