@@ -168,21 +168,24 @@
 
     }
 
-    function GravarConta() {
+    function GerarTabelaContasTemporaria() {
 
         var fornec = $('#hdnFornecedor').val();
+        var descFornec = $('#txtFornecedor').val();
         if (fornec == '') {
             fornec = 0;
         }
-
 
         var contaBancaria = $('#ddlConta').val();
         var desc_conta = $('#txtConta').val();
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
+
+        var descDespesa = $('#ddlDespesa option:selected').text();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
+        var desc_obra = $('#txtobra').val();
         var tipo_pg = $('#ddlTipoPgto').val();
         var id_conta = $('#hdnIDContasPagar').val();
         var usuario = $('#hdnUsuario').val();
@@ -201,8 +204,89 @@
             valor_string: valor_string,
             data: data,
             id_despesa: cod_despesa,
+            desc_despesa: descDespesa,
             id_obra: obra,
+            desc_obra: desc_obra,
             id_fornecedor: fornec,
+            desc_fornecedor: descFornec,
+            tipo_pgto: tipo_pg,
+            conta_bancaria: contaBancaria,
+            id: id_conta,
+            nm_usuario: usuario
+        };
+
+
+        var obj = { 'contas': Contas };
+        console.log(obj);
+        $.ajax({
+            type: "POST",
+            url: 'ContasPagar.aspx/TabelaContaTemporaria',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#divGravarTemporaria').html(source);
+                $('#div').addClass('hidden');
+                $('#btnGerar').addClass('hidden');
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+    }
+
+    function GravarConta() {
+
+        var fornec = $('#hdnFornecedor').val();
+        var descFornec = $('#txtFornecedor').val();
+        if (fornec == '') {
+            fornec = 0;
+        }
+
+        var contaBancaria = $('#ddlConta').val();
+        var desc_conta = $('#txtConta').val();
+        var num_parcela_string = $('#txtParcela').val();
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        var cod_despesa = $('#ddlDespesa').val();
+        var descDespesa = $('#ddlDespesa').text();
+        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
+        var obra = $('#hdnObra').val();
+        var descObra = $('#txtobra').val();
+        var tipo_pg = $('#ddlTipoPgto').val();
+        var id_conta = $('#hdnIDContasPagar').val();
+        var usuario = $('#hdnUsuario').val();
+
+        if (obra == '') {
+            obra = 0;
+        }
+
+        if (id_conta == '') {
+            id_conta = 0;
+        }
+
+        var Contas = {
+            desc_conta: desc_conta,
+            num_parcela_string: num_parcela_string,
+            valor_string: valor_string,
+            data: data,
+            id_despesa: cod_despesa,
+            descDespesa: descDespesa,
+            id_obra: obra,
+            desc_obra: descObra,
+            id_fornecedor: fornec,
+            desc_fornecedor: descFornec,
             tipo_pgto: tipo_pg,
             conta_bancaria: contaBancaria,
             id: id_conta,
@@ -992,6 +1076,7 @@
                             <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
                             &nbsp;&nbsp;
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
+                            <input type="text" style="width: 50px; height: 30px" value="" />
                         </td>
                     </tr>
                     <tr>
@@ -1084,31 +1169,39 @@
                     </tr>
 
                     <tr>
-                        <td colspan="5">
-                            <div style="width: 100%">
-                                <br />
-                                <center>
-                                    <table style="width: 90%">
-                                        <tr>
-                                            <td>
-                                                <div id="divGravar"></div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </center>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
 
                         <td colspan="4" style="text-align: center">
                             <br />
+                            <asp:Button runat="server" ID="btnGerar" CssClass="btn btn-success" Text="Gerar" OnClientClick="GerarTabelaContasTemporaria();return false;" />
                             <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                         <td style="text-align: center">
                             <br />
                             <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="5" style="width: 100px">
+                 
+                                <br />
+                               
+                    
+                        </td>
+                    </tr>
+
+
+                </table>
+            </center>
+        </div>
+
+        <div style="width: 100%">
+            <br />
+            <center>
+                <table style="width: 80%">
+                    <tr>
+                        <td>
+                            <div id="divGravarTemporaria"></div>
                         </td>
                     </tr>
                 </table>
