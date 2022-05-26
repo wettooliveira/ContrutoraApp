@@ -120,19 +120,19 @@ namespace ContrutoraApp
 
 
                 table += "          <tr               style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th style='border-bottom: 1px solid; text-align:left'> " + numero_conta + " </th>";
+                table += "          <th style='border-bottom: 1px solid; text-align:left' data-content=" + numero_conta + "> " + numero_conta + " </th>";
                 table += "          <th               style='border-bottom: 1px solid'> " + contas.desc_despesa + " </th>";
                 table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_fornecedor + "</th>";
                 table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_obra + "</th>";
                 table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + contas.tipo_pgto + "</th>";
                 table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + i.ToString() + "/" + contas.num_parcela_string + " </th>"; //Parcela
-                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
+                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
 
                 if (contadorData == 0)
                 {
                    
                     //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> "+ Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
-                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
+                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  id='txtDataTb' style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
 
                 }
                 else

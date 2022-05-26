@@ -250,6 +250,26 @@
 
     function GravarConta() {
 
+        var table = document.getElementById('tbDados1');
+
+        var rowLength = table.rows.length;
+
+        for (var i = 1; i < rowLength; i += 1) {
+            var row = table.rows[i];
+
+            //your code goes here, looping over every row.
+            //cells are accessed as easy
+
+            var cellLength = row.cells.length;
+            for (var y = 0; y < cellLength; y += 1) {
+                           
+                var cell = row.cells[y].innerHTML;
+                var cellInpu = $('#txtVlParcelaTb').val(); 
+                var celldata = $('#txtDataTb').val();             
+ 
+            }
+        }
+
         var fornec = $('#hdnFornecedor').val();
         var descFornec = $('#txtFornecedor').val();
         if (fornec == '') {
@@ -258,11 +278,11 @@
 
         var contaBancaria = $('#ddlConta').val();
         var desc_conta = $('#txtConta').val();
-        var num_parcela_string = $('#txtParcela').val();
+        var num_parcela_string = $('#txtVlParcelaTb').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
         var descDespesa = $('#ddlDespesa').text();
-        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
+        var data = $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
         var descObra = $('#txtobra').val();
         var tipo_pg = $('#ddlTipoPgto').val();
@@ -305,6 +325,9 @@
             tipo = 'Gravar';
             url = 'ContasPagar.aspx/Gravar';
         }
+
+        console.log(obj);
+        return false;
 
         $.ajax({
             type: "POST",
@@ -1062,29 +1085,7 @@
 
 
 
-        var table = document.getElementById('tbDados1');
-
-        var rowLength = table.rows.length;
-
-        for (var i = 1; i < rowLength; i += 1) {
-            var row = table.rows[i];
-         
-          
-            //your code goes here, looping over every row.
-            //cells are accessed as easy
-
-            var cellLength = row.cells.length;
-            for (var y = 0; y < cellLength; y += 1) {
-                var cell;/*= row.cells[y];*/
-                //cell = $(this).parent().parent().find('td').text();
-                cell = table.rows[i].cells[y].value();  // row.cells[y].find('td').text();
-               
-                 
-                alert(cell);
-
-                //do something with every cell here
-            }
-        }
+       
 
     }
     
