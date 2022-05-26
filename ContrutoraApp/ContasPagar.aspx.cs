@@ -99,12 +99,12 @@ namespace ContrutoraApp
             String table = "";
             String cor_r = "#90EE90";
 
-            table += "      <table id='tbDados' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+            table += "      <table id='tbDados1' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
             table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
             table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
-            table += "              <th  nowrap scope='col' align='left'   style=''>Descrição</th>";
-            table += "              <th  nowrap scope='col' align='left'   style=''>Fornecedor</th>";
-            table += "              <th  nowrap scope='col' align='left'   style=''>Obra</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Fornecedor</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Obra</th>";
             table += "              <th  nowrap scope='col' style='width:100px'>Form Pgto.</th>";
             table += "              <th  nowrap scope='col' style='width:80px; text-align:left'>Parcela</th>";
             table += "              <th  nowrap scope='col' style='width:100px;text-align:left'>Valor</th>";

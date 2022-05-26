@@ -230,6 +230,7 @@
                 $('#divGravarTemporaria').html(source);
                 $('#div').addClass('hidden');
                 $('#btnGerar').addClass('hidden');
+                teste();
 
             },
             error: function (request, status, error) {
@@ -1036,6 +1037,58 @@
         TabelaLancarDados('consultar', id);
     }
 
+    function teste() {
+
+        //$('tbDados1 > table  > tr').each(function (index, tr) {
+        //    console.log(index);
+        //    console.log(tr);
+        //});
+
+        //$('#tbDados1 tr').each(function (index, tr) {
+        //    $(tr).find('td').each(function (index, td) {
+        //        alert(td);
+        //    });()
+        //});
+
+
+        //$('tbDados1 tr td').each(function (el) {
+        //    alert($(this).text());
+        //    if ($(this).text() == '') {
+               
+        //       /* alert($('tbDados1 td:nth-child(' + i + '), th:nth-child(' + i + ')').hide());*/
+        //    }
+        //    i++;
+        //})
+
+
+
+        var table = document.getElementById('tbDados1');
+
+        var rowLength = table.rows.length;
+
+        for (var i = 1; i < rowLength; i += 1) {
+            var row = table.rows[i];
+         
+          
+            //your code goes here, looping over every row.
+            //cells are accessed as easy
+
+            var cellLength = row.cells.length;
+            for (var y = 0; y < cellLength; y += 1) {
+                var cell;/*= row.cells[y];*/
+                //cell = $(this).parent().parent().find('td').text();
+                cell = table.rows[i].cells[y].value();  // row.cells[y].find('td').text();
+               
+                 
+                alert(cell);
+
+                //do something with every cell here
+            }
+        }
+
+    }
+    
+
 
 </script>
 
@@ -1076,7 +1129,7 @@
                             <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
                             &nbsp;&nbsp;
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
-                            <input type="text" style="width: 50px; height: 30px" value="" />
+                           
                         </td>
                     </tr>
                     <tr>
