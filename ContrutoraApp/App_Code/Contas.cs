@@ -17,6 +17,8 @@ namespace ContrutoraApp
         public String tipo_pgto { get; set; }
         public Double valor { get; set; }
         public String valor_string { get; set; }
+
+        public String valor_parcela_string { get; set; }
         public String nm_cadastrou { get; set; }
         public String dt_cadastrou { get; set; }
         public String desc_despesa { get; set; }

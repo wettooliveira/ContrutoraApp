@@ -230,7 +230,7 @@
                 $('#divGravarTemporaria').html(source);
                 $('#div').addClass('hidden');
                 $('#btnGerar').addClass('hidden');
-                teste();
+           
 
             },
             error: function (request, status, error) {
@@ -254,56 +254,70 @@
 
         var rowLength = table.rows.length;
 
+        var cellInpu, celldata;
         for (var i = 1; i < rowLength; i += 1) {
             var row = table.rows[i];
+            alert(table.rows[i]);
 
             //your code goes here, looping over every row.
             //cells are accessed as easy
 
             var cellLength = row.cells.length;
             for (var y = 0; y < cellLength; y += 1) {
-                           
-                var cell = row.cells[y].innerHTML;
-                var cellInpu = $('#txtVlParcelaTb').val(); 
-                var celldata = $('#txtDataTb').val();             
- 
+                if (row.length) {
+             
+                if (cellInpu == '') {
+                    cellInpu = $('#txtVlParcelaTb').val().trim().replace('.', '').replace(',', '.');;
+                }
+                else {
+                    cellInpu += ';' + $('#txtVlParcelaTb').val().trim().replace('.', '').replace(',', '.');;
+                }
+                if (celldata == '') {
+                    celldata = $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
+                }
+                else {
+                    celldata += ';' + $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
+                    }
+                }
+
+                //var formaPgto = row.cells[5].innerHTML;
+                //var chrParcela = row.cells[6].innerHTML;
+           
             }
         }
 
-        var fornec = $('#hdnFornecedor').val();
-        var descFornec = $('#txtFornecedor').val();
-        if (fornec == '') {
-            fornec = 0;
-        }
-
-        var contaBancaria = $('#ddlConta').val();
-        var desc_conta = $('#txtConta').val();
-        var num_parcela_string = $('#txtVlParcelaTb').val();
-        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        var cod_despesa = $('#ddlDespesa').val();
-        var descDespesa = $('#ddlDespesa').text();
-        var data = $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
-        var obra = $('#hdnObra').val();
-        var descObra = $('#txtobra').val();
-        var tipo_pg = $('#ddlTipoPgto').val();
         var id_conta = $('#hdnIDContasPagar').val();
-        var usuario = $('#hdnUsuario').val();
-
-        if (obra == '') {
-            obra = 0;
-        }
-
         if (id_conta == '') {
             id_conta = 0;
         }
+        var contaBancaria = $('#ddlConta').val();
+        var descDespesa = $('#ddlDespesa').text();
+        var fornec = $('#hdnFornecedor').val();
+        if (fornec == '') {
+            fornec = 0;
+        }
+        var descFornec = $('#txtFornecedor').val();
+        var obra = $('#hdnObra').val();
+        if (obra == '') {
+            obra = 0;
+        }
+        var tipo_pg = $('#ddlTipoPgto').val();
+        var num_parcela_string = $('#txtParcela').val();
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        var cod_despesa = $('#ddlDespesa').val(); 
+        var descObra = $('#txtobra').val();
+        var usuario = $('#hdnUsuario').val();
+        
+                 
 
         var Contas = {
-            desc_conta: desc_conta,
+           
             num_parcela_string: num_parcela_string,
             valor_string: valor_string,
-            data: data,
+            valor_parcela_string: cellInpu,    
+            data: celldata,
             id_despesa: cod_despesa,
-            descDespesa: descDespesa,
+            desc_despesa: descDespesa,
             id_obra: obra,
             desc_obra: descObra,
             id_fornecedor: fornec,
