@@ -230,7 +230,7 @@
                 $('#divGravarTemporaria').html(source);
                 $('#div').addClass('hidden');
                 $('#btnGerar').addClass('hidden');
-           
+
 
             },
             error: function (request, status, error) {
@@ -250,85 +250,99 @@
 
     function GravarConta() {
 
+        var lista = [];
+
         var table = document.getElementById('tbDados1');
 
         var rowLength = table.rows.length;
+        rowLength = (parseInt(rowLength) - 1);
 
-        var cellInpu, celldata;
-        for (var i = 1; i < rowLength; i += 1) {
+
+        for (var i = 0; i < rowLength; i += 1) {
             var row = table.rows[i];
-            alert(table.rows[i]);
 
             //your code goes here, looping over every row.
             //cells are accessed as easy
 
+            var numeroConta;
+
             var cellLength = row.cells.length;
+
             for (var y = 0; y < cellLength; y += 1) {
-                if (row.length) {
-             
-                if (cellInpu == '') {
-                    cellInpu = $('#txtVlParcelaTb').val().trim().replace('.', '').replace(',', '.');;
-                }
-                else {
-                    cellInpu += ';' + $('#txtVlParcelaTb').val().trim().replace('.', '').replace(',', '.');;
-                }
-                if (celldata == '') {
-                    celldata = $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
-                }
-                else {
-                    celldata += ';' + $('#txtDataTb').val().trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
-                    }
-                }
 
-                //var formaPgto = row.cells[5].innerHTML;
-                //var chrParcela = row.cells[6].innerHTML;
-           
+                numeroConta = row.cells[0].innerHTML;
+
             }
-        }
+            alert(i);
+            //var celula;
+            //celula = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.')
 
-        var id_conta = $('#hdnIDContasPagar').val();
-        if (id_conta == '') {
-            id_conta = 0;
-        }
-        var contaBancaria = $('#ddlConta').val();
-        var descDespesa = $('#ddlDespesa').text();
-        var fornec = $('#hdnFornecedor').val();
-        if (fornec == '') {
-            fornec = 0;
-        }
-        var descFornec = $('#txtFornecedor').val();
-        var obra = $('#hdnObra').val();
-        if (obra == '') {
-            obra = 0;
-        }
-        var tipo_pg = $('#ddlTipoPgto').val();
-        var num_parcela_string = $('#txtParcela').val();
-        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-        var cod_despesa = $('#ddlDespesa').val(); 
-        var descObra = $('#txtobra').val();
-        var usuario = $('#hdnUsuario').val();
-        
-                 
+            //alert(celula);
+            var cellInpu;
+            var celldata;
+            if (i > 0) {
 
-        var Contas = {
-           
-            num_parcela_string: num_parcela_string,
-            valor_string: valor_string,
-            valor_parcela_string: cellInpu,    
-            data: celldata,
-            id_despesa: cod_despesa,
-            desc_despesa: descDespesa,
-            id_obra: obra,
-            desc_obra: descObra,
-            id_fornecedor: fornec,
-            desc_fornecedor: descFornec,
-            tipo_pgto: tipo_pg,
-            conta_bancaria: contaBancaria,
-            id: id_conta,
-            nm_usuario: usuario
-        };
+                cellInpu = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
+
+                celldata = $('#txtDataTb_'+ i).val() //.trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
+            }
 
 
+            var id_conta = $('#hdnIDContasPagar').val();
+            if (id_conta == '') {
+                id_conta = 0;
+            }
+            var contaBancaria = $('#ddlConta').val();
+            var cod_despesa = $('#ddlDespesa').val();
+            var descDespesa = $('#ddlDespesa').value;
+            var fornec = $('#hdnFornecedor').val();
+            if (fornec == '') {
+                fornec = 0;
+            }
+            var descFornec = $('#txtFornecedor').val();
+            var obra = $('#hdnObra').val();
+            if (obra == '') {
+                obra = 0;
+            }
+            var tipo_pg = $('#ddlTipoPgto').val();
+            var num_parcela_string = $('#txtParcela').val();
+            var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+            var descObra = $('#txtobra').val();
+            var usuario = $('#hdnUsuario').val();
+
+
+            //var formaPgto = row.cells[5].innerHTML;
+            //var chrParcela = row.cells[6].innerHTML;
+            var Contas = {
+                num_conta: numeroConta,
+                num_parcela_string: num_parcela_string,
+                valor_string: valor_string,
+                valor_parcela_string: cellInpu,
+                data: celldata,
+                id_despesa: cod_despesa,
+                desc_despesa: descDespesa,
+                id_obra: obra,
+                desc_obra: descObra,
+                id_fornecedor: fornec,
+                desc_fornecedor: descFornec,
+                tipo_pgto: tipo_pg,
+                conta_bancaria: contaBancaria,
+                id: id_conta,
+                nm_usuario: usuario
+            };
+
+            lista.push(Contas);
+
+
+        }
+
+        var contalista = {
+            listaContas1: lista
+        }
+
+        console.log(lista);
+
+      
         var obj = { 'Contas': Contas };
 
         var url = '', tipo = '';
@@ -341,7 +355,7 @@
         }
 
         console.log(obj);
-        return false;
+       
 
         $.ajax({
             type: "POST",
@@ -1091,7 +1105,7 @@
         //$('tbDados1 tr td').each(function (el) {
         //    alert($(this).text());
         //    if ($(this).text() == '') {
-               
+
         //       /* alert($('tbDados1 td:nth-child(' + i + '), th:nth-child(' + i + ')').hide());*/
         //    }
         //    i++;
@@ -1099,10 +1113,10 @@
 
 
 
-       
+
 
     }
-    
+
 
 
 </script>
@@ -1144,7 +1158,7 @@
                             <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
                             &nbsp;&nbsp;
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
-                           
+
                         </td>
                     </tr>
                     <tr>
@@ -1251,10 +1265,10 @@
 
                     <tr>
                         <td colspan="5" style="width: 100px">
-                 
-                                <br />
-                               
-                    
+
+                            <br />
+
+
                         </td>
                     </tr>
 
