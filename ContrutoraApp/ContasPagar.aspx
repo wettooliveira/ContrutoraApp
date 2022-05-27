@@ -256,21 +256,23 @@
 
         var rowLength = table.rows.length;
         rowLength = (parseInt(rowLength) - 1);
-
-
+        
+        var valorParcelaMaior;
         for (var i = 0; i < rowLength; i += 1) {
             var row = table.rows[i];
 
             //your code goes here, looping over every row.
             //cells are accessed as easy
 
-            var numeroConta;
+            var numeroConta, num_parcela_string, tipo_pg ;
 
             var cellLength = row.cells.length;
 
             for (var y = 0; y < cellLength; y += 1) {
 
                 numeroConta = row.cells[0].innerHTML;
+                num_parcela_string = row.cells[5].innerHTML;
+                tipo_pg = row.cells[4].innerHTML;
 
             }
             alert(i);
@@ -283,6 +285,7 @@
             if (i > 0) {
 
                 cellInpu = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
+                valorParcelaMaior += $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
 
                 celldata = $('#txtDataTb_'+ i).val() //.trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
             }
@@ -304,8 +307,7 @@
             if (obra == '') {
                 obra = 0;
             }
-            var tipo_pg = $('#ddlTipoPgto').val();
-            var num_parcela_string = $('#txtParcela').val();
+                   
             var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
             var descObra = $('#txtobra').val();
             var usuario = $('#hdnUsuario').val();
@@ -331,19 +333,20 @@
                 nm_usuario: usuario
             };
 
-            lista.push(Contas);
+            if (i > 0) {
 
+                lista.push(Contas);
+
+            }
+           
 
         }
-
+        alert(valorParcelaMaior);
         var contalista = {
             listaContas1: lista
         }
-
-        console.log(lista);
-
       
-        var obj = { 'Contas': Contas };
+        var obj = { 'Contas': contalista };
 
         var url = '', tipo = '';
         if ($('#btnGravar').val() == 'Alterar') {
@@ -351,7 +354,7 @@
             url = 'ContasPagar.aspx/Alterar';
         } else {
             tipo = 'Gravar';
-            url = 'ContasPagar.aspx/Gravar';
+            url = 'ContasPagar.aspx/Gravar_old';
         }
 
         console.log(obj);

@@ -43,9 +43,9 @@ namespace ContrutoraApp
         [WebMethod]
         public static String TabelaContaTemporaria(Contas contas)
         {
-           
+
             int numero_conta = 0;
-        
+
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -56,7 +56,7 @@ namespace ContrutoraApp
             //construtor command para obter dados44
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
-         
+
             //abre a conexao
             cn.Open();
 
@@ -126,29 +126,29 @@ namespace ContrutoraApp
                 table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_obra + "</th>";
                 table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + contas.tipo_pgto + "</th>";
                 table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + i.ToString() + "/" + contas.num_parcela_string + " </th>"; //Parcela
-                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb_"+ i +"'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
+                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
 
                 if (contadorData == 0)
                 {
-                   
+
                     //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> "+ Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
                     table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  id='txtDataTb_" + i + "' style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
 
                 }
                 else
                 {
-                    
+
                     //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " </th>";
                     //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
                     table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text' id='txtDataTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " /></th>";
                 }
 
-            
+
                 table += "          </tr> ";
 
-                contadorData ++;
+                contadorData++;
             }
-                       
+
             cn.Close();
 
             table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
@@ -673,8 +673,8 @@ namespace ContrutoraApp
         [WebMethod]
         public static String Gravar_old(Contas Contas)
         {
-            string data = DateTime.Now.AddMonths(8).ToString("dd/MM/yyyy");
-            int numero_conta = 0;
+            // ---------------------------- Colocar trava de valor maior da parcela do que o valor total -----------------------------------------------
+           
             // Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -689,87 +689,43 @@ namespace ContrutoraApp
 
             // abre a conexao
             cn.Open();
+                        
 
-            cmd.CommandText = " Select top 1 num_conta + 1 as num_conta from tb_contasPagar order by 1 desc";
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+            foreach (Contas c in Contas.listaContas1)
             {
-                while (dr.Read())
-                {
-                    numero_conta = Convert.ToInt32(dr["num_conta"]);
-                }
-            }
-            else
-            {
-                numero_conta = 1;
-            }
-            dr.Close();
-
-            int parcelas = Convert.ToInt32(Contas.num_parcela_string);
-            Decimal valor_parcelas = 0;
-            //valor das parcelas
-
-            if (parcelas > 1)
-            {
-                String valor1 = Convert.ToDecimal(Contas.valor_string.Replace('.', ',')).ToString("N2");
-                valor_parcelas = Convert.ToDecimal(valor1) / parcelas;
-            }
-            else
-            {
-                String valor1 = Contas.valor_string.Replace('.', ',').ToString();
-                valor_parcelas = Convert.ToDecimal(valor1);
-            }
-
-            int contadorData = 0;
-            for (int i = 1; i <= parcelas; i++)
-            {
-
-                //comando de instrução do banco de dados
                 cmd.Parameters.Clear();
                 cmd.CommandText = @"INSERT INTO tb_contasPagar(num_conta,valor_parcela ,parcela,num_parcela, tipo_pgto ,valor, id_despesa, fornec, id_conta_bancaria, id_obra, dt_pagamento, nm_cadastrou,dt_cadastrou)
                                 values(@num_conta, @valor_parcela,@parcela,@num_parcela, @tipo_pgto, @valor, @id_despesa ,@fornec, @id_conta_bancaria, @id_obra, @dt_pagamento,@nm_cadastrou,getdate())";
 
-
-                cmd.Parameters.AddWithValue("@num_conta", numero_conta);
-                cmd.Parameters.AddWithValue("@valor_parcela", valor_parcelas);
-                cmd.Parameters.AddWithValue("@parcela", (i.ToString() + "/" + Contas.num_parcela_string).ToString());
-                cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(Contas.num_parcela_string));
-                cmd.Parameters.AddWithValue("@tipo_pgto", Contas.tipo_pgto);
-                cmd.Parameters.AddWithValue("@valor", Contas.valor_string);
-                if (Contas.id_despesa == 0)
+                cmd.Parameters.AddWithValue("@num_conta", Convert.ToInt32(c.num_conta));
+                cmd.Parameters.AddWithValue("@valor_parcela", c.valor_parcela_string);
+                cmd.Parameters.AddWithValue("@parcela", c.num_parcela_string.Trim());
+                cmd.Parameters.AddWithValue("@num_parcela", Convert.ToInt32(c.num_parcela_string.Split('/')[1]));
+                cmd.Parameters.AddWithValue("@tipo_pgto", c.tipo_pgto);
+                cmd.Parameters.AddWithValue("@valor", c.valor_string);
+                if (c.id_despesa == 0)
                 {
                     cmd.Parameters.AddWithValue("@id_despesa", DBNull.Value);
                 }
                 else
                 {
-                    cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(Contas.id_despesa));
+                    cmd.Parameters.AddWithValue("@id_despesa", Convert.ToInt32(c.id_despesa));
                 }
-
-                if (contadorData == 0)
-                {
-                    cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data));
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(Contas.data).AddMonths(contadorData));
-                }
-
-                cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(Contas.id_fornecedor));
-                cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(Contas.conta_bancaria));
-                if (Contas.id_obra == 0)
+                cmd.Parameters.AddWithValue("@fornec", Convert.ToInt32(c.id_fornecedor));
+                cmd.Parameters.AddWithValue("@dt_pagamento", Convert.ToDateTime(c.data));
+                cmd.Parameters.AddWithValue("@id_conta_bancaria", Convert.ToInt32(c.conta_bancaria));
+                if (c.id_obra == 0)
                 {
                     cmd.Parameters.AddWithValue("@id_obra", DBNull.Value);
                 }
                 else
                 {
-                    cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(Contas.id_obra));
+                    cmd.Parameters.AddWithValue("@id_obra", Convert.ToInt32(c.id_obra));
                 }
-
-                cmd.Parameters.AddWithValue("@nm_cadastrou", Contas.nm_usuario);
+                cmd.Parameters.AddWithValue("@nm_cadastrou", c.nm_usuario);
 
                 cmd.ExecuteNonQuery();
-                contadorData++;
+
             }
 
             cn.Close();
@@ -940,7 +896,7 @@ namespace ContrutoraApp
         public static String ExcluirConta(String id, String acao)
         {
 
-            String retorno = ""; 
+            String retorno = "";
             //// Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
@@ -956,7 +912,7 @@ namespace ContrutoraApp
             //abre a conexao
             cn.Open();
 
-            if(acao == "Todas")
+            if (acao == "Todas")
             {
                 //regra se tiver conta paga tem que estornar
 
@@ -989,7 +945,7 @@ namespace ContrutoraApp
                 {
                     retorno = "existe parcela";
                 }
-     
+
             }
             else
             {
@@ -1016,11 +972,11 @@ namespace ContrutoraApp
                 else
                 {
 
-                }         
+                }
 
                 retorno = "OK";
             }
-       
+
 
             cn.Close();
             return retorno;
@@ -1186,7 +1142,7 @@ namespace ContrutoraApp
                                                         	dt_cadastrou                                                        	    
                                                          FROM tb_contasPagas WHERE id =  @id";
 
-        
+
                 cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.ExecuteNonQuery();
