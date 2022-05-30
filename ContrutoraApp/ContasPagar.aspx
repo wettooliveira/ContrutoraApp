@@ -257,7 +257,7 @@
         var rowLength = table.rows.length;
         rowLength = (parseInt(rowLength) - 1);
         
-        var valorParcelaMaior;
+        var valorParcelaMaior = 0;
         for (var i = 0; i < rowLength; i += 1) {
             var row = table.rows[i];
 
@@ -275,19 +275,16 @@
                 tipo_pg = row.cells[4].innerHTML;
 
             }
-            alert(i);
-            //var celula;
-            //celula = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.')
-
-            //alert(celula);
+          
+            
             var cellInpu;
             var celldata;
             if (i > 0) {
 
                 cellInpu = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
-                valorParcelaMaior += $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
+                valorParcelaMaior = parseFloat(valorParcelaMaior) + parseFloat($('#txtVlParcelaTb_' + i).val());
 
-                celldata = $('#txtDataTb_'+ i).val() //.trim().split('/')[0] + '/' + $('#txtDataTb').val().trim().split('/')[1] + '/' + $('#txtDataTb').val().trim().split('/')[2];
+                celldata = $('#txtDataTb_'+ i).val() 
             }
 
 
@@ -337,15 +334,26 @@
 
                 lista.push(Contas);
 
-            }
-           
+            }           
 
         }
-        alert(valorParcelaMaior);
+
+        //if (parseFloat(valorParcelaMaior) > parseFloat(valor_string)) {
+
+        //    swalWithBootstrapButtons.fire({
+        //        title: '',
+        //        text: 'erro',
+        //        icon: info,
+        //        confirmButtonText: 'OK',
+        //        allowOutsideClick: false
+        //    });
+        //    return false;
+        //}
+     
         var contalista = {
             listaContas1: lista
         }
-      
+        return false;
         var obj = { 'Contas': contalista };
 
         var url = '', tipo = '';
@@ -358,7 +366,7 @@
         }
 
         console.log(obj);
-       
+        
 
         $.ajax({
             type: "POST",
@@ -610,7 +618,7 @@
     function GravarDetahesConta() {
 
         var Contas = {};
-
+        
         if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
 
             $('#avisoModal').removeClass('hidden');

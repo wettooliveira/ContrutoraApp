@@ -285,14 +285,14 @@ namespace ContrutoraApp
                                  left join obra obra on obra.id_obra = cp.id_obra
 								 left join tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'	";
-                cmd.CommandText += " WHERE cp.num_conta = " + num_conta;
-                cmd.CommandText += " union";
-                cmd.CommandText += " select p.id, p.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, obra.id_obra, p.tipo_pgto ,p.parcela as num_parcela, p.valor_parcela as valor, convert(varchar(30),p.dt_pagamento,103) as vencimento, 'Pagas' as status";
-                cmd.CommandText += " from tb_contasPagas p";
-                cmd.CommandText += " left join obra obra on obra.id_obra = p.id_obra";
-                cmd.CommandText += " left join tb_despesa desp on desp.id_despesa = p.id_despesa";
-                cmd.CommandText += " LEFT join tb_cliente fornec on fornec.id = p.fornec and fornec.tp_cli_fornc <> 'cliente'";
-                cmd.CommandText += " WHERE p.num_conta =" + num_conta;
+                cmd.CommandText += " WHERE  cp.dt_pagamento >= '" + getDataCadastradasInicial + "' and cp.dt_pagamento <= '" + getDataCadastradasFinal + "'";
+                //cmd.CommandText += " union";
+                //cmd.CommandText += " select p.id, p.num_conta, desp.desc_despesa, fornec.razaoSocial, obra.desc_obra, obra.id_obra, p.tipo_pgto ,p.parcela as num_parcela, p.valor_parcela as valor, convert(varchar(30),p.dt_pagamento,103) as vencimento, 'Pagas' as status";
+                //cmd.CommandText += " from tb_contasPagas p";
+                //cmd.CommandText += " left join obra obra on obra.id_obra = p.id_obra";
+                //cmd.CommandText += " left join tb_despesa desp on desp.id_despesa = p.id_despesa";
+                //cmd.CommandText += " LEFT join tb_cliente fornec on fornec.id = p.fornec and fornec.tp_cli_fornc <> 'cliente'";
+                //cmd.CommandText += " WHERE p.num_conta =" + num_conta;
 
                 String cor_r = "#FFFFFF";
 
@@ -335,7 +335,15 @@ namespace ContrutoraApp
                         table += "          <th style='border-bottom: 1px solid #eee; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
                         table += "          <th style='border-bottom: 1px solid #eee'> " + dr["desc_despesa"].ToString().ToUpper() + " </th>";
                         table += "          <th style='border-bottom: 1px solid #eee;'>" + dr["razaoSocial"].ToString() + "</th>";
-                        table += "          <th style='border-bottom: 1px solid #eee;'>" + dr["tipo_pgto"].ToString() + "</th>";
+                        if (dr["tipo_pgto"].ToString() == "0")
+                        {
+                            table += "          <th style='border-bottom: 1px solid #eee;'></th>";
+                        }
+                        else
+                        {
+                            table += "          <th style='border-bottom: 1px solid #eee;'>" + dr["tipo_pgto"].ToString() + "</th>";
+                        }
+                       
                         table += "          <th style='border-bottom: 1px solid #eee'> " + dr["num_parcela"].ToString() + " </th>";
                         table += "          <th style='border-bottom: 1px solid #eee'> " + Convert.ToDouble(dr["valor"]).ToString("N2") + " </th>";
                         table += "          <th style='border-bottom: 1px solid #eee'> " + dr["vencimento"] + " </th>";
@@ -371,7 +379,7 @@ namespace ContrutoraApp
                                  left join obra obra on obra.id_obra = cp.id_obra
 								 left join tb_despesa desp on desp.id_despesa = cp.id_despesa
                                  LEFT join tb_cliente fornec on fornec.id = cp.fornec and fornec.tp_cli_fornc <> 'cliente'";
-                cmd.CommandText += " WHERE cp.status is null  and cp.dt_cadastrou >= '" + getDataCadastradasInicial + "' and cp.dt_cadastrou <= '" + getDataCadastradasFinal + "' ";
+                cmd.CommandText += " WHERE cp.dt_pagamento <= '" + getDataCadastradasFinal + "' ";
                 cmd.CommandText += " ORDER BY 1 desc   ";
 
                 String cor_r = "#FFFFFF";
@@ -402,14 +410,14 @@ namespace ContrutoraApp
                     {
                         String dataVencimento = DateTime.Now.ToString("dd/MM/yyyy");
 
-                        //if (dataVencimento != dr["vencimento"].ToString())
-                        //{
-                        //    if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
-                        //}
-                        //else
-                        //{
-                        if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-                        //}
+                        if (dataVencimento != dr["vencimento"].ToString())
+                        {
+                            if (cor_r.Equals("#FFFFFF")) { cor_r = "#FF6347"; } else { cor_r = "#FF6347"; }
+                        }
+                        else
+                        {
+                            if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+                        }
 
                         table += "          <tr style='color:Black;background-color:" + cor_r + "'> ";
                         table += "          <th style='border-bottom: 1px solid #eee; text-align:center'> " + dr["num_conta"].ToString() + " </th>";
@@ -675,6 +683,8 @@ namespace ContrutoraApp
         {
             // ---------------------------- Colocar trava de valor maior da parcela do que o valor total -----------------------------------------------
            
+
+
             // Passa o caminho do banco de dados para um string      
             string connectionString = Conexao.StrConexao;
 
