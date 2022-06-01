@@ -38,6 +38,125 @@ namespace ContrutoraApp
             return menu.Menu();
 
         }
+        [WebMethod]
+        public static String TabelaContaTemporaria(Contas contas)
+        {
+
+            int numero_conta = 0;
+
+            //// Passa o caminho do banco de dados para um string      
+            string connectionString = Conexao.StrConexao;
+
+            //chama o metodo de conexao com o banco
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = connectionString;
+
+            //construtor command para obter dados44
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //abre a conexao
+            cn.Open();
+
+
+            //verifica numero da ultima conta gravada
+            cmd.CommandText = " Select top 1 num_conta + 1 as num_conta from tb_contasReceber order by 1 desc";
+
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    numero_conta = Convert.ToInt32(dr["num_conta"]);
+                }
+            }
+            else
+            {
+                numero_conta = 1;
+            }
+            dr.Close();
+            //fim verifica numero da ultima conta gravada
+
+
+            int parcelas = Convert.ToInt32(contas.num_parcela_string);
+
+            //valor das parcelas
+            Decimal valor_parcelas = 0;
+            if (parcelas > 1)
+            {
+                String valor1 = Convert.ToDecimal(contas.valor_string.Replace('.', ',')).ToString("N2");
+                valor_parcelas = Convert.ToDecimal(valor1) / parcelas;
+            }
+            else
+            {
+                String valor1 = contas.valor_string.Replace('.', ',').ToString();
+                valor_parcelas = Convert.ToDecimal(valor1);
+            }
+
+
+            String table = "";
+            String cor_r = "#90EE90";
+
+            table += "      <table id='tbDados1' width=\"100%\" style='color:#333333;border-collapse:collapse;border-radius:4px'> ";
+            table += "          <tr style='color:White;background-color:#5D7B9D;font-weight:'> ";
+            table += "              <th  nowrap scope='col' align='left' style='padding-right: 20px;'>Conta</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Descrição</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Fornecedor</th>";
+            table += "              <th  nowrap scope='col' align='left'  >Obra</th>";
+            table += "              <th  nowrap scope='col' style='width:100px'>Form Pgto.</th>";
+            table += "              <th  nowrap scope='col' style='width:80px; text-align:left'>Parcela</th>";
+            table += "              <th  nowrap scope='col' style='width:100px;text-align:left'>Valor</th>";
+            table += "              <th  nowrap scope='col' style='width:80px; text-align:center'>Data Pagto.</th>";
+            table += "          </tr> ";
+
+            int contadorData = 0;
+            for (int i = 1; i <= parcelas; i++)
+            {
+
+                //if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+                if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
+
+
+                table += "          <tr               style='color:Black;background-color:" + cor_r + "'> ";
+                table += "          <th style='border-bottom: 1px solid; text-align:left' data-content=" + numero_conta + "> " + numero_conta + " </th>";
+                table += "          <th               style='border-bottom: 1px solid'> " + contas.desc_despesa + " </th>";
+                table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_fornecedor + "</th>";
+                table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_obra + "</th>";
+                table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + contas.tipo_pgto + "</th>";
+                table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + i.ToString() + "/" + contas.num_parcela_string + " </th>"; //Parcela
+                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
+
+                if (contadorData == 0)
+                {
+
+                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> "+ Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
+                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  id='txtDataTb_" + i + "' style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
+
+                }
+                else
+                {
+
+                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " </th>";
+                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
+                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text' id='txtDataTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " /></th>";
+                }
+
+
+                table += "          </tr> ";
+
+                contadorData++;
+            }
+
+            cn.Close();
+
+            table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
+            table += "              <th colspan='8' style='height:10px; color:#5D7B9D'> </th>";
+            table += "          </tr> ";
+            table += "      </table> ";
+            return table;
+
+        }
+
 
         [WebMethod]
         public static String TabelaContasReceber(String status)

@@ -230,7 +230,8 @@
                 $('#divGravarTemporaria').html(source);
                 $('#div').addClass('hidden');
                 $('#btnGerar').addClass('hidden');
-
+                $('#btnPagas').addClass('hidden');
+                $('#btnGravar').removeClass('hidden');
 
             },
             error: function (request, status, error) {
@@ -256,7 +257,7 @@
 
         var rowLength = table.rows.length;
         rowLength = (parseInt(rowLength) - 1);
-        
+
         var valorParcelaMaior = 0;
         for (var i = 0; i < rowLength; i += 1) {
             var row = table.rows[i];
@@ -264,7 +265,7 @@
             //your code goes here, looping over every row.
             //cells are accessed as easy
 
-            var numeroConta, num_parcela_string, tipo_pg ;
+            var numeroConta, num_parcela_string, tipo_pg;
 
             var cellLength = row.cells.length;
 
@@ -275,8 +276,8 @@
                 tipo_pg = row.cells[4].innerHTML;
 
             }
-          
-            
+
+
             var cellInpu;
             var celldata;
             if (i > 0) {
@@ -284,7 +285,7 @@
                 cellInpu = $('#txtVlParcelaTb_' + i).val().trim().replace('.', '').replace(',', '.');
                 valorParcelaMaior = parseFloat(valorParcelaMaior) + parseFloat($('#txtVlParcelaTb_' + i).val());
 
-                celldata = $('#txtDataTb_'+ i).val() 
+                celldata = $('#txtDataTb_' + i).val()
             }
 
 
@@ -304,7 +305,7 @@
             if (obra == '') {
                 obra = 0;
             }
-                   
+
             var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
             var descObra = $('#txtobra').val();
             var usuario = $('#hdnUsuario').val();
@@ -334,7 +335,7 @@
 
                 lista.push(Contas);
 
-            }           
+            }
 
         }
 
@@ -349,7 +350,7 @@
         //    });
         //    return false;
         //}
-     
+
         var contalista = {
             listaContas1: lista
         }
@@ -366,7 +367,7 @@
         }
 
         console.log(obj);
-        
+
 
         $.ajax({
             type: "POST",
@@ -618,7 +619,7 @@
     function GravarDetahesConta() {
 
         var Contas = {};
-        
+
         if ($('#txtDescDetalhes').val() == '' || $('#txtQtdeDetalhes').val() == '' || $('#txtvalorDetalhes').val() == '') {
 
             $('#avisoModal').removeClass('hidden');
@@ -1266,32 +1267,21 @@
                         <td colspan="4" style="text-align: center">
                             <br />
                             <asp:Button runat="server" ID="btnGerar" CssClass="btn btn-success" Text="Gerar" OnClientClick="GerarTabelaContasTemporaria();return false;" />
-                            <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
-                        </td>
-                        <td style="text-align: center">
-                            <br />
-                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                            <asp:Button runat="server" ID="btnGravar" CssClass="btn btn-success hidden" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                     </tr>
-
-                    <tr>
-                        <td colspan="5" style="width: 100px">
-
-                            <br />
-
-
-                        </td>
-                    </tr>
-
-
                 </table>
             </center>
         </div>
-
+        <br />
         <div style="width: 100%">
-            <br />
             <center>
-                <table style="width: 80%">
+                <table style="width: 85%">
+                    <tr>
+                        <td colspan="5" style="width: 100px; text-align: right">
+                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Pagas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <div id="divGravarTemporaria"></div>
@@ -1301,9 +1291,7 @@
             </center>
         </div>
         <hr />
-
         <div style="width: 100%">
-            <br />
             <center>
                 <table style="width: 90%">
                     <tr>

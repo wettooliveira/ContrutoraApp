@@ -79,6 +79,79 @@
         return !1
     }
 
+    function GerarTabelaContasTemporaria() {
+
+        var cliente = $('#hdnCliente').val();
+        var descCliente = $('#txtFornecedor').val();
+        if (cliente == '') {
+            cliente = 0;
+        }
+        var contaBancaria = $('#ddlConta').val();     
+        var num_parcela_string = $('#txtParcela').val();
+        var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
+        var despesa = $('#txtDescRecebimento').val();      
+        var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];   
+        var usuario = $('#hdnUsuario').val();
+        var desc_obra = $('#txtobra').val();
+        var tipo_pg = $('#ddlTipoPgto').val();
+        var obra = $('#hdnObra').val();
+        if (obra == '') {
+            obra = 0;
+        }
+        var id_conta = $('#hdnIDContasPagar').val();
+        if (id_conta == '') {
+            id_conta = 0;
+        }
+               
+
+        var Contas = {
+            desc_despesa: despesa,
+            num_parcela_string: num_parcela_string,
+            valor_string: valor_string,
+            data: data,      
+            id_obra: obra,
+            desc_obra: desc_obra,
+            id_fornecedor: cliente,
+            desc_fornecedor: descCliente,
+            tipo_pgto: tipo_pg,
+            conta_bancaria: contaBancaria,
+            id: id_conta,
+            nm_usuario: usuario
+        };
+
+
+        var obj = { 'contas': Contas };
+        console.log(obj);
+        $.ajax({
+            type: "POST",
+            url: 'ContasReceber.aspx/TabelaContaTemporaria',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            success: function (data) {
+                var source = data.d;
+
+                $('#divGravarTemporaria').html(source);
+                $('#div').addClass('hidden');
+                $('#btnGerar').addClass('hidden');
+
+
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+                //swalWithBootstrapButtons.fire({
+                //    title: '',
+                //    text: 'Erro ao abrir tabela! Tente novamente!',
+                //    icon: 'error',
+                //    confirmButtonText: 'OK',
+                //    allowOutsideClick: false
+                //}).then((result) => {
+                /*  });*/
+            }
+        });
+    }
+
     function TabelaLancarDados() {
 
         $('#btnPagas').val("Recebidas");
@@ -95,6 +168,7 @@
 
                 $('#div').html(source);
                 $('#btnPagas').prop("disabled", false);
+                $('#btnGravar').("disabled", false);
 
             },
             error: function (request, status, error) {
@@ -188,7 +262,7 @@
         var usuario = $('#hdnUsuario').val();
         var contaBancaria = $('#ddlConta').val();
 
-   
+
         var Contas = {
             desc_conta: desc_conta,
             num_parcela_string: num_parcela_string,
@@ -202,7 +276,7 @@
             nm_usuario: usuario
 
 
-        };                      
+        };
 
         var obj = { 'Contas': Contas };
 
@@ -216,7 +290,7 @@
         }
 
         console.log(obj);
-    
+
         $.ajax({
             type: "POST",
             url: "ContasReceber.aspx/Gravar",
@@ -225,7 +299,7 @@
             dataType: "JSON",
             success: function (data) {
                 var source = data.d;
-                             
+
                 if (source == "OK" & tipo == 'Gravar') {
                     alertCss('Gravar');
                     TabelaLancarDados();
@@ -273,12 +347,12 @@
                 $('#ddlTipoPgto').val(source.tipo_pgto);
                 $('#txtFornecedor').val(source.desc_fornecedor);
                 $('#txtObras').val(source.desc_obra);
-                $('#txtDescRecebimento').val(source.desc_conta);                
+                $('#txtDescRecebimento').val(source.desc_conta);
                 $('#txtParcela').val(source.num_parcela);
-                $('#txtValor').val(source.valor_string);                
+                $('#txtValor').val(source.valor_string);
                 $('#txtData').val(source.data);
                 $('#ddlTipoPgto').val(source.tipo_pgto);
-                
+
 
                 $('#btnGravar').val('Alterar');
 
@@ -318,7 +392,7 @@
             allowOutsideClick: false
         }).then((result) => {
             if (result.value) {
-               
+
                 $.ajax({
                     type: "POST",
                     url: "ContasReceber.aspx/ExcluirConta",
@@ -362,19 +436,19 @@
 
     }
 
-    function baixarConta(id,valor) {
-      
+    function baixarConta(id, valor) {
+
         /*limparTabelaTempModal();*/
 
         //$('#lblTabelaInseridosDetalhes').html('');
         //$('#avisoModal').addClass('hidden');
         $('#hdnIDContasPagar').val(id);
         $('#txtvalorRecebe').val(valor.toLocaleString('pt-br', { minimumFractionDigits: 2 }));
-        
+
         /*GravarDetahesTemp('buscar');*/
         $('#ModalDetalhes').modal('show');
-        
-/*        BuscarDadosInseridosDetalhes(id);*/
+
+        /*        BuscarDadosInseridosDetalhes(id);*/
         /* $("#ModalDetalhes").modal({ show: true });*/
     }
 
@@ -429,14 +503,14 @@
 
             $('#avisoModal').addClass('hidden');
 
-            var id_obra = $('#hdnIDContasPagar').val();         
+            var id_obra = $('#hdnIDContasPagar').val();
             var dt = $('#txtDataRecebe').val();
             var valor = $('#txtvalorRecebe').val().trim().replace('.', '').replace(',', '.');
-           
+
             Contas = {
-                
+
                 valor: valor,
-                id: id_obra,                
+                id: id_obra,
                 data: dt
             };
 
@@ -459,7 +533,7 @@
                         BuscarDadosInseridosDetalhes(dados.retorno.split('@')[1]);
                         $('#txtDataRecebe').val('');
                         $('#txtvalorRecebe').val('');
-                       
+
                     }
 
                     /*BuscaTabelaDetalhesModal(dados);*/
@@ -772,7 +846,7 @@
         //});
     }
 
-    
+
 
     function baixarConta_old(id) {
 
@@ -826,7 +900,7 @@
         <asp:HiddenField ID="hdnIDContasPagar" runat="server" />
         <asp:HiddenField ID="hdnCliente" runat="server" />
         <asp:HiddenField ID="hdnObra" runat="server" />
-         <asp:HiddenField ID="hdnUsuario" runat="server" />
+        <asp:HiddenField ID="hdnUsuario" runat="server" />
         <asp:HiddenField ID="hdnValorParcela" runat="server" />
         <div id="menu">
         </div>
@@ -937,20 +1011,37 @@
 
                         <td colspan="4" style="text-align: center">
                             <br />
-                            <asp:Button ID="btnGravar"  runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
+                            <asp:Button runat="server" ID="btnGerar" CssClass="btn btn-success" Text="Gerar" OnClientClick="GerarTabelaContasTemporaria();return false;" />
+                            <asp:Button ID="btnGravar" runat="server" CssClass="btn btn-success" Text="Gravar" OnClientClick="GravarConta();return false;" />
                         </td>
                         <td style="text-align: center">
                             <br />
-                            <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Recebidas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                         
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+
+        <div style="width: 100%">
+            <br />
+            <center>
+                <table style="width: 80%">
+                    <tr>
+                     <td colspan="5" style="width: 100px; text-align: right">
+                               <asp:Button ID="btnPagas" runat="server" CssClass="btn btn-info" Text="Recebidas" OnClientClick="TabelaLancarDadosPagas();return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="divGravarTemporaria"></div>
                         </td>
                     </tr>
                 </table>
             </center>
         </div>
         <hr />
-
-        <div style="width: 100%">
-            <br />
+        <div style="width: 100%">           
             <center>
                 <table style="width: 90%">
                     <tr>
@@ -975,19 +1066,17 @@
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
                             <table style="width: 100%">
-                               
+
                                 <tr>
                                     <td>
-                                          <asp:TextBox runat="server" ID="txtvalorRecebe" CssClass="form-control" Width="150px" placeholder="R$" onKeyPress="return(moeda(this,'.',',',event))"></asp:TextBox>
+                                        <asp:TextBox runat="server" ID="txtvalorRecebe" CssClass="form-control" Width="150px" placeholder="R$" onKeyPress="return(moeda(this,'.',',',event))"></asp:TextBox>
                                     </td>
                                     <td>
-                                         <asp:TextBox runat="server" ID="txtDataRecebe" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
-                                      
+                                        <asp:TextBox runat="server" ID="txtDataRecebe" Width="100px" CssClass="form-control" MaxLength="10" placeholder="__/__/____" onkeypress="mascaraMutuario(this,data);" onkeydown="verBackSpace(this,data);" onblur="validateDate(this);"></asp:TextBox>
+
                                     </td>
-                                    <td>
-                                      
-                                    </td>
-                              
+                                    <td></td>
+
                                 </tr>
                                 <tr>
 
