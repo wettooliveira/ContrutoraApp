@@ -177,7 +177,7 @@
         }
 
         var contaBancaria = $('#ddlConta').val();
-        var desc_conta = $('#txtConta').val();
+      
         var num_parcela_string = $('#txtParcela').val();
         var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
         var cod_despesa = $('#ddlDespesa').val();
@@ -185,7 +185,7 @@
         var descDespesa = $('#ddlDespesa option:selected').text();
         var data = $('#txtData').val().trim().split('/')[0] + '/' + $('#txtData').val().trim().split('/')[1] + '/' + $('#txtData').val().trim().split('/')[2];
         var obra = $('#hdnObra').val();
-        var desc_obra = $('#txtobra').val();
+        var desc_obra = $('#txtObras').val();
         var tipo_pg = $('#ddlTipoPgto').val();
         var id_conta = $('#hdnIDContasPagar').val();
         var usuario = $('#hdnUsuario').val();
@@ -198,8 +198,13 @@
             id_conta = 0;
         }
 
+        if (desc_obra == '') {
+            desc_obra = '';
+        }
+
+
         var Contas = {
-            desc_conta: desc_conta,
+           
             num_parcela_string: num_parcela_string,
             valor_string: valor_string,
             data: data,
@@ -307,7 +312,10 @@
             }
 
             var valor_string = $('#txtValor').val().trim().replace('.', '').replace(',', '.');
-            var descObra = $('#txtobra').val();
+            var descObra = $('#txtObras').val();
+            if (descObra == '') {
+                descObra = '';
+            }
             var usuario = $('#hdnUsuario').val();
 
 
@@ -354,7 +362,7 @@
         var contalista = {
             listaContas1: lista
         }
-        return false;
+   
         var obj = { 'Contas': contalista };
 
         var url = '', tipo = '';
@@ -367,7 +375,7 @@
         }
 
         console.log(obj);
-
+   
 
         $.ajax({
             type: "POST",
@@ -1098,38 +1106,7 @@
     function selConta(id) {
 
         TabelaLancarDados('consultar', id);
-    }
-
-    function teste() {
-
-        //$('tbDados1 > table  > tr').each(function (index, tr) {
-        //    console.log(index);
-        //    console.log(tr);
-        //});
-
-        //$('#tbDados1 tr').each(function (index, tr) {
-        //    $(tr).find('td').each(function (index, td) {
-        //        alert(td);
-        //    });()
-        //});
-
-
-        //$('tbDados1 tr td').each(function (el) {
-        //    alert($(this).text());
-        //    if ($(this).text() == '') {
-
-        //       /* alert($('tbDados1 td:nth-child(' + i + '), th:nth-child(' + i + ')').hide());*/
-        //    }
-        //    i++;
-        //})
-
-
-
-
-
-    }
-
-
+    }   
 
 </script>
 
@@ -1168,10 +1145,12 @@
                     <tr>
                         <td style="display: inline-flex" colspan="4">
                             <asp:TextBox ID="txtNumConta" runat="server" placeholder="Nº Conta" CssClass="form-control" Width="100px"></asp:TextBox>
-                            &nbsp;&nbsp;
+                            
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
-
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <asp:TextBox runat="server" ID="txtNotaFiscal" placeholder="NF" Width="100px" CssClass="form-control" ></asp:TextBox>
                         </td>
+                   
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -1232,10 +1211,7 @@
 
                         <td colspan="2">
                             <asp:TextBox ID="txtParcela" runat="server" Width="100px" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
-                        </td>
-                 
-                       
-
+                        </td>  
                     </tr>  --%>
 
                     <tr>
