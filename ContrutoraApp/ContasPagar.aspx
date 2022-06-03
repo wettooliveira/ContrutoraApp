@@ -99,7 +99,11 @@
 
 
                 $('#div').html(source);
-                $('#btnPagas').prop("disabled", false);
+                if (status == 'consultar') {
+                    $('#btnPagas').prop("disabled", true);
+                    $('#btnGerar').prop("disabled", true);
+                }
+         
 
             },
             error: function (request, status, error) {
@@ -201,6 +205,14 @@
         if (desc_obra == '') {
             desc_obra = '';
         }
+        var nf_ = $('#txtNotaFiscal').val();
+
+        var tp = 'Gravar';
+        var url = 'ContasPagar.aspx/TabelaContaTemporaria_Gravar';
+        if ($('btnGravar').val() == 'Alterar') {
+            tp = 'Alterar';
+            url = 'ContasPagar.aspx/TabelaContaTemporaria_Alterar';
+        }
 
 
         var Contas = {
@@ -217,7 +229,9 @@
             tipo_pgto: tipo_pg,
             conta_bancaria: contaBancaria,
             id: id_conta,
-            nm_usuario: usuario
+            nm_usuario: usuario,
+            nf: nf_,
+            tipo: tp
         };
 
 
@@ -225,7 +239,7 @@
         console.log(obj);
         $.ajax({
             type: "POST",
-            url: 'ContasPagar.aspx/TabelaContaTemporaria',
+            url: url,
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
@@ -277,9 +291,8 @@
             for (var y = 0; y < cellLength; y += 1) {
 
                 numeroConta = row.cells[0].innerHTML;
-                num_parcela_string = row.cells[5].innerHTML;
-                tipo_pg = row.cells[4].innerHTML;
-
+                num_parcela_string = row.cells[6].innerHTML;
+                tipo_pg = row.cells[5].innerHTML;
             }
 
 
@@ -317,8 +330,8 @@
                 descObra = '';
             }
             var usuario = $('#hdnUsuario').val();
-
-
+            var nf_ = $('#txtNotaFiscal').val();
+            
             //var formaPgto = row.cells[5].innerHTML;
             //var chrParcela = row.cells[6].innerHTML;
             var Contas = {
@@ -336,13 +349,13 @@
                 tipo_pgto: tipo_pg,
                 conta_bancaria: contaBancaria,
                 id: id_conta,
-                nm_usuario: usuario
+                nm_usuario: usuario,
+                nf: nf_
             };
 
             if (i > 0) {
 
                 lista.push(Contas);
-
             }
 
         }
@@ -368,7 +381,7 @@
         var url = '', tipo = '';
         if ($('#btnGravar').val() == 'Alterar') {
             tipo = 'Alterar';
-            url = 'ContasPagar.aspx/Alterar';
+            url = 'ContasPagar.aspx/Alterar_OLD';
         } else {
             tipo = 'Gravar';
             url = 'ContasPagar.aspx/Gravar_old';
@@ -439,8 +452,10 @@
                 $('#ddlDespesa').val(source.id_despesa);
                 $('#txtData').val(source.data);
                 $('#ddlTipoPgto').val(source.tipo_pgto);
+                $('#txtNotaFiscal').val(source.nf);
 
                 $('#btnGravar').val('Alterar');
+                $('#btnGerar').prop("disabled", false);
 
             },
             error: function (request, status, error) {
@@ -640,15 +655,15 @@
             var desc_detalhe = $('#txtDescDetalhes').val();
             var qtde = $('#txtQtdeDetalhes').val();
             var valor = $('#txtvalorDetalhes').val().trim().replace('.', '').replace(',', '.');
-            var nf_ = $('#txtNF').val();
+         /*   var nf_ = $('#txtNF').val();*/
 
 
             Contas = {
                 desc_conta: desc_detalhe,
                 num_parcela: qtde,
                 valor: valor,
-                num_conta: id_obra,
-                nf: nf_
+                num_conta: id_obra
+         
             };
 
 
@@ -709,7 +724,7 @@
                 var dados = data.d.split('@')[1];
                 var tabela = data.d.split('@')[0];
 
-                $('#txtNF').val(dados);
+              /*  $('#txtNF').val(dados);*/
                 $('#lblTabelaInseridosDetalhes').html('');
                 $('#lblTabelaInseridosDetalhes').html(tabela);
 
@@ -835,7 +850,7 @@
         $('#txtDescDetalhes').val('');
         $('#txtQtdeDetalhes').val('');
         $('#txtvalorDetalhes').val('');
-        $('#txtNF').val('');
+      
 
         var id_conta = $('#hdnIDContasPagar').val();
 
@@ -1149,6 +1164,7 @@
                             <input type="image" src="../Css/Imagens/lupa.png" style="width: 30px; height: 30px" title="Consultar Conta" onclick="BuscarContaPagar();return false;" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <asp:TextBox runat="server" ID="txtNotaFiscal" placeholder="NF" Width="100px" CssClass="form-control" ></asp:TextBox>
+                       
                         </td>
                    
                     </tr>
@@ -1292,14 +1308,7 @@
                             <asp:HiddenField runat="server" ID="hdnIdLiberacao" />
                             <label id="lblLiberacaoEspecial"></label>
                             <table style="width: 100%">
-                                <tr>
-                                    <td colspan="4">
-                                        <center>
-                                            <asp:TextBox runat="server" ID="txtNF" CssClass="form-control" Width="150px" placeholder="NF"></asp:TextBox>
-                                        </center>
-
-                                    </td>
-                                </tr>
+          
                                 <tr>
                                     <td>
                                         <asp:TextBox runat="server" ID="txtDescDetalhes" CssClass="form-control" placeholder="item"></asp:TextBox>
