@@ -31,6 +31,15 @@ public partial class cad_cliente
     protected global::System.Web.UI.WebControls.HiddenField hdnUsuario;
 
     /// <summary>
+    /// Controle hdnIdCliente.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnIdCliente;
+
+    /// <summary>
     /// Controle riCliente.
     /// </summary>
     /// <remarks>
@@ -47,6 +56,15 @@ public partial class cad_cliente
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton riFornecedor;
+
+    /// <summary>
+    /// Controle riAmbos.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton riAmbos;
 
     /// <summary>
     /// Controle txtRazaoSocial.
@@ -146,6 +164,15 @@ public partial class cad_cliente
     /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtUF;
+
+    /// <summary>
+    /// Controle txtObs.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlTextArea txtObs;
 
     /// <summary>
     /// Controle btnGravar.

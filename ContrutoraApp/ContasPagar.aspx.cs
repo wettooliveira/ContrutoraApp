@@ -239,51 +239,51 @@ namespace ContrutoraApp
 
 
            
-            int contadorData = 0;
-            for (int i = 1; i <= parcelas; i++)
-            {
+            //int contadorData = 0;
+            //for (int i = 1; i <= parcelas; i++)
+            //{
 
-                //if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
-                if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
-
-
-                table += "          <tr               style='color:Black;background-color:" + cor_r + "'> ";
-                table += "          <th style='border-bottom: 1px solid; text-align:left' data-content=" + numero_conta + "> " + numero_conta + " </th>";
-                table += "          <th               style='border-bottom: 1px solid'> " + contas.desc_despesa + " </th>";
-                table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_fornecedor + "</th>";
-                table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_obra + "</th>";
-                table += "          <th               style='border-bottom: 1px solid'>" + contas.nf + "</th>";
-                table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + contas.tipo_pgto + "</th>";
-                table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + i.ToString() + "/" + contas.num_parcela_string + " </th>"; //Parcela
-                table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
-
-                if (contadorData == 0)
-                {
-
-                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> "+ Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
-                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  id='txtDataTb_" + i + "' style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
-
-                }
-                else
-                {
-
-                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " </th>";
-                    //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
-                    table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text' id='txtDataTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " /></th>";
-                }
+            //    //if (cor_r.Equals("#90EE90")) { cor_r = "#90EE90"; } else { cor_r = "#90EE90"; }
+            //    if (cor_r.Equals("#FFFFFF")) { cor_r = "#F7F6F3"; } else { cor_r = "#FFFFFF"; }
 
 
-                table += "          </tr> ";
+            //    table += "          <tr               style='color:Black;background-color:" + cor_r + "'> ";
+            //    table += "          <th style='border-bottom: 1px solid; text-align:left' data-content=" + numero_conta + "> " + numero_conta + " </th>";
+            //    table += "          <th               style='border-bottom: 1px solid'> " + contas.desc_despesa + " </th>";
+            //    table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_fornecedor + "</th>";
+            //    table += "          <th               style='border-bottom: 1px solid'>" + contas.desc_obra + "</th>";
+            //    table += "          <th               style='border-bottom: 1px solid'>" + contas.nf + "</th>";
+            //    table += "          <th align='left'  style='border-bottom: 1px solid; width:100px'>" + contas.tipo_pgto + "</th>";
+            //    table += "          <th style='border-bottom: 1px solid; width:80px; text-align:rigth'> " + i.ToString() + "/" + contas.num_parcela_string + " </th>"; //Parcela
+            //    table += "          <th style='border-bottom: 1px solid; width:100px;text-align:rigth'>  <input type='text' id='txtVlParcelaTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDouble(valor_parcelas).ToString("N2") + " onKeyPress='return(moeda(this, '.', ',',event))' /> </th>";
 
-                contadorData++;
-            }
+            //    if (contadorData == 0)
+            //    {
 
-            cn.Close();
+            //        //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> "+ Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
+            //        table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text'  id='txtDataTb_" + i + "' style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " /></th>";
 
-            table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
-            table += "              <th colspan='9' style='height:10px; color:#5D7B9D'> </th>";
-            table += "          </tr> ";
-            table += "      </table> ";
+            //    }
+            //    else
+            //    {
+
+            //        //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " </th>";
+            //        //table += "          <th align='center' style='border-bottom: 1px solid; width:80px'> " + Convert.ToDateTime(contas.data).ToString("dd/MM/yyyy") + " </th>";
+            //        table += "          <th align='center' style='border-bottom: 1px solid; width:80px'>  <input type='text' id='txtDataTb_" + i + "'  style='width: 100px; height: 30px' value=" + Convert.ToDateTime(contas.data).AddMonths(contadorData).ToString("dd/MM/yyyy") + " /></th>";
+            //    }
+
+
+            //    table += "          </tr> ";
+
+            //    contadorData++;
+            //}
+
+            //cn.Close();
+
+            //table += "          <tr style='color:White;background-color:#5D7B9D;height:10px'> ";
+            //table += "              <th colspan='9' style='height:10px; color:#5D7B9D'> </th>";
+            //table += "          </tr> ";
+            //table += "      </table> ";
             return table;
 
         }

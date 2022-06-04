@@ -8,18 +8,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
     <link rel="stylesheet" type="text/css" href="../Css/Content/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" media="screen" />
     <script type="text/javascript" src="../Scripts/jquery-3.4.1.js"></script>
-    <%-- <script type="text/javascript" src="../Scripts/jquery-3.3.1.js"></script>--%>
-    <%--<link rel="stylesheet" type="text/css" href="../Css/Menu.css" media="screen" />--%>
-    <script type="text/javascript" src="../Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
+    <%--<script type="text/javascript" src="../Scripts/jquery-3.4.1.min.js"></script>--%>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="Scripts/SweetAlert2/sweetalert2.all.min.js"></script>
 
     <title></title>
 
     <script type="text/javascript" language="javascript">
-        const { checked } = require("modernizr");
-
+      
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success',
@@ -36,13 +36,25 @@
                 tipo = "cliente";
             } else if ($('#riFornecedor').is(':checked')) {
                 tipo = "fornecedor";
+            } else if ($('#riAmbos').is(':checked')) {
+                tipo = "ambos";
+            } else {
+
+                swalWithBootstrapButtons.fire({
+                    title: '',
+                    text: 'Necessario colocar o tipo (Cliente,Fornecedor ou Ambos)',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+
+                return false;
             }
-         
+
             var RazaoSocial = $('#txtRazaoSocial').val();
             var CNPJ = $('#txtCnpj').val();
             var IE = $('#txtInscricao').val();
-            var Tel = $('#txtTel').val();
-            var obs = "texte";
+            var Tel = $('#txtTel').val();            
             var CEP = $('#txtCEP').val();
             var logradouro = $('#txtEndereco').val();
             var numero = $('#txtNumero').val();
@@ -51,6 +63,18 @@
             var cidade = $('#txtCidade').val();
             var UF = $('#txtUF').val();
             var usuario = $('#hdnUsuario').val();
+            var obs = $('#txtObs').val();
+            var id_cliente;
+            var URL;
+
+
+            if ($('#btnGravar').val() == 'Gravar') {
+                id_cliente = 0;
+                URL = "cad_cliente.aspx/Gravar";
+            } else {
+                id_cliente = $('#hdnIdCliente').val();
+                URL = "cad_cliente.aspx/AlterarCliente";
+            }
 
             var Endereco = {
                 cep: CEP,
@@ -63,6 +87,7 @@
             };
 
             var Cliente = {
+                id: id_cliente,
                 RazaoSocial: RazaoSocial,
                 CNPJ: CNPJ,
                 IE: IE,
@@ -70,18 +95,12 @@
                 obs: obs,
                 nm_cadastrou: usuario,
                 endereco: Endereco,
-                tp_cli_fornc: tipo
+                tp_cli_fornc: tipo             
             };
 
             var obj = { 'cliente': Cliente };
-
-            var URL
-            if ($('#btnGravar').val() == 'Gravar') {
-                URL = "cad_cliente.aspx/Gravar";
-            } else {
-                URL = "cad_cliente.aspx/Alterar";
-            }
-
+       
+            console.log(obj);
             $.ajax({
                 type: "POST",
                 url: URL,
@@ -94,13 +113,13 @@
                     if (data.d.split(',')[0] == 'OK') {
                         $('#lblAviso').html('');
                         if (data.d.split(',')[1] == 'gravar') {
-                           
+
                             alertCss('Gravar');
                         } else {
-                           
+
                             alertCss('Alterar');
                         }
-                      
+
 
                     } else if (data.d.split(',')[0] == 'ERRO') {
                         $('#lblAviso').html('');
@@ -153,7 +172,7 @@
         }
 
         function BuscarCep(cep) {
-
+            alert();
             $.ajax({
                 type: "POST",
                 url: "cad_cliente.aspx/BuscarCEP",
@@ -178,7 +197,7 @@
                         $('#txtUF').val(source.uf);
                     }
 
-      
+
 
 
                 },
@@ -213,15 +232,20 @@
                 dataType: "JSON",
                 success: function (data) {
                     var source = data.d;
-                   
+
                     if (source.tp_cli_fornc == 'cliente') {
                         $("#riCliente").prop("checked", true);
 
-                    } else {
+                    } else if (source.tp_cli_fornc == 'fornecedor') {
 
                         $("#riFornecedor").prop("checked", true);
+                    } else {
+
+                        $("#riAmbos").prop("checked", true);
+
                     }
 
+                    $('#hdnIdCliente').val(source.id);
                     $('#txtRazaoSocial').val(source.RazaoSocial);
                     $('#txtCnpj').val(source.CNPJ);
                     $('#txtInscricao').val(source.IE);
@@ -259,6 +283,7 @@
         .swal2-popup {
             font-size: medium !important;
         }
+
         .btn {
             margin: 0 0.5rem;
             font-size: medium !important;
@@ -275,6 +300,7 @@
 <body>
     <form id="form1" runat="server">
         <asp:HiddenField ID="hdnUsuario" runat="server" />
+            <asp:HiddenField ID="hdnIdCliente" runat="server" />
         <div>
             <center>
                 <table>
@@ -292,7 +318,9 @@
                             &nbsp;&nbsp;
                                 <input type="radio" runat="server" class="radioinput" id="riFornecedor" name="fav_language" value="fornecedor" />
                             <label>Fornecedor</label>
-
+                            &nbsp;&nbsp;
+                                <input type="radio" runat="server" class="radioinput" id="riAmbos" name="fav_language" value="ambos" />
+                            <label>Ambos</label>
                         </td>
                     </tr>
                     <tr class="trBody">
@@ -366,7 +394,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                         <td>
+                            <textarea id="txtObs" runat="server" placeholder="Observação" class="form-control"  style="resize:none;width:500px;height:70px"></textarea>
+                        </td>
                     </tr>
 
                     <%--<tr>
@@ -384,9 +414,7 @@
                             <asp:TextBox ID="txtParcela" runat="server" placeholder="Parcela" CssClass="form-control"></asp:TextBox>
                         </td>
 
-                        <td>
-                            <asp:TextBox ID="txtValor" runat="server" placeholder="Valor" CssClass="form-control"></asp:TextBox>
-                        </td>
+                     
 
                        
                     </tr>--%>

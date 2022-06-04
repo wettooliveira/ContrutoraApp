@@ -148,6 +148,15 @@ public partial class cad_obra
     protected global::System.Web.UI.WebControls.TextBox txtValorObra;
 
     /// <summary>
+    /// Controle txtObs.
+    /// </summary>
+    /// <remarks>
+    /// Campo gerado automaticamente.
+    /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlTextArea txtObs;
+
+    /// <summary>
     /// Controle btnGravar.
     /// </summary>
     /// <remarks>

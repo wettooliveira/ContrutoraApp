@@ -13,6 +13,7 @@ namespace ContrutoraApp
         public String responsavel { get; set; }
         public Endereco endereco { get; set; }
         public Cliente cliente { get; set; }
+        public String obs { get; set; }
         public Double valor { get; set; }
 
         public String valor_string { get; set; }
